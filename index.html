@@ -218,7 +218,7 @@
       </p>
       <div class="field">
         <label>Web App URL</label>
-        <input type="text" id="webAppUrl" placeholder="https://script.google.com/macros/s/AKfycbwVFA2HcKjfmQlcLm8OTMU8kS2EMD9cE1yGkN_aRa9XGjiTkSTTrPCGdy6yUI0sp7vw/exec">
+        <input type="text" id="webAppUrl" placeholder="https://script.google.com/macros/s/xxxx/exec">
       </div>
       <div class="actions">
         <button class="btn btn-primary" id="btnSaveUrl">Simpan URL</button>
@@ -235,7 +235,9 @@
   "use strict";
 
   var STORE_KEY = 'malariaAppConfig';
-  var state = { webAppUrl: '', data: [] };
+  // URL Web App Google Apps Script - sudah tertaut secara default, bisa diganti di tab Pengaturan bila perlu
+  var DEFAULT_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbwVFA2HcKjfmQlcLm8OTMU8kS2EMD9cE1yGkN_aRa9XGjiTkSTTrPCGdy6yUI0sp7vw/exec';
+  var state = { webAppUrl: DEFAULT_WEBAPP_URL, data: [] };
 
   // ---------- Storage helper (aman jika localStorage tidak tersedia) ----------
   function safeGetStorage(key){
@@ -250,7 +252,7 @@
     if (raw){
       try {
         var cfg = JSON.parse(raw);
-        state.webAppUrl = cfg.webAppUrl || '';
+        if (cfg.webAppUrl) { state.webAppUrl = cfg.webAppUrl; }
       } catch(e){}
     }
   }
