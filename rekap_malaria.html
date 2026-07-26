@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rekap Obat Program - Malaria</title>
+<style>
+  :root{
+    --primary:#0f6b52; --primary-dark:#0a4d3a; --bg:#f4f7f6; --card:#ffffff;
+    --border:#dbe4e1; --text:#1f2d29; --muted:#6b7a75; --danger:#c0392b; --warn:#e08e0b;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);margin:0;color:var(--text);}
+  header{background:var(--primary);color:#fff;padding:16px 24px;}
+  header h1{margin:0;font-size:20px;}
+  header p{margin:4px 0 0;font-size:13px;opacity:.9;}
+  nav{display:flex;background:var(--primary-dark);}
+  nav button{flex:1;padding:12px;background:transparent;border:none;color:#fff;font-size:14px;cursor:pointer;opacity:.75;}
+  nav button.active{opacity:1;border-bottom:3px solid #fff;font-weight:600;}
+  main{max-width:960px;margin:20px auto;padding:0 16px 60px;}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:20px;}
+  .card h2{margin-top:0;font-size:17px;color:var(--primary-dark);}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:640px){.grid{grid-template-columns:1fr;}}
+  label{font-size:13px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px;}
+  input,select,textarea{width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:6px;font-size:14px;background:#fff;}
+  textarea{resize:vertical;min-height:60px;}
+  .field{margin-bottom:6px;}
+  fieldset{border:1px solid var(--border);border-radius:8px;margin:16px 0 0;padding:14px;}
+  legend{font-size:13px;font-weight:700;color:var(--primary-dark);padding:0 6px;}
+  .obat-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;}
+  @media(max-width:640px){.obat-row{grid-template-columns:1fr 1fr;}}
+  .actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;}
+  button.btn{cursor:pointer;border:none;border-radius:6px;padding:10px 18px;font-size:14px;font-weight:600;}
+  .btn-primary{background:var(--primary);color:#fff;}
+  .btn-primary:hover{background:var(--primary-dark);}
+  .btn-secondary{background:#e8efec;color:var(--primary-dark);}
+  .btn-danger{background:#fdecea;color:var(--danger);}
+  .msg{padding:10px 12px;border-radius:6px;font-size:13px;margin-bottom:14px;display:none;}
+  .msg.ok{background:#e6f4ea;color:#1e7e34;display:block;}
+  .msg.err{background:#fdecea;color:var(--danger);display:block;}
+  .msg.info{background:#eaf2fb;color:#2a5885;display:block;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th,td{padding:8px 6px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap;}
+  th{background:#eef4f2;color:var(--primary-dark);position:sticky;top:0;}
+  .table-wrap{overflow-x:auto;max-height:460px;}
+  .toolbar{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;align-items:center;}
+  .toolbar input{max-width:260px;}
+  .badge{padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;}
+  .badge.falciparum{background:#fdecea;color:#c0392b;}
+  .badge.vivax{background:#fff4e0;color:#b3760a;}
+  .badge.mix{background:#eee0fd;color:#6c3fc0;}
+  .row-actions button{padding:4px 8px;font-size:12px;}
+  .config-box{font-size:12px;color:var(--muted);}
+  .required::after{content:" *";color:var(--danger);}
+  .empty-state{text-align:center;color:var(--muted);padding:30px 0;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🩸 Rekapitulasi Obat Program</h1>
+  <p>Modul aktif: <strong>Malaria</strong> — (Hyperhep &amp; Tuberkulin menyusul)</p>
+</header>
+
+<nav>
+  <button data-tab="input" class="active">📝 Input Data Pasien</button>
+  <button data-tab="laporan">📋 Menu Laporan</button>
+  <button data-tab="setting">⚙️ Pengaturan Koneksi</button>
+</nav>
+
+<main>
+
+  <!-- ============ TAB INPUT ============ -->
+  <section id="tab-input" class="tab">
+    <div class="card">
+      <h2>Form Input Data Pasien - Malaria</h2>
+      <div id="msgInput" class="msg"></div>
+
+      <form id="formMalaria" autocomplete="off">
+        <div class="grid">
+          <div class="field">
+            <label class="required">Nama Pasien</label>
+            <input type="text" name="namaPasien" required>
+          </div>
+          <div class="field">
+            <label class="required">Tanggal Lahir</label>
+            <input type="date" name="tglLahir" id="tglLahir" required>
+          </div>
+          <div class="field">
+            <label>Umur (otomatis)</label>
+            <input type="text" name="umur" id="umur" readonly>
+          </div>
+          <div class="field">
+            <label class="required">No. Reg</label>
+            <input type="text" name="noReg" required>
+          </div>
+          <div class="field">
+            <label>No. Telp / HP</label>
+            <input type="text" name="noTelp" placeholder="08xxxxxxxxxx">
+          </div>
+          <div class="field">
+            <label>FASKES</label>
+            <input type="text" name="faskes">
+          </div>
+          <div class="field">
+            <label>Alamat Domisili</label>
+            <textarea name="alamatDomisili"></textarea>
+          </div>
+          <div class="field">
+            <label>Alamat Tinggal Sesuai KTP</label>
+            <textarea name="alamatKTP"></textarea>
+          </div>
+          <div class="field">
+            <label>Derajat Malaria</label>
+            <select name="derajatMalaria">
+              <option value="">- Pilih -</option>
+              <option>Tanpa Komplikasi</option>
+              <option>Berat / Komplikasi</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Hasil Malaria</label>
+            <select name="hasilMalaria">
+              <option value="">- Pilih -</option>
+              <option>Malaria Falciparum</option>
+              <option>Malaria Vivax</option>
+              <option>Malaria Mix</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Tanggal Kejadian</label>
+            <input type="date" name="tglKejadian">
+          </div>
+          <div class="field">
+            <label>Tanggal ke IGD</label>
+            <input type="date" name="tglIGD">
+          </div>
+          <div class="field">
+            <label>Suhu Badan (°C)</label>
+            <input type="number" step="0.1" name="suhuBadan">
+          </div>
+          <div class="field">
+            <label>Berat Badan (kg)</label>
+            <input type="number" step="0.1" name="bb">
+          </div>
+          <div class="field">
+            <label>Anemia</label>
+            <select name="anemia">
+              <option value="">- Pilih -</option>
+              <option>Ya</option>
+              <option>Tidak</option>
+            </select>
+          </div>
+          <div class="field" style="grid-column:1/-1;">
+            <label>Gejala</label>
+            <textarea name="gejala" placeholder="Demam, menggigil, sakit kepala, dll."></textarea>
+          </div>
+        </div>
+
+        <fieldset>
+          <legend>Pemakaian Obat</legend>
+          <div class="obat-row">
+            <div class="field"><label>DHP - Jumlah Tablet</label><input type="number" name="dhpTablet"></div>
+            <div class="field"><label>Aturan Pakai (x/hari)</label><input type="number" name="dhpAturan" placeholder="cth: 1"></div>
+            <div class="field"><label>Jumlah Hari</label><input type="number" name="dhpHari"></div>
+            <div class="field"></div>
+          </div>
+          <div class="obat-row" style="margin-top:10px;">
+            <div class="field"><label>Primakuin - Jumlah Tablet</label><input type="number" name="primakuinTablet"></div>
+            <div class="field"><label>Aturan Pakai (x/hari)</label><input type="number" name="primakuinAturan" placeholder="cth: 1"></div>
+            <div class="field"><label>Jumlah Hari</label><input type="number" name="primakuinHari"></div>
+            <div class="field"></div>
+          </div>
+        </fieldset>
+
+        <div class="actions">
+          <button type="submit" class="btn btn-primary" id="btnSimpan">💾 Simpan ke Google Sheets</button>
+          <button type="reset" class="btn btn-secondary">Bersihkan Form</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============ TAB LAPORAN ============ -->
+  <section id="tab-laporan" class="tab" style="display:none;">
+    <div class="card">
+      <h2>Menu Laporan Pasien Malaria</h2>
+      <div id="msgLaporan" class="msg"></div>
+      <div class="toolbar">
+        <input type="text" id="searchBox" placeholder="Cari nama / no. reg...">
+        <button class="btn btn-secondary" id="btnRefresh">🔄 Muat Ulang Data</button>
+      </div>
+      <div class="table-wrap">
+        <table id="tabelLaporan">
+          <thead>
+            <tr>
+              <th>Nama</th><th>Umur</th><th>No. Reg</th><th>No HP</th>
+              <th>Hasil Malaria</th><th>Derajat</th><th>Tgl Kejadian</th>
+              <th>FASKES</th><th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="bodyLaporan"></tbody>
+        </table>
+        <div id="emptyState" class="empty-state" style="display:none;">Belum ada data, atau data belum dimuat.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TAB SETTING ============ -->
+  <section id="tab-setting" class="tab" style="display:none;">
+    <div class="card">
+      <h2>Pengaturan Koneksi Google Sheets</h2>
+      <p class="config-box">
+        Tempel URL Web App Google Apps Script (hasil deploy Code.gs) di bawah ini.
+        URL akan disimpan pada browser ini saja (localStorage tidak dipakai di dalam artifact preview,
+        namun pada file HTML yang diunduh &amp; dibuka langsung di browser Anda, fitur ini akan berjalan normal).
+      </p>
+      <div class="field">
+        <label>Web App URL</label>
+        <input type="text" id="webAppUrl" placeholder="https://script.google.com/macros/s/xxxx/exec">
+      </div>
+      <div class="actions">
+        <button class="btn btn-primary" id="btnSaveUrl">Simpan URL</button>
+        <button class="btn btn-secondary" id="btnTestConn">🔎 Uji Koneksi</button>
+      </div>
+      <div id="msgSetting" class="msg"></div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  var STORE_KEY = 'malariaAppConfig';
+  var state = { webAppUrl: '', data: [] };
+
+  // ---------- Storage helper (aman jika localStorage tidak tersedia) ----------
+  function safeGetStorage(key){
+    try { return localStorage.getItem(key); } catch(e){ return null; }
+  }
+  function safeSetStorage(key, val){
+    try { localStorage.setItem(key, val); return true; } catch(e){ return false; }
+  }
+
+  function loadConfig(){
+    var raw = safeGetStorage(STORE_KEY);
+    if (raw){
+      try {
+        var cfg = JSON.parse(raw);
+        state.webAppUrl = cfg.webAppUrl || '';
+      } catch(e){}
+    }
+  }
+
+  // ---------- Tab navigation ----------
+  function initTabs(){
+    var navButtons = document.querySelectorAll('nav button');
+    navButtons.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        navButtons.forEach(function(b){ b.classList.remove('active'); });
+        btn.classList.add('active');
+        document.querySelectorAll('.tab').forEach(function(t){ t.style.display = 'none'; });
+        document.getElementById('tab-' + btn.dataset.tab).style.display = 'block';
+        if (btn.dataset.tab === 'laporan') { fetchLaporan(); }
+      });
+    });
+  }
+
+  // ---------- Umur otomatis ----------
+  function hitungUmur(tglLahirStr){
+    if (!tglLahirStr) return '';
+    var lahir = new Date(tglLahirStr);
+    if (isNaN(lahir.getTime())) return '';
+    var now = new Date();
+    var tahun = now.getFullYear() - lahir.getFullYear();
+    var bulan = now.getMonth() - lahir.getMonth();
+    var hari = now.getDate() - lahir.getDate();
+    if (hari < 0) { bulan -= 1; }
+    if (bulan < 0) { tahun -= 1; bulan += 12; }
+    if (tahun < 0) return '';
+    if (tahun === 0) {
+      return bulan + ' bulan';
+    }
+    return tahun + ' tahun ' + bulan + ' bulan';
+  }
+
+  function initUmurAuto(){
+    var tglLahir = document.getElementById('tglLahir');
+    var umur = document.getElementById('umur');
+    tglLahir.addEventListener('change', function(){
+      umur.value = hitungUmur(tglLahir.value);
+    });
+  }
+
+  // ---------- Message helper ----------
+  function showMsg(elId, text, type){
+    var el = document.getElementById(elId);
+    el.textContent = text;
+    el.className = 'msg ' + type;
+    el.style.display = 'block';
+  }
+  function hideMsg(elId){
+    document.getElementById(elId).style.display = 'none';
+  }
+
+  // ---------- Form submit ----------
+  function serializeForm(form){
+    var data = {};
+    Array.prototype.forEach.call(form.elements, function(el){
+      if (!el.name) return;
+      data[el.name] = el.value;
+    });
+    return data;
+  }
+
+  function validatePayload(payload){
+    var errors = [];
+    if (!payload.namaPasien || !payload.namaPasien.trim()) errors.push('Nama Pasien wajib diisi.');
+    if (!payload.tglLahir) errors.push('Tanggal Lahir wajib diisi.');
+    if (!payload.noReg || !payload.noReg.trim()) errors.push('No. Reg wajib diisi.');
+    return errors;
+  }
+
+  function initForm(){
+    var form = document.getElementById('formMalaria');
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      hideMsg('msgInput');
+      var payload = serializeForm(form);
+      var errors = validatePayload(payload);
+      if (errors.length){
+        showMsg('msgInput', errors.join(' '), 'err');
+        return;
+      }
+      if (!state.webAppUrl){
+        showMsg('msgInput', 'URL Web App Google Sheets belum diatur. Buka tab "Pengaturan Koneksi" terlebih dahulu.', 'err');
+        return;
+      }
+      var btn = document.getElementById('btnSimpan');
+      btn.disabled = true;
+      btn.textContent = 'Menyimpan...';
+
+      fetch(state.webAppUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // hindari preflight CORS
+        body: JSON.stringify(payload)
+      })
+      .then(function(res){ return res.json(); })
+      .then(function(json){
+        if (json.status === 'success'){
+          showMsg('msgInput', 'Data pasien berhasil disimpan ke Google Sheets.', 'ok');
+          form.reset();
+          document.getElementById('umur').value = '';
+        } else {
+          showMsg('msgInput', 'Gagal menyimpan: ' + (json.message || 'Tidak diketahui'), 'err');
+        }
+      })
+      .catch(function(err){
+        showMsg('msgInput', 'Gagal menghubungi server: ' + err.message, 'err');
+      })
+      .finally(function(){
+        btn.disabled = false;
+        btn.textContent = '💾 Simpan ke Google Sheets';
+      });
+    });
+  }
+
+  // ---------- Laporan ----------
+  function badgeHasil(hasil){
+    if (!hasil) return '';
+    var cls = 'falciparum';
+    if (/vivax/i.test(hasil)) cls = 'vivax';
+    if (/mix/i.test(hasil)) cls = 'mix';
+    return '<span class="badge ' + cls + '">' + escapeHtml(hasil) + '</span>';
+  }
+
+  function escapeHtml(str){
+    if (str === null || str === undefined) return '';
+    return String(str)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+
+  function renderLaporan(list){
+    var tbody = document.getElementById('bodyLaporan');
+    var empty = document.getElementById('emptyState');
+    tbody.innerHTML = '';
+    if (!list.length){
+      empty.style.display = 'block';
+      return;
+    }
+    empty.style.display = 'none';
+    list.forEach(function(item, idx){
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td>' + escapeHtml(item.namaPasien) + '</td>' +
+        '<td>' + escapeHtml(item.umur) + '</td>' +
+        '<td>' + escapeHtml(item.noReg) + '</td>' +
+        '<td>' + escapeHtml(item.noTelp) + '</td>' +
+        '<td>' + badgeHasil(item.hasilMalaria) + '</td>' +
+        '<td>' + escapeHtml(item.derajatMalaria) + '</td>' +
+        '<td>' + escapeHtml(item.tglKejadian) + '</td>' +
+        '<td>' + escapeHtml(item.faskes) + '</td>' +
+        '<td class="row-actions"><button class="btn btn-secondary" data-idx="' + idx + '">📄 Unduh Catatan</button></td>';
+      tbody.appendChild(tr);
+    });
+
+    tbody.querySelectorAll('button[data-idx]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var item = list[parseInt(btn.dataset.idx, 10)];
+        downloadCatatan(item);
+      });
+    });
+  }
+
+  function applyFilter(){
+    var q = document.getElementById('searchBox').value.trim().toLowerCase();
+    if (!q){ renderLaporan(state.data); return; }
+    var filtered = state.data.filter(function(item){
+      return (item.namaPasien || '').toLowerCase().indexOf(q) > -1 ||
+             (item.noReg || '').toLowerCase().indexOf(q) > -1;
+    });
+    renderLaporan(filtered);
+  }
+
+  function fetchLaporan(){
+    hideMsg('msgLaporan');
+    if (!state.webAppUrl){
+      showMsg('msgLaporan', 'URL Web App belum diatur. Buka tab "Pengaturan Koneksi" terlebih dahulu.', 'err');
+      renderLaporan([]);
+      return;
+    }
+    showMsg('msgLaporan', 'Memuat data dari Google Sheets...', 'info');
+    fetch(state.webAppUrl, { method: 'GET' })
+      .then(function(res){ return res.json(); })
+      .then(function(json){
+        if (json.status === 'success'){
+          state.data = json.data || [];
+          hideMsg('msgLaporan');
+          renderLaporan(state.data);
+        } else {
+          showMsg('msgLaporan', 'Gagal memuat data: ' + (json.message || 'Tidak diketahui'), 'err');
+        }
+      })
+      .catch(function(err){
+        showMsg('msgLaporan', 'Gagal menghubungi server: ' + err.message, 'err');
+      });
+  }
+
+  // ---------- Export catatan per pasien (.txt) ----------
+  function buildCatatanText(item){
+    function v(key){ return (item[key] !== undefined && item[key] !== null && item[key] !== '') ? item[key] : '-'; }
+    var lines = [
+      'REKAP DATA PASIEN - PROGRAM OBAT MALARIA',
+      '========================================',
+      'Nama Pasien       : ' + v('namaPasien'),
+      'Tanggal Lahir     : ' + v('tglLahir'),
+      'Umur              : ' + v('umur'),
+      'No. Reg           : ' + v('noReg'),
+      'No. Telp/HP       : ' + v('noTelp'),
+      'Alamat Domisili   : ' + v('alamatDomisili'),
+      'Alamat KTP        : ' + v('alamatKTP'),
+      'Derajat Malaria   : ' + v('derajatMalaria'),
+      'Hasil Malaria     : ' + v('hasilMalaria'),
+      'Tanggal Kejadian  : ' + v('tglKejadian'),
+      'Tanggal ke IGD    : ' + v('tglIGD'),
+      'Suhu Badan        : ' + v('suhuBadan') + ' C',
+      'Gejala            : ' + v('gejala'),
+      'Anemia            : ' + v('anemia'),
+      'Berat Badan       : ' + v('bb') + ' kg',
+      'FASKES            : ' + v('faskes'),
+      '',
+      'PEMAKAIAN OBAT',
+      '----------------------------------------',
+      'DHP        : ' + v('dhpTablet') + ' tablet, aturan pakai ' + v('dhpAturan') + 'x/hari, selama ' + v('dhpHari') + ' hari',
+      'Primakuin  : ' + v('primakuinTablet') + ' tablet, aturan pakai ' + v('primakuinAturan') + 'x/hari, selama ' + v('primakuinHari') + ' hari',
+      '',
+      'Dicetak otomatis oleh Aplikasi Rekap Obat Program - ' + new Date().toLocaleString('id-ID')
+    ];
+    return lines.join('\n');
+  }
+
+  function downloadCatatan(item){
+    var text = buildCatatanText(item);
+    var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    var safeNama = (item.namaPasien || 'pasien').replace(/[^a-z0-9]+/gi, '_');
+    a.href = url;
+    a.download = 'Catatan_Malaria_' + safeNama + '.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  // ---------- Settings ----------
+  function initSettings(){
+    var input = document.getElementById('webAppUrl');
+    input.value = state.webAppUrl;
+
+    document.getElementById('btnSaveUrl').addEventListener('click', function(){
+      var val = input.value.trim();
+      if (!/^https:\/\/script\.google\.com\/macros\/s\//.test(val)){
+        showMsg('msgSetting', 'Format URL tampaknya tidak sesuai URL Web App Apps Script.', 'err');
+        return;
+      }
+      state.webAppUrl = val;
+      var ok = safeSetStorage(STORE_KEY, JSON.stringify({ webAppUrl: val }));
+      showMsg('msgSetting', ok ? 'URL berhasil disimpan.' : 'URL diset untuk sesi ini (penyimpanan permanen tidak tersedia di lingkungan ini).', 'ok');
+    });
+
+    document.getElementById('btnTestConn').addEventListener('click', function(){
+      if (!state.webAppUrl){
+        showMsg('msgSetting', 'Isi dan simpan URL terlebih dahulu.', 'err');
+        return;
+      }
+      showMsg('msgSetting', 'Menguji koneksi...', 'info');
+      fetch(state.webAppUrl, { method: 'GET' })
+        .then(function(res){ return res.json(); })
+        .then(function(json){
+          if (json.status === 'success'){
+            showMsg('msgSetting', 'Koneksi berhasil. Jumlah data saat ini: ' + json.data.length, 'ok');
+          } else {
+            showMsg('msgSetting', 'Server merespons error: ' + json.message, 'err');
+          }
+        })
+        .catch(function(err){
+          showMsg('msgSetting', 'Koneksi gagal: ' + err.message, 'err');
+        });
+    });
+  }
+
+  function initButtons(){
+    document.getElementById('btnRefresh').addEventListener('click', fetchLaporan);
+    document.getElementById('searchBox').addEventListener('input', applyFilter);
+  }
+
+  // expose for testing (Node/jsdom harness)
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { hitungUmur: hitungUmur, buildCatatanText: buildCatatanText, validatePayload: validatePayload, escapeHtml: escapeHtml };
+  }
+
+  function init(){
+    loadConfig();
+    initTabs();
+    initUmurAuto();
+    initForm();
+    initSettings();
+    initButtons();
+  }
+
+  if (typeof document !== 'undefined') {
+    document.addEventListener('DOMContentLoaded', init);
+  }
+})();
+</script>
+</body>
+</html>
