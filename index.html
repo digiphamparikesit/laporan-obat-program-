@@ -54,6 +54,12 @@
   .config-box{font-size:12px;color:var(--muted);}
   .required::after{content:" *";color:var(--danger);}
   .empty-state{text-align:center;color:var(--muted);padding:30px 0;}
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:100;padding:16px;}
+  .modal-box{background:#fff;border-radius:10px;max-width:520px;width:100%;padding:20px;max-height:90vh;overflow-y:auto;}
+  .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+  .modal-head h3{margin:0;font-size:16px;color:var(--primary-dark);}
+  .btn-close{background:none;border:none;font-size:22px;line-height:1;cursor:pointer;color:var(--muted);}
+  #notePreview{width:100%;min-height:340px;font-family:'Consolas',monospace;font-size:13px;white-space:pre;line-height:1.5;}
 </style>
 </head>
 <body>
@@ -206,6 +212,24 @@
       </div>
     </div>
   </section>
+
+  <!-- ============ MODAL CATATAN ============ -->
+  <div id="modalOverlay" class="modal-overlay" style="display:none;">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3>Catatan Pasien</h3>
+        <button id="btnCloseModal" class="btn-close" aria-label="Tutup">&times;</button>
+      </div>
+      <textarea id="notePreview" readonly></textarea>
+      <div id="msgModal" class="msg"></div>
+      <div class="actions">
+        <button class="btn btn-secondary" id="btnCopyNote">📋 Salin Teks</button>
+        <button class="btn btn-primary" id="btnSendWa">💬 Kirim ke WhatsApp</button>
+        <button class="btn btn-secondary" id="btnDownloadTxt">⬇️ Unduh .txt</button>
+      </div>
+    </div>
+  </div>
+
 
   <!-- ============ TAB SETTING ============ -->
   <section id="tab-setting" class="tab" style="display:none;">
@@ -406,14 +430,14 @@
         '<td>' + escapeHtml(item.derajatMalaria) + '</td>' +
         '<td>' + escapeHtml(item.tglKejadian) + '</td>' +
         '<td>' + escapeHtml(item.faskes) + '</td>' +
-        '<td class="row-actions"><button class="btn btn-secondary" data-idx="' + idx + '">📄 Unduh Catatan</button></td>';
+        '<td class="row-actions"><button class="btn btn-secondary" data-idx="' + idx + '">📋 Catatan</button></td>';
       tbody.appendChild(tr);
     });
 
     tbody.querySelectorAll('button[data-idx]').forEach(function(btn){
       btn.addEventListener('click', function(){
         var item = list[parseInt(btn.dataset.idx, 10)];
-        downloadCatatan(item);
+        openNoteModal(item);
       });
     });
   }
@@ -499,6 +523,73 @@
     URL.revokeObjectURL(url);
   }
 
+  // ---------- Modal Catatan (preview, salin, kirim WA) ----------
+  var currentModalItem = null;
+
+  function openNoteModal(item){
+    currentModalItem = item;
+    var text = buildCatatanText(item);
+    document.getElementById('notePreview').value = text;
+    hideMsg('msgModal');
+    document.getElementById('modalOverlay').style.display = 'flex';
+  }
+
+  function closeNoteModal(){
+    document.getElementById('modalOverlay').style.display = 'none';
+    currentModalItem = null;
+  }
+
+  function copyNoteToClipboard(){
+    var textarea = document.getElementById('notePreview');
+    var text = textarea.value;
+
+    function onSuccess(){
+      showMsg('msgModal', 'Teks catatan berhasil disalin. Silakan tempel (paste) ke WhatsApp.', 'ok');
+    }
+    function onFail(err){
+      showMsg('msgModal', 'Gagal menyalin otomatis. Silakan blok teks di atas lalu salin manual (Ctrl+C).', 'err');
+    }
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(onSuccess).catch(function(){
+        fallbackCopy(textarea, onSuccess, onFail);
+      });
+    } else {
+      fallbackCopy(textarea, onSuccess, onFail);
+    }
+  }
+
+  function fallbackCopy(textarea, onSuccess, onFail){
+    try {
+      textarea.focus();
+      textarea.select();
+      var ok = document.execCommand('copy');
+      if (ok) { onSuccess(); } else { onFail(); }
+    } catch (e) {
+      onFail(e);
+    }
+  }
+
+  function sendViaWhatsapp(){
+    if (!currentModalItem) return;
+    var text = buildCatatanText(currentModalItem);
+    var waUrl = 'https://wa.me/?text=' + encodeURIComponent(text);
+    window.open(waUrl, '_blank');
+    showMsg('msgModal', 'WhatsApp dibuka di tab baru. Silakan pilih grup Puskesmas Kabupaten tujuan.', 'info');
+  }
+
+  function initModal(){
+    document.getElementById('btnCloseModal').addEventListener('click', closeNoteModal);
+    document.getElementById('modalOverlay').addEventListener('click', function(ev){
+      if (ev.target.id === 'modalOverlay') closeNoteModal();
+    });
+    document.getElementById('btnCopyNote').addEventListener('click', copyNoteToClipboard);
+    document.getElementById('btnSendWa').addEventListener('click', sendViaWhatsapp);
+    document.getElementById('btnDownloadTxt').addEventListener('click', function(){
+      if (currentModalItem) downloadCatatan(currentModalItem);
+    });
+  }
+
   // ---------- Settings ----------
   function initSettings(){
     var input = document.getElementById('webAppUrl');
@@ -553,6 +644,7 @@
     initForm();
     initSettings();
     initButtons();
+    initModal();
   }
 
   if (typeof document !== 'undefined') {
