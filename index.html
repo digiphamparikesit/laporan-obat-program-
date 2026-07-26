@@ -11,6 +11,7 @@
   }
   *{box-sizing:border-box;}
   body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);margin:0;color:var(--text);}
+  .sticky-wrap{position:sticky;top:0;z-index:200;box-shadow:0 2px 6px rgba(0,0,0,.12);}
   header{background:var(--primary);color:#fff;padding:16px 24px;}
   header h1{margin:0;font-size:20px;}
   header p{margin:4px 0 0;font-size:13px;opacity:.9;}
@@ -30,6 +31,13 @@
   legend{font-size:13px;font-weight:700;color:var(--primary-dark);padding:0 6px;}
   .obat-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;}
   @media(max-width:640px){.obat-row{grid-template-columns:1fr 1fr;}}
+  .obat-table-wrap{overflow-x:auto;}
+  .obat-table{width:100%;border-collapse:collapse;min-width:720px;}
+  .obat-table th{font-size:12px;color:var(--muted);text-align:left;padding:0 6px 6px;font-weight:600;}
+  .obat-table td{padding:4px 6px;vertical-align:top;}
+  .obat-table td.obat-nama{font-size:13px;font-weight:700;color:var(--primary-dark);padding-top:12px;white-space:nowrap;}
+  .obat-table input{padding:8px;}
+  .col-jumlah{width:15%;} .col-dosis{width:13%;} .col-frek{width:13%;} .col-lama{width:15%;} .col-ket{width:30%;}
   .actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;}
   button.btn{cursor:pointer;border:none;border-radius:6px;padding:10px 18px;font-size:14px;font-weight:600;}
   .btn-primary{background:var(--primary);color:#fff;}
@@ -64,6 +72,7 @@
 </head>
 <body>
 
+<div class="sticky-wrap">
 <header>
   <h1>🩸 Rekapitulasi Obat Program</h1>
   <p>Modul aktif: <strong>Malaria</strong> — (Hyperhep &amp; Tuberkulin menyusul)</p>
@@ -74,6 +83,7 @@
   <button data-tab="laporan">📋 Menu Laporan</button>
   <button data-tab="setting">⚙️ Pengaturan Koneksi</button>
 </nav>
+</div>
 
 <main>
 
@@ -166,17 +176,48 @@
 
         <fieldset>
           <legend>Pemakaian Obat</legend>
-          <div class="obat-row">
-            <div class="field"><label>DHP - Jumlah Tablet</label><input type="number" name="dhpTablet"></div>
-            <div class="field"><label>Aturan Pakai (x/hari)</label><input type="number" name="dhpAturan" placeholder="cth: 1"></div>
-            <div class="field"><label>Jumlah Hari</label><input type="number" name="dhpHari"></div>
-            <div class="field"></div>
-          </div>
-          <div class="obat-row" style="margin-top:10px;">
-            <div class="field"><label>Primakuin - Jumlah Tablet</label><input type="number" name="primakuinTablet"></div>
-            <div class="field"><label>Aturan Pakai (x/hari)</label><input type="number" name="primakuinAturan" placeholder="cth: 1"></div>
-            <div class="field"><label>Jumlah Hari</label><input type="number" name="primakuinHari"></div>
-            <div class="field"></div>
+          <p style="font-size:12px;color:var(--muted);margin:0 0 10px;">
+            Format aturan pakai: <em>Jumlah tab/amp, aturan pakai [Dosis] x [Frekuensi/hari] selama [Lama Hari] hari</em>
+          </p>
+          <div class="obat-table-wrap">
+            <table class="obat-table">
+              <thead>
+                <tr>
+                  <th>Obat</th>
+                  <th class="col-jumlah">Jumlah</th>
+                  <th class="col-dosis">Dosis /pakai</th>
+                  <th class="col-frek">x /hari</th>
+                  <th class="col-lama">Selama (hari)</th>
+                  <th class="col-ket">Keterangan</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="obat-nama">DHP</td>
+                  <td><input type="number" name="dhpJumlah" placeholder="tab"></td>
+                  <td><input type="number" name="dhpDosis" placeholder="1"></td>
+                  <td><input type="number" name="dhpFrekuensi" placeholder="1"></td>
+                  <td><input type="number" name="dhpHari" placeholder="3"></td>
+                  <td><input type="text" name="dhpKeterangan" placeholder="cth: diminum setelah makan"></td>
+                </tr>
+                <tr>
+                  <td class="obat-nama">Primakuin</td>
+                  <td><input type="number" name="primakuinJumlah" placeholder="tab"></td>
+                  <td><input type="number" name="primakuinDosis" placeholder="1"></td>
+                  <td><input type="number" name="primakuinFrekuensi" placeholder="1"></td>
+                  <td><input type="number" name="primakuinHari" placeholder="14"></td>
+                  <td><input type="text" name="primakuinKeterangan" placeholder="cth: cek G6PD dulu"></td>
+                </tr>
+                <tr>
+                  <td class="obat-nama">Artesunat Injeksi</td>
+                  <td><input type="number" name="artesunatJumlah" placeholder="amp"></td>
+                  <td><input type="text" name="artesunatDosis" placeholder="2.4 mg/kgBB"></td>
+                  <td><input type="number" name="artesunatFrekuensi" placeholder="1"></td>
+                  <td><input type="number" name="artesunatHari" placeholder="3"></td>
+                  <td><input type="text" name="artesunatKeterangan" placeholder="cth: IV, jam 0-12-24 lanjut harian"></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </fieldset>
 
@@ -479,6 +520,14 @@
   // ---------- Export catatan per pasien (.txt) ----------
   function buildCatatanText(item){
     function v(key){ return (item[key] !== undefined && item[key] !== null && item[key] !== '') ? item[key] : '-'; }
+    function baris_obat(nama, satuan, jumlahKey, dosisKey, frekKey, hariKey, ketKey){
+      var baris = nama + '  : ' + v(jumlahKey) + ' ' + satuan + ', aturan pakai ' + v(dosisKey) + ' x ' + v(frekKey) + ' selama ' + v(hariKey) + ' hari';
+      var ket = item[ketKey];
+      if (ket && String(ket).trim() !== '') {
+        baris += '\n  Keterangan : ' + ket;
+      }
+      return baris;
+    }
     var lines = [
       'REKAP DATA PASIEN - PROGRAM OBAT MALARIA',
       '========================================',
@@ -501,8 +550,9 @@
       '',
       'PEMAKAIAN OBAT',
       '----------------------------------------',
-      'DHP        : ' + v('dhpTablet') + ' tablet, aturan pakai ' + v('dhpAturan') + 'x/hari, selama ' + v('dhpHari') + ' hari',
-      'Primakuin  : ' + v('primakuinTablet') + ' tablet, aturan pakai ' + v('primakuinAturan') + 'x/hari, selama ' + v('primakuinHari') + ' hari',
+      baris_obat('DHP', 'tab', 'dhpJumlah', 'dhpDosis', 'dhpFrekuensi', 'dhpHari', 'dhpKeterangan'),
+      baris_obat('Primakuin', 'tab', 'primakuinJumlah', 'primakuinDosis', 'primakuinFrekuensi', 'primakuinHari', 'primakuinKeterangan'),
+      baris_obat('Artesunat Injeksi', 'amp', 'artesunatJumlah', 'artesunatDosis', 'artesunatFrekuensi', 'artesunatHari', 'artesunatKeterangan'),
       '',
       'Dicetak otomatis oleh Aplikasi Rekap Obat Program - ' + new Date().toLocaleString('id-ID')
     ];
