@@ -81,6 +81,7 @@
   .info-line{font-size:12px;color:var(--muted);margin:-4px 0 12px;}
   .info-line.warn{color:var(--danger);font-weight:600;}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
 
@@ -770,13 +771,16 @@
       <div class="toolbar">
         <input type="text" id="searchBoxRabies" placeholder="Cari nama / no. reg...">
         <button class="btn btn-secondary" id="btnRefreshRabiesLaporan">🔄 Muat Ulang Data</button>
+        <button class="btn btn-primary" id="btnExportExcelRabies">📊 Unduh Excel (.xlsx)</button>
       </div>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>No. Reg</th><th>Nama</th><th>Umur</th><th>Vaksin Ke-</th>
-              <th>Jenis Hewan</th><th>Tgl ke RS</th><th>Puskesmas Rujukan</th><th>Aksi</th>
+              <th>No. Reg</th><th>Nama Pasien</th><th>NIK KTP</th><th>Tgl Lahir</th><th>Umur</th>
+              <th>No. HP</th><th>Alamat KTP</th><th>Vaksin Ke-</th><th>Puskesmas Rujukan</th>
+              <th>Jenis Hewan</th><th>Lokasi Gigitan</th><th>Tgl Digigit</th><th>Tgl ke RS</th>
+              <th>Tgl Cuci Luka</th><th>Tgl Vaksin</th><th>Bulan</th><th>Tahun</th><th>Vial Terpakai</th><th>Aksi</th>
             </tr>
           </thead>
           <tbody id="bodyRabiesLaporan"></tbody>
@@ -1667,11 +1671,22 @@
       tr.innerHTML =
         '<td>' + escapeHtml(item.noReg) + '</td>' +
         '<td>' + escapeHtml(item.namaPasien) + '</td>' +
+        '<td>' + escapeHtml(item.nikKtp) + '</td>' +
+        '<td>' + escapeHtml(item.tglLahir) + '</td>' +
         '<td>' + escapeHtml(item.umur) + '</td>' +
+        '<td>' + escapeHtml(item.noHp) + '</td>' +
+        '<td>' + escapeHtml(item.alamatKtp) + '</td>' +
         '<td>' + escapeHtml(item.vaksinKe) + '</td>' +
-        '<td>' + escapeHtml(item.jenisHewan) + '</td>' +
-        '<td>' + escapeHtml(item.tglKeRS) + '</td>' +
         '<td>' + escapeHtml(item.puskesmasRujukan) + '</td>' +
+        '<td>' + escapeHtml(item.jenisHewan) + '</td>' +
+        '<td>' + escapeHtml(item.lokasiGigitan) + '</td>' +
+        '<td>' + escapeHtml(item.tglDigigit) + '</td>' +
+        '<td>' + escapeHtml(item.tglKeRS) + '</td>' +
+        '<td>' + escapeHtml(item.tglCuciLuka) + '</td>' +
+        '<td>' + escapeHtml(item.tglVaksin) + '</td>' +
+        '<td>' + escapeHtml(item.bulanKeRS) + '</td>' +
+        '<td>' + escapeHtml(item.tahunKeRS) + '</td>' +
+        '<td>' + escapeHtml(item.jumlahVialRabies) + '</td>' +
         '<td class="row-actions"><button class="btn btn-secondary" data-idx="' + idx + '">📋 Catatan</button></td>';
       tbody.appendChild(tr);
     });
@@ -1681,6 +1696,51 @@
         openNoteModal(item, buildCatatanTextRabies, 'Rabies', 'namaPasien');
       });
     });
+  }
+
+  function exportRabiesToExcel(){
+    hideMsg('msgRabiesLaporan');
+    var list = state.rabiesData || [];
+    if (!list.length){
+      showMsg('msgRabiesLaporan', 'Tidak ada data untuk diexport. Muat ulang data terlebih dahulu.', 'err');
+      return;
+    }
+    if (typeof XLSX === 'undefined'){
+      showMsg('msgRabiesLaporan', 'Library Excel belum termuat (periksa koneksi internet), coba muat ulang halaman.', 'err');
+      return;
+    }
+    var rows = list.map(function(item){
+      return {
+        'No. Reg': item.noReg || '',
+        'Nama Pasien': item.namaPasien || '',
+        'NIK KTP': item.nikKtp || '',
+        'Tanggal Lahir': item.tglLahir || '',
+        'Umur': item.umur || '',
+        'No. HP': item.noHp || '',
+        'Alamat Sesuai KTP': item.alamatKtp || '',
+        'Vaksin Ke-': item.vaksinKe || '',
+        'Puskesmas Rujukan': item.puskesmasRujukan || '',
+        'Jenis Hewan Penular Rabies': item.jenisHewan || '',
+        'Lokasi Gigitan': item.lokasiGigitan || '',
+        'Tanggal Digigit Hewan': item.tglDigigit || '',
+        'Tanggal Dibawa ke Rumah Sakit': item.tglKeRS || '',
+        'Tanggal Cuci Luka': item.tglCuciLuka || '',
+        'Tanggal Vaksin': item.tglVaksin || '',
+        'Bulan': item.bulanKeRS || '',
+        'Tahun': item.tahunKeRS || '',
+        'Jumlah Vial Terpakai': item.jumlahVialRabies || ''
+      };
+    });
+    try {
+      var ws = XLSX.utils.json_to_sheet(rows);
+      var wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Data Pasien Rabies');
+      var tgl = new Date().toISOString().slice(0,10);
+      XLSX.writeFile(wb, 'Laporan_Pasien_Rabies_' + tgl + '.xlsx');
+      showMsg('msgRabiesLaporan', 'File Excel berhasil diunduh (' + rows.length + ' data).', 'ok');
+    } catch (err) {
+      showMsg('msgRabiesLaporan', 'Gagal membuat file Excel: ' + err.message, 'err');
+    }
   }
 
   function applyFilterRabies(){
@@ -1927,6 +1987,7 @@
     document.getElementById('searchBoxTuberkulin').addEventListener('input', applyFilterTuberkulin);
     document.getElementById('btnRefreshRabiesLaporan').addEventListener('click', fetchRabiesLaporan);
     document.getElementById('searchBoxRabies').addEventListener('input', applyFilterRabies);
+    document.getElementById('btnExportExcelRabies').addEventListener('click', exportRabiesToExcel);
   }
 
   // expose for testing (Node/jsdom harness)
