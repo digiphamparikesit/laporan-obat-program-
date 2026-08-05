@@ -15,11 +15,19 @@
   header{background:var(--primary);color:#fff;padding:16px 24px;}
   header h1{margin:0;font-size:20px;}
   header p{margin:4px 0 0;font-size:13px;opacity:.9;}
-  .program-nav{display:flex;background:#083b2c;}
-  .program-nav button{flex:1;padding:12px;background:transparent;border:none;color:#fff;font-size:14px;cursor:pointer;opacity:.6;border-bottom:3px solid transparent;}
-  .program-nav button.active{opacity:1;font-weight:700;border-bottom:3px solid #ffd166;background:rgba(255,255,255,.06);}
-  nav.sub-nav{display:flex;background:var(--primary-dark);}
-  nav.sub-nav button{flex:1;padding:12px;background:transparent;border:none;color:#fff;font-size:14px;cursor:pointer;opacity:.75;}
+  .program-nav{display:flex;background:#083b2c;gap:16px;padding:14px 12px 12px;overflow-x:auto;justify-content:center;}
+  .program-nav button{display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:none;cursor:pointer;flex:0 0 auto;width:76px;padding:0;opacity:.8;}
+  .program-nav button .icon-box{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 2px 6px rgba(0,0,0,.3);transition:transform .15s ease, box-shadow .15s ease;}
+  .program-nav button .icon-label{font-size:11px;color:#fff;text-align:center;line-height:1.25;opacity:.9;}
+  .program-nav button.active{opacity:1;}
+  .program-nav button.active .icon-box{transform:scale(1.08);box-shadow:0 0 0 3px #ffd166,0 4px 10px rgba(0,0,0,.35);}
+  .program-nav button.active .icon-label{font-weight:700;opacity:1;}
+  .icon-malaria{background:linear-gradient(135deg,#ff8787,#c0392b);}
+  .icon-hyperhep{background:linear-gradient(135deg,#4dabf7,#1864ab);}
+  .icon-tuberkulin{background:linear-gradient(135deg,#b197fc,#5f3dc4);}
+  .icon-rabies{background:linear-gradient(135deg,#ffa94d,#d9480f);}
+  nav.sub-nav{display:flex;background:var(--primary-dark);overflow-x:auto;}
+  nav.sub-nav button{flex:0 0 auto;padding:12px 16px;background:transparent;border:none;color:#fff;font-size:14px;cursor:pointer;opacity:.75;white-space:nowrap;}
   nav.sub-nav button.active{opacity:1;border-bottom:3px solid #fff;font-weight:600;}
   main{max-width:960px;margin:20px auto;padding:0 16px 60px;}
   .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:20px;}
@@ -61,6 +69,7 @@
   .badge.falciparum{background:#fdecea;color:#c0392b;}
   .badge.vivax{background:#fff4e0;color:#b3760a;}
   .badge.mix{background:#eee0fd;color:#6c3fc0;}
+  .badge.negatif{background:#e6f4ea;color:#1e7e34;}
   .row-actions button{padding:4px 8px;font-size:12px;}
   .config-box{font-size:12px;color:var(--muted);}
   .required::after{content:" *";color:var(--danger);}
@@ -92,15 +101,29 @@
 </header>
 
 <div class="program-nav">
-  <button data-program="malaria" class="active">🦟 Program Malaria</button>
-  <button data-program="hyperhep">💉 Program Hyperhep</button>
-  <button data-program="tuberkulin">🧪 Program Tuberkulin</button>
-  <button data-program="rabies">🐕 Program Rabies</button>
+  <button data-program="malaria" class="active">
+    <span class="icon-box icon-malaria">🦟</span>
+    <span class="icon-label">Malaria</span>
+  </button>
+  <button data-program="hyperhep">
+    <span class="icon-box icon-hyperhep">💉</span>
+    <span class="icon-label">Hyperhep</span>
+  </button>
+  <button data-program="tuberkulin">
+    <span class="icon-box icon-tuberkulin">🧪</span>
+    <span class="icon-label">Tuberkulin</span>
+  </button>
+  <button data-program="rabies">
+    <span class="icon-box icon-rabies">🐕</span>
+    <span class="icon-label">Rabies</span>
+  </button>
 </div>
 
 <nav class="sub-nav" data-subnav="malaria">
   <button data-tab="input" class="active">📝 Input Data Pasien</button>
   <button data-tab="laporan">📋 Menu Laporan</button>
+  <button data-tab="malaria-lab-input">🔬 Input Lab Mikroskopis</button>
+  <button data-tab="malaria-lab-laporan">📊 Laporan Lab</button>
   <button data-tab="setting">⚙️ Pengaturan Koneksi</button>
 </nav>
 
@@ -308,6 +331,130 @@
     </div>
   </div>
 
+
+  <!-- ============ MALARIA: TAB INPUT LAB MIKROSKOPIS ============ -->
+  <section id="tab-malaria-lab-input" class="tab program-malaria" style="display:none;">
+    <div class="card">
+      <h2>Input Hasil Pemeriksaan Laboratorium Malaria</h2>
+      <div id="msgMalariaLab" class="msg"></div>
+
+      <form id="formMalariaLab" autocomplete="off">
+        <div class="grid">
+          <div class="field">
+            <label class="required">No. Reg. Lab</label>
+            <input type="text" name="noRegLab" required>
+          </div>
+          <div class="field">
+            <label class="required">Nama Pasien/Tersangka</label>
+            <input type="text" name="namaPasienLab" required>
+          </div>
+          <div class="field">
+            <label>Jenis Kelamin</label>
+            <select name="jenisKelamin">
+              <option value="">- Pilih -</option>
+              <option>Laki-laki</option>
+              <option>Perempuan</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Tanggal Lahir</label>
+            <input type="date" name="tglLahirLab" id="tglLahirLab">
+          </div>
+          <div class="field">
+            <label>Usia (otomatis)</label>
+            <input type="text" name="usiaLab" id="usiaLab" readonly>
+          </div>
+          <div class="field" style="grid-column:1/-1;">
+            <label>Alamat Lengkap</label>
+            <textarea name="alamatLengkapLab"></textarea>
+          </div>
+          <div class="field">
+            <label>Metode Pemeriksaan</label>
+            <input type="text" name="metodePemeriksaan" placeholder="cth: Mikroskopis SD Tebal/Tipis, RDT">
+          </div>
+          <div class="field">
+            <label>Alasan Pemeriksaan</label>
+            <input type="text" name="alasanPemeriksaan" placeholder="cth: Demam, follow-up pengobatan">
+          </div>
+          <div class="field">
+            <label>Hasil Pemeriksaan Mikroskopis</label>
+            <select name="hasilMikroskopis">
+              <option value="">- Pilih -</option>
+              <option>Negatif</option>
+              <option>Positif Falciparum</option>
+              <option>Positif Vivax</option>
+              <option>Positif Mix</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Gametosit</label>
+            <select name="gametosit">
+              <option value="">- Pilih -</option>
+              <option>Positif</option>
+              <option>Negatif</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Kepadatan Parasit (per mikroliter)</label>
+            <input type="number" name="kepadatanParasit" placeholder="cth: 1200">
+          </div>
+          <div class="field">
+            <label>Kode Slide <span style="font-weight:400;color:var(--muted);">(diisi mas Sugeng)</span></label>
+            <input type="text" name="kodeSlide">
+          </div>
+        </div>
+
+        <fieldset>
+          <legend>Tanggal SD Diperiksa</legend>
+          <div class="grid">
+            <div class="field">
+              <label class="required">Tanggal SD Diperiksa</label>
+              <input type="date" name="tglSDdiperiksa" id="tglSDdiperiksa" required>
+            </div>
+            <div class="field">
+              <label>Bulan (otomatis)</label>
+              <input type="text" name="bulanLab" id="bulanLab" readonly>
+            </div>
+            <div class="field">
+              <label>Tahun (otomatis)</label>
+              <input type="text" name="tahunLab" id="tahunLab" readonly>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="actions">
+          <button type="submit" class="btn btn-primary" id="btnSimpanMalariaLab">💾 Simpan ke Google Sheets</button>
+          <button type="reset" class="btn btn-secondary">Bersihkan Form</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============ MALARIA: TAB LAPORAN LAB MIKROSKOPIS ============ -->
+  <section id="tab-malaria-lab-laporan" class="tab program-malaria" style="display:none;">
+    <div class="card">
+      <h2>Laporan Hasil Pemeriksaan Laboratorium Malaria</h2>
+      <div id="msgMalariaLabLaporan" class="msg"></div>
+      <div class="toolbar">
+        <input type="text" id="searchBoxMalariaLab" placeholder="Cari nama / no. reg. lab...">
+        <button class="btn btn-secondary" id="btnRefreshMalariaLabLaporan">🔄 Muat Ulang Data</button>
+        <button class="btn btn-primary" id="btnExportExcelMalariaLab">📊 Unduh Excel (.xlsx)</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>No. Reg. Lab</th><th>Nama Pasien</th><th>JK</th><th>Tgl Lahir</th><th>Usia</th>
+              <th>Metode</th><th>Alasan</th><th>Hasil Mikroskopis</th><th>Gametosit</th>
+              <th>Kepadatan Parasit</th><th>Kode Slide</th><th>Tgl SD Diperiksa</th><th>Bulan</th><th>Tahun</th><th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="bodyMalariaLabLaporan"></tbody>
+        </table>
+        <div id="emptyMalariaLabState" class="empty-state" style="display:none;">Belum ada data, atau data belum dimuat.</div>
+      </div>
+    </div>
+  </section>
 
   <!-- ============ TAB SETTING ============ -->
   <section id="tab-setting" class="tab program-malaria" style="display:none;">
@@ -861,6 +1008,7 @@
 
   function onTabOpened(tabId){
     if (tabId === 'laporan') { fetchLaporan(); }
+    if (tabId === 'malaria-lab-laporan') { fetchMalariaLabLaporan(); }
     if (tabId === 'hyperhep-stok') { fetchHyperhepStok(); }
     if (tabId === 'hyperhep-pasien') { updateInfoSisaStok(); }
     if (tabId === 'hyperhep-laporan') { fetchHyperhepLaporan(); }
@@ -1032,6 +1180,7 @@
   function badgeHasil(hasil){
     if (!hasil) return '';
     var cls = 'falciparum';
+    if (/negatif/i.test(hasil)) cls = 'negatif';
     if (/vivax/i.test(hasil)) cls = 'vivax';
     if (/mix/i.test(hasil)) cls = 'mix';
     return '<span class="badge ' + cls + '">' + escapeHtml(hasil) + '</span>';
@@ -1108,6 +1257,206 @@
       .catch(function(err){
         showMsg('msgLaporan', 'Gagal menghubungi server: ' + err.message, 'err');
       });
+  }
+
+  // ================= LAB MIKROSKOPIS MALARIA =================
+
+  function initMalariaLabAuto(){
+    var tglLahir = document.getElementById('tglLahirLab');
+    var usia = document.getElementById('usiaLab');
+    tglLahir.addEventListener('change', function(){
+      usia.value = hitungUmur(tglLahir.value);
+    });
+
+    var tglSD = document.getElementById('tglSDdiperiksa');
+    var bulanEl = document.getElementById('bulanLab');
+    var tahunEl = document.getElementById('tahunLab');
+    tglSD.addEventListener('change', function(){
+      var bt = hitungBulanTahun(tglSD.value);
+      bulanEl.value = bt.bulan;
+      tahunEl.value = bt.tahun;
+    });
+  }
+
+  function initFormMalariaLab(){
+    var form = document.getElementById('formMalariaLab');
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      hideMsg('msgMalariaLab');
+      var payload = serializeForm(form);
+      var errors = [];
+      if (!payload.noRegLab || !payload.noRegLab.trim()) errors.push('No. Reg. Lab wajib diisi.');
+      if (!payload.namaPasienLab || !payload.namaPasienLab.trim()) errors.push('Nama Pasien/Tersangka wajib diisi.');
+      if (!payload.tglSDdiperiksa) errors.push('Tanggal SD Diperiksa wajib diisi.');
+      if (errors.length){
+        showMsg('msgMalariaLab', errors.join(' '), 'err');
+        return;
+      }
+      if (!state.webAppUrl){
+        showMsg('msgMalariaLab', 'URL Web App Google Sheets belum diatur. Buka tab "Pengaturan Koneksi" terlebih dahulu.', 'err');
+        return;
+      }
+      var btn = document.getElementById('btnSimpanMalariaLab');
+      btn.disabled = true;
+      btn.textContent = 'Menyimpan...';
+      postToSheet('MalariaLab', payload)
+        .then(function(json){
+          if (json.status === 'success'){
+            showMsg('msgMalariaLab', 'Data hasil pemeriksaan lab berhasil disimpan ke Google Sheets.', 'ok');
+            form.reset();
+            document.getElementById('usiaLab').value = '';
+            document.getElementById('bulanLab').value = '';
+            document.getElementById('tahunLab').value = '';
+          } else {
+            showMsg('msgMalariaLab', 'Gagal menyimpan: ' + (json.message || 'Tidak diketahui'), 'err');
+          }
+        })
+        .catch(function(err){
+          showMsg('msgMalariaLab', 'Gagal menghubungi server: ' + err.message, 'err');
+        })
+        .finally(function(){
+          btn.disabled = false;
+          btn.textContent = '💾 Simpan ke Google Sheets';
+        });
+    });
+  }
+
+  function renderMalariaLabLaporan(list){
+    var tbody = document.getElementById('bodyMalariaLabLaporan');
+    var empty = document.getElementById('emptyMalariaLabState');
+    tbody.innerHTML = '';
+    if (!list.length){ empty.style.display = 'block'; return; }
+    empty.style.display = 'none';
+    list.forEach(function(item, idx){
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td>' + escapeHtml(item.noRegLab) + '</td>' +
+        '<td>' + escapeHtml(item.namaPasienLab) + '</td>' +
+        '<td>' + escapeHtml(item.jenisKelamin) + '</td>' +
+        '<td>' + escapeHtml(item.tglLahirLab) + '</td>' +
+        '<td>' + escapeHtml(item.usiaLab) + '</td>' +
+        '<td>' + escapeHtml(item.metodePemeriksaan) + '</td>' +
+        '<td>' + escapeHtml(item.alasanPemeriksaan) + '</td>' +
+        '<td>' + badgeHasil(item.hasilMikroskopis) + '</td>' +
+        '<td>' + escapeHtml(item.gametosit) + '</td>' +
+        '<td>' + escapeHtml(item.kepadatanParasit) + '</td>' +
+        '<td>' + escapeHtml(item.kodeSlide) + '</td>' +
+        '<td>' + escapeHtml(item.tglSDdiperiksa) + '</td>' +
+        '<td>' + escapeHtml(item.bulanLab) + '</td>' +
+        '<td>' + escapeHtml(item.tahunLab) + '</td>' +
+        '<td class="row-actions"><button class="btn btn-secondary" data-idx="' + idx + '">📋 Catatan</button></td>';
+      tbody.appendChild(tr);
+    });
+    tbody.querySelectorAll('button[data-idx]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var item = list[parseInt(btn.dataset.idx, 10)];
+        openNoteModal(item, buildCatatanTextMalariaLab, 'MalariaLab', 'namaPasienLab');
+      });
+    });
+  }
+
+  function applyFilterMalariaLab(){
+    var q = document.getElementById('searchBoxMalariaLab').value.trim().toLowerCase();
+    var list = state.malariaLabData || [];
+    if (!q){ renderMalariaLabLaporan(list); return; }
+    var filtered = list.filter(function(item){
+      return (item.namaPasienLab || '').toLowerCase().indexOf(q) > -1 ||
+             (item.noRegLab || '').toLowerCase().indexOf(q) > -1;
+    });
+    renderMalariaLabLaporan(filtered);
+  }
+
+  function fetchMalariaLabLaporan(){
+    hideMsg('msgMalariaLabLaporan');
+    if (!state.webAppUrl){
+      showMsg('msgMalariaLabLaporan', 'URL Web App belum diatur. Buka tab "Pengaturan Koneksi" terlebih dahulu.', 'err');
+      renderMalariaLabLaporan([]);
+      return;
+    }
+    showMsg('msgMalariaLabLaporan', 'Memuat data dari Google Sheets...', 'info');
+    getFromSheet('MalariaLab')
+      .then(function(json){
+        if (json.status === 'success'){
+          state.malariaLabData = json.data || [];
+          hideMsg('msgMalariaLabLaporan');
+          renderMalariaLabLaporan(state.malariaLabData);
+        } else {
+          showMsg('msgMalariaLabLaporan', 'Gagal memuat data: ' + (json.message || 'Tidak diketahui'), 'err');
+        }
+      })
+      .catch(function(err){
+        showMsg('msgMalariaLabLaporan', 'Gagal menghubungi server: ' + err.message, 'err');
+      });
+  }
+
+  function exportMalariaLabToExcel(){
+    hideMsg('msgMalariaLabLaporan');
+    var list = state.malariaLabData || [];
+    if (!list.length){
+      showMsg('msgMalariaLabLaporan', 'Tidak ada data untuk diexport. Muat ulang data terlebih dahulu.', 'err');
+      return;
+    }
+    if (typeof XLSX === 'undefined'){
+      showMsg('msgMalariaLabLaporan', 'Library Excel belum termuat (periksa koneksi internet), coba muat ulang halaman.', 'err');
+      return;
+    }
+    var rows = list.map(function(item){
+      return {
+        'No. Reg. Lab': item.noRegLab || '',
+        'Nama Pasien/Tersangka': item.namaPasienLab || '',
+        'Jenis Kelamin': item.jenisKelamin || '',
+        'Tanggal Lahir': item.tglLahirLab || '',
+        'Usia': item.usiaLab || '',
+        'Alamat Lengkap': item.alamatLengkapLab || '',
+        'Metode Pemeriksaan': item.metodePemeriksaan || '',
+        'Alasan Pemeriksaan': item.alasanPemeriksaan || '',
+        'Hasil Pemeriksaan Mikroskopis': item.hasilMikroskopis || '',
+        'Tanggal SD Diperiksa': item.tglSDdiperiksa || '',
+        'Gametosit': item.gametosit || '',
+        'Kepadatan Parasit (per mikroliter)': item.kepadatanParasit || '',
+        'Kode Slide': item.kodeSlide || '',
+        'Bulan': item.bulanLab || '',
+        'Tahun': item.tahunLab || ''
+      };
+    });
+    try {
+      var ws = XLSX.utils.json_to_sheet(rows);
+      var wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Lab Mikroskopis Malaria');
+      var tgl = new Date().toISOString().slice(0,10);
+      XLSX.writeFile(wb, 'Laporan_Lab_Malaria_' + tgl + '.xlsx');
+      showMsg('msgMalariaLabLaporan', 'File Excel berhasil diunduh (' + rows.length + ' data).', 'ok');
+    } catch (err) {
+      showMsg('msgMalariaLabLaporan', 'Gagal membuat file Excel: ' + err.message, 'err');
+    }
+  }
+
+  function buildCatatanTextMalariaLab(item){
+    function v(key){ return (item[key] !== undefined && item[key] !== null && item[key] !== '') ? item[key] : '-'; }
+    var lines = [
+      'HASIL PEMERIKSAAN LABORATORIUM - PROGRAM MALARIA',
+      '========================================',
+      'No. Reg. Lab              : ' + v('noRegLab'),
+      'Nama Pasien/Tersangka     : ' + v('namaPasienLab'),
+      'Jenis Kelamin             : ' + v('jenisKelamin'),
+      'Tanggal Lahir             : ' + v('tglLahirLab'),
+      'Usia                      : ' + v('usiaLab'),
+      'Alamat Lengkap            : ' + v('alamatLengkapLab'),
+      '',
+      'Metode Pemeriksaan        : ' + v('metodePemeriksaan'),
+      'Alasan Pemeriksaan        : ' + v('alasanPemeriksaan'),
+      'Hasil Mikroskopis         : ' + v('hasilMikroskopis'),
+      'Gametosit                 : ' + v('gametosit'),
+      'Kepadatan Parasit (/µL)   : ' + v('kepadatanParasit'),
+      'Kode Slide                : ' + v('kodeSlide'),
+      '',
+      'Tanggal SD Diperiksa      : ' + v('tglSDdiperiksa'),
+      'Bulan                     : ' + v('bulanLab'),
+      'Tahun                     : ' + v('tahunLab'),
+      '',
+      'Dicetak otomatis oleh Aplikasi Rekap Obat Program - ' + new Date().toLocaleString('id-ID')
+    ];
+    return lines.join('\n');
   }
 
   // ================= HYPERHEP =================
@@ -1981,6 +2330,9 @@
   function initButtons(){
     document.getElementById('btnRefresh').addEventListener('click', fetchLaporan);
     document.getElementById('searchBox').addEventListener('input', applyFilter);
+    document.getElementById('btnRefreshMalariaLabLaporan').addEventListener('click', fetchMalariaLabLaporan);
+    document.getElementById('searchBoxMalariaLab').addEventListener('input', applyFilterMalariaLab);
+    document.getElementById('btnExportExcelMalariaLab').addEventListener('click', exportMalariaLabToExcel);
     document.getElementById('btnRefreshHyperhepLaporan').addEventListener('click', fetchHyperhepLaporan);
     document.getElementById('searchBoxHyperhep').addEventListener('input', applyFilterHyperhep);
     document.getElementById('btnRefreshTuberkulinLaporan').addEventListener('click', fetchTuberkulinLaporan);
@@ -1992,7 +2344,7 @@
 
   // expose for testing (Node/jsdom harness)
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { hitungUmur: hitungUmur, hitungBulanTahun: hitungBulanTahun, buildCatatanText: buildCatatanText, buildCatatanTextHyperhep: buildCatatanTextHyperhep, buildCatatanTextTuberkulin: buildCatatanTextTuberkulin, buildCatatanTextRabies: buildCatatanTextRabies, validatePayload: validatePayload, escapeHtml: escapeHtml };
+    module.exports = { hitungUmur: hitungUmur, hitungBulanTahun: hitungBulanTahun, buildCatatanText: buildCatatanText, buildCatatanTextHyperhep: buildCatatanTextHyperhep, buildCatatanTextTuberkulin: buildCatatanTextTuberkulin, buildCatatanTextRabies: buildCatatanTextRabies, buildCatatanTextMalariaLab: buildCatatanTextMalariaLab, validatePayload: validatePayload, escapeHtml: escapeHtml };
   }
 
   function init(){
@@ -2003,6 +2355,8 @@
     initSettings();
     initButtons();
     initModal();
+    initFormMalariaLab();
+    initMalariaLabAuto();
     initHyperhepStokForm();
     initHyperhepPasienForm();
     initNamaBayiAuto();
