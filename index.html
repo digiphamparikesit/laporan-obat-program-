@@ -853,13 +853,17 @@
             <textarea name="alamatKtp"></textarea>
           </div>
           <div class="field">
-            <label>Vaksin Ke-</label>
+            <label class="required">Vaksin Ke-</label>
             <select name="vaksinKe">
               <option value="">- Pilih -</option>
               <option>1</option>
               <option>2</option>
               <option>3</option>
             </select>
+          </div>
+          <div class="field">
+            <label class="required">Jumlah Vial Terpakai</label>
+            <input type="number" name="jumlahVialRabies" step="0.1" min="0" placeholder="cth: 1">
           </div>
           <div class="field">
             <label>Puskesmas Rujukan</label>
@@ -2015,6 +2019,7 @@
       var errors = [];
       if (!payload.noReg || !payload.noReg.trim()) errors.push('No. Reg wajib diisi.');
       if (!payload.namaPasien || !payload.namaPasien.trim()) errors.push('Nama Pasien wajib diisi.');
+      if (!payload.jumlahVialRabies || parseFloat(payload.jumlahVialRabies) <= 0) errors.push('Jumlah Vial Terpakai wajib diisi.');
       if (errors.length){
         showMsg('msgRabiesPasien', errors.join(' '), 'err');
         return;
@@ -2023,14 +2028,13 @@
         showMsg('msgRabiesPasien', 'URL Web App belum diatur. Buka tab "Pengaturan Koneksi" (Program Malaria) terlebih dahulu.', 'err');
         return;
       }
-      payload.jumlahVialRabies = 1; // otomatis, 1 vial per kunjungan
       var btn = document.getElementById('btnSimpanRabiesPasien');
       btn.disabled = true;
       btn.textContent = 'Menyimpan...';
       postToSheet('RabiesPasien', payload)
         .then(function(json){
           if (json.status === 'success'){
-            showMsg('msgRabiesPasien', 'Data pasien berhasil disimpan. Stok Rabies berkurang 1 vial.', 'ok');
+            showMsg('msgRabiesPasien', 'Data pasien berhasil disimpan. Stok Rabies berkurang ' + payload.jumlahVialRabies + ' vial.', 'ok');
             form.reset();
             document.getElementById('umurRabies').value = '';
             document.getElementById('bulanKeRSRabies').value = '';
