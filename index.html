@@ -15,17 +15,18 @@
   header{background:var(--primary);color:#fff;padding:16px 24px;}
   header h1{margin:0;font-size:20px;}
   header p{margin:4px 0 0;font-size:13px;opacity:.9;}
-  .program-nav{display:flex;background:#083b2c;gap:16px;padding:14px 12px 12px;overflow-x:auto;justify-content:center;}
-  .program-nav button{display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:none;cursor:pointer;flex:0 0 auto;width:76px;padding:0;opacity:.8;}
-  .program-nav button .icon-box{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 2px 6px rgba(0,0,0,.3);transition:transform .15s ease, box-shadow .15s ease;}
-  .program-nav button .icon-label{font-size:11px;color:#fff;text-align:center;line-height:1.25;opacity:.9;}
-  .program-nav button.active{opacity:1;}
-  .program-nav button.active .icon-box{transform:scale(1.08);box-shadow:0 0 0 3px #ffd166,0 4px 10px rgba(0,0,0,.35);}
-  .program-nav button.active .icon-label{font-weight:700;opacity:1;}
-  .icon-malaria{background:linear-gradient(135deg,#ff8787,#c0392b);}
-  .icon-hyperhep{background:linear-gradient(135deg,#4dabf7,#1864ab);}
-  .icon-tuberkulin{background:linear-gradient(135deg,#b197fc,#5f3dc4);}
-  .icon-rabies{background:linear-gradient(135deg,#ffa94d,#d9480f);}
+  .home-grid-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px 24px;margin:20px auto;}
+  .home-grid-head{display:flex;align-items:center;gap:14px;margin-bottom:22px;}
+  .home-grid-label{font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;white-space:nowrap;}
+  .home-grid-bar{flex:1;height:6px;border-radius:3px;background:linear-gradient(to right, var(--primary) 0 45%, #dcebe5 45% 100%);}
+  .home-grid{display:flex;flex-wrap:wrap;gap:26px 18px;}
+  .home-icon{display:flex;flex-direction:column;align-items:center;gap:10px;background:none;border:none;cursor:pointer;padding:0;width:88px;flex:0 0 auto;}
+  .home-icon .icon-box{width:64px;height:64px;border-radius:18px;background:var(--primary-dark);display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 3px 8px rgba(0,0,0,.18);transition:transform .12s ease, box-shadow .12s ease;}
+  .home-icon:hover .icon-box{transform:translateY(-3px);box-shadow:0 6px 14px rgba(0,0,0,.22);}
+  .home-icon .icon-label{font-size:12.5px;font-weight:700;color:var(--text);text-align:center;line-height:1.3;}
+  .btn-home{background:rgba(255,255,255,.15);color:#fff;border:none;border-radius:6px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;}
+  .btn-home:hover{background:rgba(255,255,255,.25);}
+
   nav.sub-nav{display:flex;background:var(--primary-dark);overflow-x:auto;}
   nav.sub-nav button{flex:0 0 auto;padding:12px 16px;background:transparent;border:none;color:#fff;font-size:14px;cursor:pointer;opacity:.75;white-space:nowrap;}
   nav.sub-nav button.active{opacity:1;border-bottom:3px solid #fff;font-weight:600;}
@@ -95,31 +96,15 @@
 <body>
 
 <div class="sticky-wrap">
-<header>
-  <h1>🩺 Rekapitulasi Obat Program</h1>
-  <p>Modul aktif: <strong>Malaria, Hyperhep, Tuberkulin &amp; Rabies</strong></p>
+<header style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+  <div>
+    <h1>🩺 Rekapitulasi Obat Program</h1>
+    <p>Modul aktif: <strong>Malaria, Hyperhep, Tuberkulin &amp; Rabies</strong></p>
+  </div>
+  <button id="btnGoHome" class="btn-home">🏠 Beranda</button>
 </header>
 
-<div class="program-nav">
-  <button data-program="malaria" class="active">
-    <span class="icon-box icon-malaria">🦟</span>
-    <span class="icon-label">Malaria</span>
-  </button>
-  <button data-program="hyperhep">
-    <span class="icon-box icon-hyperhep">💉</span>
-    <span class="icon-label">Hyperhep</span>
-  </button>
-  <button data-program="tuberkulin">
-    <span class="icon-box icon-tuberkulin">🧪</span>
-    <span class="icon-label">Tuberkulin</span>
-  </button>
-  <button data-program="rabies">
-    <span class="icon-box icon-rabies">🐕</span>
-    <span class="icon-label">Rabies</span>
-  </button>
-</div>
-
-<nav class="sub-nav" data-subnav="malaria">
+<nav class="sub-nav" data-subnav="malaria" style="display:none;">
   <button data-tab="input" class="active">📝 Input Data Pasien</button>
   <button data-tab="laporan">📋 Menu Laporan</button>
   <button data-tab="malaria-lab-input">🔬 Input Lab Mikroskopis</button>
@@ -147,8 +132,33 @@
 
 <main>
 
+<div id="homeGridWrap" class="home-grid-wrap">
+  <div class="home-grid-head">
+    <span class="home-grid-label">Pilih Aplikasi</span>
+    <span class="home-grid-bar"></span>
+  </div>
+  <div class="home-grid">
+    <button class="home-icon" data-program="malaria">
+      <span class="icon-box">🦟</span>
+      <span class="icon-label">Malaria</span>
+    </button>
+    <button class="home-icon" data-program="hyperhep">
+      <span class="icon-box">💉</span>
+      <span class="icon-label">Hyperhep</span>
+    </button>
+    <button class="home-icon" data-program="tuberkulin">
+      <span class="icon-box">🧪</span>
+      <span class="icon-label">Tuberkulin</span>
+    </button>
+    <button class="home-icon" data-program="rabies">
+      <span class="icon-box">🐕</span>
+      <span class="icon-label">Rabies</span>
+    </button>
+  </div>
+</div>
+
   <!-- ============ TAB INPUT ============ -->
-  <section id="tab-input" class="tab program-malaria">
+  <section id="tab-input" class="tab program-malaria" style="display:none;">
     <div class="card">
       <h2>Form Input Data Pasien - Malaria</h2>
       <div id="msgInput" class="msg"></div>
@@ -968,7 +978,7 @@
 
   // ---------- Navigasi 2 level: Program (Malaria/Hyperhep) + Sub-tab ----------
   function initTabs(){
-    var programButtons = document.querySelectorAll('.program-nav button');
+    var programButtons = document.querySelectorAll('.home-grid button');
     programButtons.forEach(function(btn){
       btn.addEventListener('click', function(){
         switchProgram(btn.dataset.program);
@@ -987,10 +997,14 @@
         onTabOpened(btn.dataset.tab);
       });
     });
+
+    document.getElementById('btnGoHome').addEventListener('click', goHome);
   }
 
   function switchProgram(program){
-    document.querySelectorAll('.program-nav button').forEach(function(b){
+    document.getElementById('homeGridWrap').style.display = 'none';
+
+    document.querySelectorAll('.home-grid button').forEach(function(b){
       b.classList.toggle('active', b.dataset.program === program);
     });
     document.querySelectorAll('nav.sub-nav').forEach(function(n){
@@ -1004,6 +1018,13 @@
       document.getElementById('tab-' + activeSubBtn.dataset.tab).style.display = 'block';
       onTabOpened(activeSubBtn.dataset.tab);
     }
+  }
+
+  function goHome(){
+    document.querySelectorAll('.home-grid button').forEach(function(b){ b.classList.remove('active'); });
+    document.querySelectorAll('nav.sub-nav').forEach(function(n){ n.style.display = 'none'; });
+    document.querySelectorAll('.tab').forEach(function(t){ t.style.display = 'none'; });
+    document.getElementById('homeGridWrap').style.display = 'block';
   }
 
   function onTabOpened(tabId){
