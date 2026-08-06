@@ -12,6 +12,14 @@
   *{box-sizing:border-box;}
   body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);margin:0;color:var(--text);}
   .sticky-wrap{position:sticky;top:0;z-index:200;box-shadow:0 2px 6px rgba(0,0,0,.12);}
+  .layout-wrap{width:100%;}
+  .sidebar-col{width:100%;}
+  @media(min-width:900px){
+    .layout-wrap{display:flex;align-items:flex-start;max-width:1400px;margin:0 auto;padding:0 24px;gap:20px;}
+    .sidebar-col{flex:0 0 230px;width:230px;}
+    .sidebar-col nav.sub-nav{position:sticky;top:var(--header-h, 82px);border-radius:10px;overflow:hidden;margin-top:20px;box-shadow:0 2px 6px rgba(0,0,0,.15);}
+    main{flex:1;min-width:0;max-width:none;margin:20px 0;padding:0 0 60px;width:auto;}
+  }
   header{background:var(--primary);color:#fff;padding:16px 24px;}
   header h1{margin:0;font-size:20px;}
   header p{margin:4px 0 0;font-size:13px;opacity:.9;}
@@ -104,7 +112,10 @@
   </div>
   <button id="btnGoHome" class="btn-home">🏠 Beranda</button>
 </header>
+</div>
 
+<div class="layout-wrap">
+<div class="sidebar-col">
 <nav class="sub-nav" data-subnav="malaria" style="display:none;">
   <button data-tab="input" class="active">📝 Input Data Pasien</button>
   <button data-tab="laporan">📋 Menu Laporan</button>
@@ -971,6 +982,7 @@
   </section>
 
 </main>
+</div>
 
 <script>
 (function(){
@@ -2413,6 +2425,13 @@
     module.exports = { hitungUmur: hitungUmur, hitungBulanTahun: hitungBulanTahun, buildCatatanText: buildCatatanText, buildCatatanTextHyperhep: buildCatatanTextHyperhep, buildCatatanTextTuberkulin: buildCatatanTextTuberkulin, buildCatatanTextRabies: buildCatatanTextRabies, buildCatatanTextMalariaLab: buildCatatanTextMalariaLab, validatePayload: validatePayload, escapeHtml: escapeHtml };
   }
 
+  function updateHeaderHeightVar(){
+    var header = document.querySelector('.sticky-wrap header');
+    if (header) {
+      document.documentElement.style.setProperty('--header-h', header.offsetHeight + 'px');
+    }
+  }
+
   function init(){
     loadConfig();
     initTabs();
@@ -2431,6 +2450,8 @@
     initRabiesStokForm();
     initRabiesPasienForm();
     initRabiesAuto();
+    updateHeaderHeightVar();
+    window.addEventListener('resize', updateHeaderHeightVar);
   }
 
   if (typeof document !== 'undefined') {
