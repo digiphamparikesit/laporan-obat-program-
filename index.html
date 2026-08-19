@@ -674,6 +674,24 @@
       <div id="msgHyperhepLaporan" class="msg"></div>
       <div class="toolbar">
         <input type="text" id="searchBoxHyperhep" placeholder="Cari nama bayi / nama ibu...">
+        <select id="filterBulanHyperhep" style="width:auto;">
+          <option value="">Semua Bulan</option>
+          <option value="Januari">Januari</option>
+          <option value="Februari">Februari</option>
+          <option value="Maret">Maret</option>
+          <option value="April">April</option>
+          <option value="Mei">Mei</option>
+          <option value="Juni">Juni</option>
+          <option value="Juli">Juli</option>
+          <option value="Agustus">Agustus</option>
+          <option value="September">September</option>
+          <option value="Oktober">Oktober</option>
+          <option value="November">November</option>
+          <option value="Desember">Desember</option>
+        </select>
+        <select id="filterTahunHyperhep" style="width:auto;">
+          <option value="">Semua Tahun</option>
+        </select>
         <button class="btn btn-secondary" id="btnRefreshHyperhepLaporan">🔄 Muat Ulang Data</button>
       </div>
       <div class="table-wrap">
@@ -754,6 +772,24 @@
       <div id="msgTuberkulinLaporan" class="msg"></div>
       <div class="toolbar">
         <input type="text" id="searchBoxTuberkulin" placeholder="Cari nama pasien...">
+        <select id="filterBulanTuberkulin" style="width:auto;">
+          <option value="">Semua Bulan</option>
+          <option value="Januari">Januari</option>
+          <option value="Februari">Februari</option>
+          <option value="Maret">Maret</option>
+          <option value="April">April</option>
+          <option value="Mei">Mei</option>
+          <option value="Juni">Juni</option>
+          <option value="Juli">Juli</option>
+          <option value="Agustus">Agustus</option>
+          <option value="September">September</option>
+          <option value="Oktober">Oktober</option>
+          <option value="November">November</option>
+          <option value="Desember">Desember</option>
+        </select>
+        <select id="filterTahunTuberkulin" style="width:auto;">
+          <option value="">Semua Tahun</option>
+        </select>
         <button class="btn btn-secondary" id="btnRefreshTuberkulinLaporan">🔄 Muat Ulang Data</button>
       </div>
       <div class="table-wrap">
@@ -1732,13 +1768,33 @@
 
   function applyFilterHyperhep(){
     var q = document.getElementById('searchBoxHyperhep').value.trim().toLowerCase();
+    var bulan = document.getElementById('filterBulanHyperhep').value;
+    var tahun = document.getElementById('filterTahunHyperhep').value;
     var list = state.hyperhepData || [];
-    if (!q){ renderHyperhepLaporan(list); return; }
     var filtered = list.filter(function(item){
-      return (item.namaBayi || '').toLowerCase().indexOf(q) > -1 ||
-             (item.namaIbu || '').toLowerCase().indexOf(q) > -1;
+      var matchQ = !q || (item.namaBayi || '').toLowerCase().indexOf(q) > -1 ||
+                   (item.namaIbu || '').toLowerCase().indexOf(q) > -1;
+      var bt = hitungBulanTahun(item.tglMelahirkan);
+      var matchBulan = !bulan || bt.bulan === bulan;
+      var matchTahun = !tahun || bt.tahun === tahun;
+      return matchQ && matchBulan && matchTahun;
     });
+    state.hyperhepDataFiltered = filtered;
     renderHyperhepLaporan(filtered);
+  }
+
+  function populateFilterTahunHyperhep(list){
+    var select = document.getElementById('filterTahunHyperhep');
+    var current = select.value;
+    var tahunSet = {};
+    list.forEach(function(item){
+      var bt = hitungBulanTahun(item.tglMelahirkan);
+      if (bt.tahun) tahunSet[bt.tahun] = true;
+    });
+    var tahunList = Object.keys(tahunSet).sort(function(a,b){ return b - a; });
+    select.innerHTML = '<option value="">Semua Tahun</option>' +
+      tahunList.map(function(t){ return '<option value="' + t + '">' + t + '</option>'; }).join('');
+    if (tahunList.indexOf(current) > -1) select.value = current;
   }
 
   function fetchHyperhepLaporan(){
@@ -1754,7 +1810,8 @@
         if (json.status === 'success'){
           state.hyperhepData = json.data || [];
           hideMsg('msgHyperhepLaporan');
-          renderHyperhepLaporan(state.hyperhepData);
+          populateFilterTahunHyperhep(state.hyperhepData);
+          applyFilterHyperhep();
         } else {
           showMsg('msgHyperhepLaporan', 'Gagal memuat data: ' + (json.message || 'Tidak diketahui'), 'err');
         }
@@ -1869,12 +1926,30 @@
 
   function applyFilterTuberkulin(){
     var q = document.getElementById('searchBoxTuberkulin').value.trim().toLowerCase();
+    var bulan = document.getElementById('filterBulanTuberkulin').value;
+    var tahun = document.getElementById('filterTahunTuberkulin').value;
     var list = state.tuberkulinData || [];
-    if (!q){ renderTuberkulinLaporan(list); return; }
     var filtered = list.filter(function(item){
-      return (item.namaPasien || '').toLowerCase().indexOf(q) > -1;
+      var matchQ = !q || (item.namaPasien || '').toLowerCase().indexOf(q) > -1;
+      var matchBulan = !bulan || item.bulanPemberian === bulan;
+      var matchTahun = !tahun || String(item.tahunPemberian) === tahun;
+      return matchQ && matchBulan && matchTahun;
     });
+    state.tuberkulinDataFiltered = filtered;
     renderTuberkulinLaporan(filtered);
+  }
+
+  function populateFilterTahunTuberkulin(list){
+    var select = document.getElementById('filterTahunTuberkulin');
+    var current = select.value;
+    var tahunSet = {};
+    list.forEach(function(item){
+      if (item.tahunPemberian) tahunSet[String(item.tahunPemberian)] = true;
+    });
+    var tahunList = Object.keys(tahunSet).sort(function(a,b){ return b - a; });
+    select.innerHTML = '<option value="">Semua Tahun</option>' +
+      tahunList.map(function(t){ return '<option value="' + t + '">' + t + '</option>'; }).join('');
+    if (tahunList.indexOf(current) > -1) select.value = current;
   }
 
   function fetchTuberkulinLaporan(){
@@ -1890,7 +1965,8 @@
         if (json.status === 'success'){
           state.tuberkulinData = json.data || [];
           hideMsg('msgTuberkulinLaporan');
-          renderTuberkulinLaporan(state.tuberkulinData);
+          populateFilterTahunTuberkulin(state.tuberkulinData);
+          applyFilterTuberkulin();
         } else {
           showMsg('msgTuberkulinLaporan', 'Gagal memuat data: ' + (json.message || 'Tidak diketahui'), 'err');
         }
@@ -2428,8 +2504,12 @@
     document.getElementById('btnExportExcelMalariaLab').addEventListener('click', exportMalariaLabToExcel);
     document.getElementById('btnRefreshHyperhepLaporan').addEventListener('click', fetchHyperhepLaporan);
     document.getElementById('searchBoxHyperhep').addEventListener('input', applyFilterHyperhep);
+    document.getElementById('filterBulanHyperhep').addEventListener('change', applyFilterHyperhep);
+    document.getElementById('filterTahunHyperhep').addEventListener('change', applyFilterHyperhep);
     document.getElementById('btnRefreshTuberkulinLaporan').addEventListener('click', fetchTuberkulinLaporan);
     document.getElementById('searchBoxTuberkulin').addEventListener('input', applyFilterTuberkulin);
+    document.getElementById('filterBulanTuberkulin').addEventListener('change', applyFilterTuberkulin);
+    document.getElementById('filterTahunTuberkulin').addEventListener('change', applyFilterTuberkulin);
     document.getElementById('btnRefreshRabiesLaporan').addEventListener('click', fetchRabiesLaporan);
     document.getElementById('searchBoxRabies').addEventListener('input', applyFilterRabies);
     document.getElementById('btnExportExcelRabies').addEventListener('click', exportRabiesToExcel);
