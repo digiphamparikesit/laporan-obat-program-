@@ -601,7 +601,15 @@
           </div>
           <div class="field">
             <label>Tanggal Lahir Ibu Bayi</label>
-            <input type="date" name="tglLahirIbu">
+            <input type="date" name="tglLahirIbu" id="tglLahirIbuHyperhep">
+          </div>
+          <div class="field">
+            <label>Umur Ibu Bayi (otomatis)</label>
+            <input type="text" name="umurIbu" id="umurIbuHyperhep" readonly>
+          </div>
+          <div class="field">
+            <label>Jumlah Anak Dilahirkan</label>
+            <input type="number" name="jumlahAnak" min="1" placeholder="cth: 1 (tunggal), 2 (kembar)">
           </div>
         </div>
 
@@ -673,7 +681,7 @@
           <thead>
             <tr>
               <th>Nama Bayi</th><th>Nama Ibu</th><th>NIK Ibu</th><th>No HP</th>
-              <th>Tgl/Jam HBIG</th><th>Tgl/Jam HB0</th><th>Skrining</th><th>Aksi</th>
+              <th>Jml Anak</th><th>Tgl/Jam HBIG</th><th>Tgl/Jam HB0</th><th>Skrining</th><th>Aksi</th>
             </tr>
           </thead>
           <tbody id="bodyHyperhepLaporan"></tbody>
@@ -1620,6 +1628,12 @@
         namaBayi.value = namaIbu.value ? ('By. ' + namaIbu.value) : '';
       }
     });
+
+    var tglLahirIbu = document.getElementById('tglLahirIbuHyperhep');
+    var umurIbu = document.getElementById('umurIbuHyperhep');
+    tglLahirIbu.addEventListener('change', function(){
+      umurIbu.value = hitungUmur(tglLahirIbu.value);
+    });
   }
 
   function updateInfoSisaStok(){
@@ -1701,6 +1715,7 @@
         '<td>' + escapeHtml(item.namaIbu) + '</td>' +
         '<td>' + escapeHtml(item.nikIbu) + '</td>' +
         '<td>' + escapeHtml(item.noHp) + '</td>' +
+        '<td>' + escapeHtml(item.jumlahAnak) + '</td>' +
         '<td>' + escapeHtml(item.tglHBIG) + ' ' + escapeHtml(item.jamHBIG) + '</td>' +
         '<td>' + escapeHtml(item.tglHB0) + ' ' + escapeHtml(item.jamHB0) + '</td>' +
         '<td>' + escapeHtml(item.skriningAwal) + '</td>' +
@@ -1763,6 +1778,8 @@
       'NIK KTP Ibu Bayi    : ' + v('nikIbu'),
       'Tempat Lahir Ibu    : ' + v('tempatLahirIbu'),
       'Tanggal Lahir Ibu   : ' + v('tglLahirIbu'),
+      'Umur Ibu Bayi       : ' + v('umurIbu'),
+      'Jumlah Anak Dilahirkan : ' + v('jumlahAnak'),
       '',
       'Tgl & Jam Ibu Melahirkan   : ' + v('tglMelahirkan') + '  Jam ' + v('jamMelahirkan'),
       'Tgl & Jam Vaksin HBIG      : ' + v('tglHBIG') + '  Jam ' + v('jamHBIG'),
