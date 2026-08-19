@@ -318,8 +318,27 @@
       <div id="msgLaporan" class="msg"></div>
       <div class="toolbar">
         <input type="text" id="searchBox" placeholder="Cari nama / no. reg...">
+        <select id="filterBulanMalaria" style="width:auto;">
+          <option value="">Semua Bulan</option>
+          <option value="Januari">Januari</option>
+          <option value="Februari">Februari</option>
+          <option value="Maret">Maret</option>
+          <option value="April">April</option>
+          <option value="Mei">Mei</option>
+          <option value="Juni">Juni</option>
+          <option value="Juli">Juli</option>
+          <option value="Agustus">Agustus</option>
+          <option value="September">September</option>
+          <option value="Oktober">Oktober</option>
+          <option value="November">November</option>
+          <option value="Desember">Desember</option>
+        </select>
+        <select id="filterTahunMalaria" style="width:auto;">
+          <option value="">Semua Tahun</option>
+        </select>
         <button class="btn btn-secondary" id="btnRefresh">🔄 Muat Ulang Data</button>
       </div>
+      <p style="font-size:12px;color:var(--muted);margin:-6px 0 10px;">Filter Bulan/Tahun berdasarkan Tanggal Kejadian.</p>
       <div class="table-wrap">
         <table id="tabelLaporan">
           <thead>
@@ -459,6 +478,24 @@
       <div id="msgMalariaLabLaporan" class="msg"></div>
       <div class="toolbar">
         <input type="text" id="searchBoxMalariaLab" placeholder="Cari nama / no. reg. lab...">
+        <select id="filterBulanMalariaLab" style="width:auto;">
+          <option value="">Semua Bulan</option>
+          <option value="Januari">Januari</option>
+          <option value="Februari">Februari</option>
+          <option value="Maret">Maret</option>
+          <option value="April">April</option>
+          <option value="Mei">Mei</option>
+          <option value="Juni">Juni</option>
+          <option value="Juli">Juli</option>
+          <option value="Agustus">Agustus</option>
+          <option value="September">September</option>
+          <option value="Oktober">Oktober</option>
+          <option value="November">November</option>
+          <option value="Desember">Desember</option>
+        </select>
+        <select id="filterTahunMalariaLab" style="width:auto;">
+          <option value="">Semua Tahun</option>
+        </select>
         <button class="btn btn-secondary" id="btnRefreshMalariaLabLaporan">🔄 Muat Ulang Data</button>
         <button class="btn btn-primary" id="btnExportExcelMalariaLab">📊 Unduh Excel (.xlsx)</button>
       </div>
@@ -1327,12 +1364,33 @@
 
   function applyFilter(){
     var q = document.getElementById('searchBox').value.trim().toLowerCase();
-    if (!q){ renderLaporan(state.data); return; }
-    var filtered = state.data.filter(function(item){
-      return (item.namaPasien || '').toLowerCase().indexOf(q) > -1 ||
-             (item.noReg || '').toLowerCase().indexOf(q) > -1;
+    var bulan = document.getElementById('filterBulanMalaria').value;
+    var tahun = document.getElementById('filterTahunMalaria').value;
+    var list = state.data || [];
+    var filtered = list.filter(function(item){
+      var matchQ = !q || (item.namaPasien || '').toLowerCase().indexOf(q) > -1 ||
+                   (item.noReg || '').toLowerCase().indexOf(q) > -1;
+      var bt = hitungBulanTahun(item.tglKejadian);
+      var matchBulan = !bulan || bt.bulan === bulan;
+      var matchTahun = !tahun || bt.tahun === tahun;
+      return matchQ && matchBulan && matchTahun;
     });
+    state.dataFiltered = filtered;
     renderLaporan(filtered);
+  }
+
+  function populateFilterTahunMalaria(list){
+    var select = document.getElementById('filterTahunMalaria');
+    var current = select.value;
+    var tahunSet = {};
+    list.forEach(function(item){
+      var bt = hitungBulanTahun(item.tglKejadian);
+      if (bt.tahun) tahunSet[bt.tahun] = true;
+    });
+    var tahunList = Object.keys(tahunSet).sort(function(a,b){ return b - a; });
+    select.innerHTML = '<option value="">Semua Tahun</option>' +
+      tahunList.map(function(t){ return '<option value="' + t + '">' + t + '</option>'; }).join('');
+    if (tahunList.indexOf(current) > -1) select.value = current;
   }
 
   function fetchLaporan(){
@@ -1349,7 +1407,8 @@
         if (json.status === 'success'){
           state.data = json.data || [];
           hideMsg('msgLaporan');
-          renderLaporan(state.data);
+          populateFilterTahunMalaria(state.data);
+          applyFilter();
         } else {
           showMsg('msgLaporan', 'Gagal memuat data: ' + (json.message || 'Tidak diketahui'), 'err');
         }
@@ -1457,13 +1516,31 @@
 
   function applyFilterMalariaLab(){
     var q = document.getElementById('searchBoxMalariaLab').value.trim().toLowerCase();
+    var bulan = document.getElementById('filterBulanMalariaLab').value;
+    var tahun = document.getElementById('filterTahunMalariaLab').value;
     var list = state.malariaLabData || [];
-    if (!q){ renderMalariaLabLaporan(list); return; }
     var filtered = list.filter(function(item){
-      return (item.namaPasienLab || '').toLowerCase().indexOf(q) > -1 ||
-             (item.noRegLab || '').toLowerCase().indexOf(q) > -1;
+      var matchQ = !q || (item.namaPasienLab || '').toLowerCase().indexOf(q) > -1 ||
+                   (item.noRegLab || '').toLowerCase().indexOf(q) > -1;
+      var matchBulan = !bulan || item.bulanLab === bulan;
+      var matchTahun = !tahun || String(item.tahunLab) === tahun;
+      return matchQ && matchBulan && matchTahun;
     });
+    state.malariaLabDataFiltered = filtered;
     renderMalariaLabLaporan(filtered);
+  }
+
+  function populateFilterTahunMalariaLab(list){
+    var select = document.getElementById('filterTahunMalariaLab');
+    var current = select.value;
+    var tahunSet = {};
+    list.forEach(function(item){
+      if (item.tahunLab) tahunSet[String(item.tahunLab)] = true;
+    });
+    var tahunList = Object.keys(tahunSet).sort(function(a,b){ return b - a; });
+    select.innerHTML = '<option value="">Semua Tahun</option>' +
+      tahunList.map(function(t){ return '<option value="' + t + '">' + t + '</option>'; }).join('');
+    if (tahunList.indexOf(current) > -1) select.value = current;
   }
 
   function fetchMalariaLabLaporan(){
@@ -1479,7 +1556,8 @@
         if (json.status === 'success'){
           state.malariaLabData = json.data || [];
           hideMsg('msgMalariaLabLaporan');
-          renderMalariaLabLaporan(state.malariaLabData);
+          populateFilterTahunMalariaLab(state.malariaLabData);
+          applyFilterMalariaLab();
         } else {
           showMsg('msgMalariaLabLaporan', 'Gagal memuat data: ' + (json.message || 'Tidak diketahui'), 'err');
         }
@@ -1491,7 +1569,7 @@
 
   function exportMalariaLabToExcel(){
     hideMsg('msgMalariaLabLaporan');
-    var list = state.malariaLabData || [];
+    var list = state.malariaLabDataFiltered || state.malariaLabData || [];
     if (!list.length){
       showMsg('msgMalariaLabLaporan', 'Tidak ada data untuk diexport. Muat ulang data terlebih dahulu.', 'err');
       return;
@@ -2499,8 +2577,12 @@
   function initButtons(){
     document.getElementById('btnRefresh').addEventListener('click', fetchLaporan);
     document.getElementById('searchBox').addEventListener('input', applyFilter);
+    document.getElementById('filterBulanMalaria').addEventListener('change', applyFilter);
+    document.getElementById('filterTahunMalaria').addEventListener('change', applyFilter);
     document.getElementById('btnRefreshMalariaLabLaporan').addEventListener('click', fetchMalariaLabLaporan);
     document.getElementById('searchBoxMalariaLab').addEventListener('input', applyFilterMalariaLab);
+    document.getElementById('filterBulanMalariaLab').addEventListener('change', applyFilterMalariaLab);
+    document.getElementById('filterTahunMalariaLab').addEventListener('change', applyFilterMalariaLab);
     document.getElementById('btnExportExcelMalariaLab').addEventListener('click', exportMalariaLabToExcel);
     document.getElementById('btnRefreshHyperhepLaporan').addEventListener('click', fetchHyperhepLaporan);
     document.getElementById('searchBoxHyperhep').addEventListener('input', applyFilterHyperhep);
