@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rekap Obat Program</title>
 <style>
-  /* ===== CSS ===== */
   :root{
     --primary:#0f6b52; --primary-dark:#0a4d3a; --bg:#f4f7f6; --card:#ffffff;
     --border:#dbe4e1; --text:#1f2d29; --muted:#6b7a75; --danger:#c0392b; --warn:#e08e0b;
@@ -75,7 +74,6 @@
     margin:4px 12px;
   }
 
-  /* SUB-GROUP (accordion) */
   .sidebar .sub-group {
     display: none;
     flex-direction: column;
@@ -270,7 +268,9 @@
   <!-- ========= MAIN CONTENT ========= -->
   <div class="main-content" id="mainContent">
 
-    <!-- ===== MALARIA INPUT ===== -->
+    <!-- ========================================================== -->
+    <!-- MALARIA INPUT -->
+    <!-- ========================================================== -->
     <div id="tab-malaria-input" class="tab active">
       <div class="card">
         <h2>Form Input Data Pasien - Malaria</h2>
@@ -315,7 +315,9 @@
       </div>
     </div>
 
-    <!-- ===== MALARIA LAPORAN ===== -->
+    <!-- ========================================================== -->
+    <!-- MALARIA LAPORAN -->
+    <!-- ========================================================== -->
     <div id="tab-malaria-laporan" class="tab">
       <div class="card">
         <h2>Laporan Pasien Malaria</h2>
@@ -333,26 +335,326 @@
       </div>
     </div>
 
-    <!-- ===== MALARIA LAB INPUT ===== -->
-    <div id="tab-malaria-lab-input" class="tab"> ... </div>
-    <div id="tab-malaria-lab-laporan" class="tab"> ... </div>
-
-    <!-- ===== HYPERHEP ===== -->
-    <div id="tab-hyperhep-stok" class="tab"> ... </div>
-    <div id="tab-hyperhep-pasien" class="tab"> ... </div>
-    <div id="tab-hyperhep-laporan" class="tab"> ... </div>
-
-    <!-- ===== TUBERKULIN ===== -->
-    <div id="tab-tuberkulin-input" class="tab"> ... </div>
-    <div id="tab-tuberkulin-laporan" class="tab"> ... </div>
-
-    <!-- ===== RABIES ===== -->
-    <div id="tab-rabies-stok" class="tab"> ... </div>
-    <div id="tab-rabies-pasien" class="tab"> ... </div>
-    <div id="tab-rabies-laporan" class="tab"> ... </div>
+    <!-- ========================================================== -->
+    <!-- MALARIA LAB INPUT -->
+    <!-- ========================================================== -->
+    <div id="tab-malaria-lab-input" class="tab">
+      <div class="card">
+        <h2>Input Hasil Pemeriksaan Laboratorium Malaria</h2>
+        <div id="msgMalariaLab" class="msg"></div>
+        <form id="formMalariaLab" autocomplete="off">
+          <div class="grid">
+            <div class="field"><label class="required">No. Reg. Lab</label><input type="text" name="noRegLab" required></div>
+            <div class="field"><label class="required">Nama Pasien/Tersangka</label><input type="text" name="namaPasienLab" required></div>
+            <div class="field"><select name="jenisKelamin"><option value="">Jenis Kelamin</option><option>Laki-laki</option><option>Perempuan</option></select></div>
+            <div class="field"><label>Tanggal Lahir</label><input type="date" name="tglLahirLab" id="tglLahirLab"></div>
+            <div class="field"><label>Usia (otomatis)</label><input type="text" name="usiaLab" id="usiaLab" readonly></div>
+            <div class="field" style="grid-column:1/-1;"><label>Alamat Lengkap</label><textarea name="alamatLengkapLab"></textarea></div>
+            <div class="field"><label>Metode Pemeriksaan</label><input type="text" name="metodePemeriksaan" placeholder="cth: Mikroskopis SD Tebal/Tipis, RDT"></div>
+            <div class="field"><label>Alasan Pemeriksaan</label><input type="text" name="alasanPemeriksaan" placeholder="cth: Demam, follow-up pengobatan"></div>
+            <div class="field"><select name="hasilMikroskopis"><option value="">Hasil Mikroskopis</option><option>Negatif</option><option>Positif Falciparum</option><option>Positif Vivax</option><option>Positif Mix</option></select></div>
+            <div class="field"><select name="gametosit"><option value="">Gametosit</option><option>Positif</option><option>Negatif</option></select></div>
+            <div class="field"><label>Kepadatan Parasit</label><input type="number" name="kepadatanParasit" placeholder="cth: 1200"></div>
+            <div class="field"><label>Kode Slide</label><input type="text" name="kodeSlide"></div>
+          </div>
+          <fieldset>
+            <legend>Tanggal SD Diperiksa</legend>
+            <div class="grid">
+              <div class="field"><label class="required">Tanggal SD Diperiksa</label><input type="date" name="tglSDdiperiksa" id="tglSDdiperiksa" required></div>
+              <div class="field"><label>Bulan (otomatis)</label><input type="text" name="bulanLab" id="bulanLab" readonly></div>
+              <div class="field"><label>Tahun (otomatis)</label><input type="text" name="tahunLab" id="tahunLab" readonly></div>
+            </div>
+          </fieldset>
+          <div class="actions">
+            <button type="submit" class="btn btn-primary" id="btnSimpanMalariaLab">💾 Simpan</button>
+            <button type="reset" class="btn btn-secondary">Bersihkan</button>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <!-- ========================================================== -->
-    <!-- ===== SUSU STUNTING ===== -->
+    <!-- MALARIA LAB LAPORAN -->
+    <!-- ========================================================== -->
+    <div id="tab-malaria-lab-laporan" class="tab">
+      <div class="card">
+        <h2>Laporan Hasil Pemeriksaan Laboratorium Malaria</h2>
+        <div id="msgMalariaLabLaporan" class="msg"></div>
+        <div class="toolbar">
+          <input type="text" id="searchBoxMalariaLab" placeholder="Cari nama / no. reg. lab...">
+          <select id="filterBulanMalariaLab"><option value="">Semua Bulan</option><option value="Januari">Januari</option><option value="Februari">Februari</option><option value="Maret">Maret</option><option value="April">April</option><option value="Mei">Mei</option><option value="Juni">Juni</option><option value="Juli">Juli</option><option value="Agustus">Agustus</option><option value="September">September</option><option value="Oktober">Oktober</option><option value="November">November</option><option value="Desember">Desember</option></select>
+          <select id="filterTahunMalariaLab"><option value="">Semua Tahun</option></select>
+          <button class="btn btn-secondary" id="btnRefreshMalariaLabLaporan">🔄 Muat Ulang</button>
+          <button class="btn btn-primary" id="btnExportExcelMalariaLab">📊 Unduh Excel</button>
+        </div>
+        <div class="table-wrap">
+          <table><thead><tr><th>No. Reg. Lab</th><th>Nama Pasien</th><th>JK</th><th>Tgl Lahir</th><th>Usia</th><th>Metode</th><th>Alasan</th><th>Hasil Mikroskopis</th><th>Gametosit</th><th>Kepadatan Parasit</th><th>Kode Slide</th><th>Tgl SD Diperiksa</th><th>Bulan</th><th>Tahun</th><th>Aksi</th></tr></thead><tbody id="bodyMalariaLabLaporan"></tbody></table>
+          <div id="emptyMalariaLabState" class="empty-state">Belum ada data</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- HYPERHEP STOK -->
+    <!-- ========================================================== -->
+    <div id="tab-hyperhep-stok" class="tab">
+      <div class="card">
+        <h2>Ringkasan Stok Vaksin Hyperhep</h2>
+        <div class="stok-summary">
+          <div class="stok-box"><div class="num" id="stokMasukTotal">-</div><div class="lbl">Total Vial Masuk</div></div>
+          <div class="stok-box"><div class="num" id="stokTerpakaiTotal">-</div><div class="lbl">Total Terpakai</div></div>
+          <div class="stok-box" id="stokSisaBox"><div class="num" id="stokSisaTotal">-</div><div class="lbl">Sisa Stok</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Input Jumlah Vaksin Hyperhep Masuk</h2>
+        <div id="msgHyperhepStok" class="msg"></div>
+        <form id="formHyperhepStok" autocomplete="off">
+          <div class="grid">
+            <div class="field"><label class="required">Tanggal Input</label><input type="date" name="tanggalInput" required></div>
+            <div class="field"><label class="required">Jumlah Vial Masuk</label><input type="number" name="jumlahVialMasuk" min="1" required></div>
+            <div class="field"><label>No. Batch</label><input type="text" name="noBatch"></div>
+            <div class="field"><label>Tanggal Kadaluarsa</label><input type="date" name="tanggalKadaluarsa"></div>
+            <div class="field" style="grid-column:1/-1;"><label>Sumber / Distributor</label><input type="text" name="sumberDistributor"></div>
+            <div class="field" style="grid-column:1/-1;"><label>Catatan</label><textarea name="catatanStok"></textarea></div>
+          </div>
+          <div class="actions">
+            <button type="submit" class="btn btn-primary" id="btnSimpanStok">💾 Simpan Stok Masuk</button>
+            <button type="reset" class="btn btn-secondary">Bersihkan</button>
+          </div>
+        </form>
+      </div>
+      <div class="card">
+        <h2>Riwayat Vaksin Masuk</h2>
+        <div class="toolbar"><button class="btn btn-secondary" id="btnRefreshStok">🔄 Muat Ulang</button></div>
+        <div class="table-wrap">
+          <table><thead><tr><th>Tanggal Input</th><th>Jumlah</th><th>No. Batch</th><th>Kadaluarsa</th><th>Sumber</th><th>Catatan</th></tr></thead><tbody id="bodyStokRiwayat"></tbody></table>
+          <div id="emptyStokState" class="empty-state">Belum ada data stok masuk</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- HYPERHEP PASIEN -->
+    <!-- ========================================================== -->
+    <div id="tab-hyperhep-pasien" class="tab">
+      <div class="card">
+        <h2>Form Pengeluaran - Input Data Pasien (Bayi)</h2>
+        <p class="info-line" id="infoSisaStok">Memuat info stok...</p>
+        <div id="msgHyperhepPasien" class="msg"></div>
+        <form id="formHyperhepPasien" autocomplete="off">
+          <div class="grid">
+            <div class="field"><label class="required">Nama Ibu Bayi</label><input type="text" name="namaIbu" id="namaIbuHyperhep" required></div>
+            <div class="field"><label class="required">Nama Bayi</label><input type="text" name="namaBayi" id="namaBayiHyperhep" placeholder="By. ..."></div>
+            <div class="field"><label>Nama Bapak Bayi</label><input type="text" name="namaBapak"></div>
+            <div class="field"><label>No. HP</label><input type="text" name="noHp" placeholder="08xxxxxxxxxx"></div>
+            <div class="field" style="grid-column:1/-1;"><label>Alamat Lengkap</label><textarea name="alamatLengkap"></textarea></div>
+            <div class="field"><label>NIK KTP Ibu Bayi</label><input type="text" name="nikIbu" maxlength="16" placeholder="16 digit"></div>
+            <div class="field"><label>Tempat Lahir Ibu Bayi</label><input type="text" name="tempatLahirIbu"></div>
+            <div class="field"><label>Tanggal Lahir Ibu Bayi</label><input type="date" name="tglLahirIbu" id="tglLahirIbuHyperhep"></div>
+            <div class="field"><label>Umur Ibu Bayi (otomatis)</label><input type="text" name="umurIbu" id="umurIbuHyperhep" readonly></div>
+            <div class="field"><label>Jumlah Anak Dilahirkan</label><input type="number" name="jumlahAnak" min="1" placeholder="cth: 1 (tunggal), 2 (kembar)"></div>
+          </div>
+          <fieldset>
+            <legend>Tanggal &amp; Jam Kejadian</legend>
+            <div class="field"><label>Tanggal dan Jam Ibu Melahirkan</label><div class="tgljam"><input type="date" name="tglMelahirkan"><input type="time" name="jamMelahirkan"></div></div>
+            <div class="field" style="margin-top:10px;"><label>Tanggal dan Jam Pemberian Vaksin HBIG</label><div class="tgljam"><input type="date" name="tglHBIG"><input type="time" name="jamHBIG"></div></div>
+            <div class="field" style="margin-top:10px;"><label>Tanggal dan Jam Pemberian Vaksin HB0</label><div class="tgljam"><input type="date" name="tglHB0"><input type="time" name="jamHB0"></div></div>
+          </fieldset>
+          <fieldset>
+            <legend>Skrining Awal</legend>
+            <div class="grid">
+              <div class="field"><select name="skriningAwal"><option value="">Hasil Skrining (HBsAg Ibu)</option><option>Reaktif (HBsAg+)</option><option>Non Reaktif</option><option>Tidak diperiksa</option></select></div>
+              <div class="field"><label>Catatan Skrining</label><input type="text" name="skriningCatatan"></div>
+            </div>
+          </fieldset>
+          <p class="info-line">💉 Jumlah vial Hyperhep terpakai: <strong>1 vial (otomatis)</strong></p>
+          <div class="actions">
+            <button type="submit" class="btn btn-primary" id="btnSimpanHyperhepPasien">💾 Simpan Data Pasien</button>
+            <button type="reset" class="btn btn-secondary">Bersihkan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- HYPERHEP LAPORAN -->
+    <!-- ========================================================== -->
+    <div id="tab-hyperhep-laporan" class="tab">
+      <div class="card">
+        <h2>Laporan Pasien Hyperhep</h2>
+        <div id="msgHyperhepLaporan" class="msg"></div>
+        <div class="toolbar">
+          <input type="text" id="searchBoxHyperhep" placeholder="Cari nama bayi / nama ibu...">
+          <select id="filterBulanHyperhep"><option value="">Semua Bulan</option><option value="Januari">Januari</option><option value="Februari">Februari</option><option value="Maret">Maret</option><option value="April">April</option><option value="Mei">Mei</option><option value="Juni">Juni</option><option value="Juli">Juli</option><option value="Agustus">Agustus</option><option value="September">September</option><option value="Oktober">Oktober</option><option value="November">November</option><option value="Desember">Desember</option></select>
+          <select id="filterTahunHyperhep"><option value="">Semua Tahun</option></select>
+          <button class="btn btn-secondary" id="btnRefreshHyperhepLaporan">🔄 Muat Ulang</button>
+        </div>
+        <div class="table-wrap">
+          <table><thead><tr><th>Nama Bayi</th><th>Nama Ibu</th><th>NIK Ibu</th><th>No HP</th><th>Jml Anak</th><th>Tgl/Jam HBIG</th><th>Tgl/Jam HB0</th><th>Skrining</th><th>Aksi</th></tr></thead><tbody id="bodyHyperhepLaporan"></tbody></table>
+          <div id="emptyHyperhepState" class="empty-state">Belum ada data</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- TUBERKULIN INPUT -->
+    <!-- ========================================================== -->
+    <div id="tab-tuberkulin-input" class="tab">
+      <div class="card">
+        <h2>Form Input Data Pasien - Tuberkulin</h2>
+        <div id="msgTuberkulin" class="msg"></div>
+        <form id="formTuberkulin" autocomplete="off">
+          <div class="grid">
+            <div class="field"><label class="required">Nama Pasien</label><input type="text" name="namaPasien" required></div>
+            <div class="field"><label class="required">Tanggal Lahir</label><input type="date" name="tglLahir" id="tglLahirTB" required></div>
+            <div class="field"><label>Umur (otomatis)</label><input type="text" name="umur" id="umurTB" readonly></div>
+            <div class="field"><label>No. HP (Orang Tua)</label><input type="text" name="noHpOrtu" placeholder="08xxxxxxxxxx"></div>
+            <div class="field" style="grid-column:1/-1;"><label>Alamat Rumah</label><textarea name="alamatRumah"></textarea></div>
+          </div>
+          <fieldset>
+            <legend>Tanggal Pemberian Obat</legend>
+            <div class="grid">
+              <div class="field"><label class="required">Tanggal Pemberian Obat</label><input type="date" name="tglPemberianObat" id="tglPemberianObatTB" required></div>
+              <div class="field"><label>Bulan (otomatis)</label><input type="text" name="bulanPemberian" id="bulanPemberianTB" readonly></div>
+              <div class="field"><label>Tahun (otomatis)</label><input type="text" name="tahunPemberian" id="tahunPemberianTB" readonly></div>
+            </div>
+          </fieldset>
+          <div class="actions">
+            <button type="submit" class="btn btn-primary" id="btnSimpanTuberkulin">💾 Simpan</button>
+            <button type="reset" class="btn btn-secondary">Bersihkan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- TUBERKULIN LAPORAN -->
+    <!-- ========================================================== -->
+    <div id="tab-tuberkulin-laporan" class="tab">
+      <div class="card">
+        <h2>Laporan Pasien Tuberkulin</h2>
+        <div id="msgTuberkulinLaporan" class="msg"></div>
+        <div class="toolbar">
+          <input type="text" id="searchBoxTuberkulin" placeholder="Cari nama pasien...">
+          <select id="filterBulanTuberkulin"><option value="">Semua Bulan</option><option value="Januari">Januari</option><option value="Februari">Februari</option><option value="Maret">Maret</option><option value="April">April</option><option value="Mei">Mei</option><option value="Juni">Juni</option><option value="Juli">Juli</option><option value="Agustus">Agustus</option><option value="September">September</option><option value="Oktober">Oktober</option><option value="November">November</option><option value="Desember">Desember</option></select>
+          <select id="filterTahunTuberkulin"><option value="">Semua Tahun</option></select>
+          <button class="btn btn-secondary" id="btnRefreshTuberkulinLaporan">🔄 Muat Ulang</button>
+        </div>
+        <div class="table-wrap">
+          <table><thead><tr><th>Nama Pasien</th><th>Tgl Lahir</th><th>Umur</th><th>No HP Ortu</th><th>Tgl Pemberian</th><th>Bulan</th><th>Tahun</th><th>Aksi</th></tr></thead><tbody id="bodyTuberkulinLaporan"></tbody></table>
+          <div id="emptyTuberkulinState" class="empty-state">Belum ada data</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- RABIES STOK -->
+    <!-- ========================================================== -->
+    <div id="tab-rabies-stok" class="tab">
+      <div class="card">
+        <h2>Ringkasan Stok Vaksin Rabies</h2>
+        <div class="stok-summary">
+          <div class="stok-box"><div class="num" id="stokMasukTotalRabies">-</div><div class="lbl">Total Vial Masuk</div></div>
+          <div class="stok-box"><div class="num" id="stokTerpakaiTotalRabies">-</div><div class="lbl">Total Terpakai</div></div>
+          <div class="stok-box" id="stokSisaBoxRabies"><div class="num" id="stokSisaTotalRabies">-</div><div class="lbl">Sisa Stok</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Input Jumlah Vaksin Rabies Masuk</h2>
+        <div id="msgRabiesStok" class="msg"></div>
+        <form id="formRabiesStok" autocomplete="off">
+          <div class="grid">
+            <div class="field"><label class="required">Tanggal Input</label><input type="date" name="tanggalInput" required></div>
+            <div class="field"><label class="required">Jumlah Vial Masuk</label><input type="number" name="jumlahVialMasuk" min="1" required></div>
+            <div class="field"><label>No. Batch</label><input type="text" name="noBatch"></div>
+            <div class="field"><label>Tanggal Kadaluarsa</label><input type="date" name="tanggalKadaluarsa"></div>
+            <div class="field" style="grid-column:1/-1;"><label>Sumber / Distributor</label><input type="text" name="sumberDistributor"></div>
+            <div class="field" style="grid-column:1/-1;"><label>Catatan</label><textarea name="catatanStok"></textarea></div>
+          </div>
+          <div class="actions">
+            <button type="submit" class="btn btn-primary" id="btnSimpanStokRabies">💾 Simpan Stok Masuk</button>
+            <button type="reset" class="btn btn-secondary">Bersihkan</button>
+          </div>
+        </form>
+      </div>
+      <div class="card">
+        <h2>Riwayat Vaksin Masuk</h2>
+        <div class="toolbar"><button class="btn btn-secondary" id="btnRefreshStokRabies">🔄 Muat Ulang</button></div>
+        <div class="table-wrap">
+          <table><thead><tr><th>Tanggal Input</th><th>Jumlah</th><th>No. Batch</th><th>Kadaluarsa</th><th>Sumber</th><th>Catatan</th></tr></thead><tbody id="bodyStokRiwayatRabies"></tbody></table>
+          <div id="emptyStokStateRabies" class="empty-state">Belum ada data stok masuk</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- RABIES PASIEN -->
+    <!-- ========================================================== -->
+    <div id="tab-rabies-pasien" class="tab">
+      <div class="card">
+        <h2>Form Pengeluaran - Input Data Pasien Rabies</h2>
+        <p class="info-line" id="infoSisaStokRabies">Memuat info stok...</p>
+        <div id="msgRabiesPasien" class="msg"></div>
+        <form id="formRabiesPasien" autocomplete="off">
+          <div class="grid">
+            <div class="field"><label class="required">No. Reg</label><input type="text" name="noReg" required></div>
+            <div class="field"><label class="required">Nama Pasien</label><input type="text" name="namaPasien" required></div>
+            <div class="field"><label>NIK KTP</label><input type="text" name="nikKtp" maxlength="16" placeholder="16 digit"></div>
+            <div class="field"><label>Tanggal Lahir</label><input type="date" name="tglLahir" id="tglLahirRabies"></div>
+            <div class="field"><label>Umur (otomatis)</label><input type="text" name="umur" id="umurRabies" readonly></div>
+            <div class="field"><label>No. HP</label><input type="text" name="noHp" placeholder="08xxxxxxxxxx"></div>
+            <div class="field" style="grid-column:1/-1;"><label>Alamat Sesuai KTP</label><textarea name="alamatKtp"></textarea></div>
+            <div class="field"><select name="vaksinKe"><option value="">Vaksin Ke-</option><option>1</option><option>2</option><option>3</option></select></div>
+            <div class="field"><label class="required">Jumlah Vial Terpakai</label><input type="number" name="jumlahVialRabies" step="0.1" min="0" placeholder="cth: 1"></div>
+            <div class="field"><label>Puskesmas Rujukan</label><input type="text" name="puskesmasRujukan"></div>
+            <div class="field"><select name="jenisHewan"><option value="">Jenis Hewan</option><option>Anjing</option><option>Kucing</option><option>Kera</option></select></div>
+            <div class="field"><label>Lokasi Gigitan</label><input type="text" name="lokasiGigitan" placeholder="cth: Tungkai kaki kanan"></div>
+          </div>
+          <fieldset>
+            <legend>Kronologi &amp; Tanggal Tindakan</legend>
+            <div class="grid">
+              <div class="field"><label>Tanggal Digigit</label><input type="date" name="tglDigigit"></div>
+              <div class="field"><label>Tanggal Dibawa Ke RS</label><input type="date" name="tglKeRS" id="tglKeRSRabies"></div>
+              <div class="field"><label>Tanggal Cuci Luka</label><input type="date" name="tglCuciLuka"></div>
+              <div class="field"><label>Tanggal Vaksin</label><input type="date" name="tglVaksin"></div>
+              <div class="field"><label>Bulan (otomatis)</label><input type="text" name="bulanKeRS" id="bulanKeRSRabies" readonly></div>
+              <div class="field"><label>Tahun (otomatis)</label><input type="text" name="tahunKeRS" id="tahunKeRSRabies" readonly></div>
+            </div>
+            <p class="info-line" style="margin-top:8px;">Bulan &amp; Tahun otomatis mengikuti Tanggal Dibawa Ke Rumah Sakit.</p>
+          </fieldset>
+          <p class="info-line">💉 Jumlah vial Rabies terpakai: <strong>1 vial (otomatis)</strong></p>
+          <div class="actions">
+            <button type="submit" class="btn btn-primary" id="btnSimpanRabiesPasien">💾 Simpan Data Pasien</button>
+            <button type="reset" class="btn btn-secondary">Bersihkan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- RABIES LAPORAN -->
+    <!-- ========================================================== -->
+    <div id="tab-rabies-laporan" class="tab">
+      <div class="card">
+        <h2>Laporan Pasien Rabies</h2>
+        <div id="msgRabiesLaporan" class="msg"></div>
+        <div class="toolbar">
+          <input type="text" id="searchBoxRabies" placeholder="Cari nama / no. reg...">
+          <select id="filterBulanRabies"><option value="">Semua Bulan</option><option value="Januari">Januari</option><option value="Februari">Februari</option><option value="Maret">Maret</option><option value="April">April</option><option value="Mei">Mei</option><option value="Juni">Juni</option><option value="Juli">Juli</option><option value="Agustus">Agustus</option><option value="September">September</option><option value="Oktober">Oktober</option><option value="November">November</option><option value="Desember">Desember</option></select>
+          <select id="filterTahunRabies"><option value="">Semua Tahun</option></select>
+          <button class="btn btn-secondary" id="btnRefreshRabiesLaporan">🔄 Muat Ulang</button>
+          <button class="btn btn-primary" id="btnExportExcelRabies">📊 Unduh Excel</button>
+        </div>
+        <div class="table-wrap">
+          <table><thead><tr><th>No. Reg</th><th>Nama Pasien</th><th>NIK KTP</th><th>Tgl Lahir</th><th>Umur</th><th>No. HP</th><th>Alamat KTP</th><th>Vaksin Ke-</th><th>Puskesmas</th><th>Jenis Hewan</th><th>Lokasi Gigitan</th><th>Tgl Digigit</th><th>Tgl ke RS</th><th>Tgl Cuci Luka</th><th>Tgl Vaksin</th><th>Bulan</th><th>Tahun</th><th>Vial Terpakai</th><th>Aksi</th></tr></thead><tbody id="bodyRabiesLaporan"></tbody></table>
+          <div id="emptyRabiesState" class="empty-state">Belum ada data</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- SUSU STUNTING INPUT -->
     <!-- ========================================================== -->
     <div id="tab-susu-input" class="tab">
       <div class="card">
@@ -384,6 +686,9 @@
       </div>
     </div>
 
+    <!-- ========================================================== -->
+    <!-- SUSU STUNTING LAPORAN -->
+    <!-- ========================================================== -->
     <div id="tab-susu-laporan" class="tab">
       <div class="card">
         <h2>Laporan Susu Stunting</h2>
@@ -400,7 +705,7 @@
     </div>
 
     <!-- ========================================================== -->
-    <!-- ===== GIGITAN COBRA ===== -->
+    <!-- GIGITAN COBRA INPUT -->
     <!-- ========================================================== -->
     <div id="tab-cobra-input" class="tab">
       <div class="card">
@@ -437,6 +742,9 @@
       </div>
     </div>
 
+    <!-- ========================================================== -->
+    <!-- GIGITAN COBRA LAPORAN -->
+    <!-- ========================================================== -->
     <div id="tab-cobra-laporan" class="tab">
       <div class="card">
         <h2>Laporan Gigitan Cobra</h2>
@@ -453,7 +761,7 @@
     </div>
 
     <!-- ========================================================== -->
-    <!-- ===== DIFTERI ===== -->
+    <!-- DIFTERI INPUT -->
     <!-- ========================================================== -->
     <div id="tab-difteri-input" class="tab">
       <div class="card">
@@ -485,6 +793,9 @@
       </div>
     </div>
 
+    <!-- ========================================================== -->
+    <!-- DIFTERI LAPORAN -->
+    <!-- ========================================================== -->
     <div id="tab-difteri-laporan" class="tab">
       <div class="card">
         <h2>Laporan Difteri</h2>
@@ -500,7 +811,9 @@
       </div>
     </div>
 
-    <!-- ===== SETTING ===== -->
+    <!-- ========================================================== -->
+    <!-- SETTING -->
+    <!-- ========================================================== -->
     <div id="tab-setting" class="tab">
       <div class="card">
         <h2>Pengaturan Koneksi Google Sheets</h2>
@@ -532,7 +845,7 @@
 
 <script>
 // =================================================================
-// JAVASCRIPT LENGKAP DENGAN ACCORDION SIDEBAR & 3 PROGRAM BARU
+// JAVASCRIPT LENGKAP – SEMUA PROGRAM BERFUNGSI
 // =================================================================
 (function(){
   "use strict";
@@ -543,9 +856,9 @@
     webAppUrl: DEFAULT_WEBAPP_URL,
     cache: {
       Malaria: null, MalariaLab: null,
-      HyperhepPasien: null, HyperhepStok: null,
+      HyperhepStok: null, HyperhepPasien: null,
       Tuberkulin: null,
-      RabiesPasien: null, RabiesStok: null,
+      RabiesStok: null, RabiesPasien: null,
       Susu: null, Cobra: null, Difteri: null
     },
     data: {}
@@ -659,42 +972,32 @@
   // NAVIGASI SIDEBAR - ACCORDION
   // =================================================================
   function initSidebarNavigation(){
-    // Klik menu program -> toggle sub-group
     document.querySelectorAll('.sidebar button[data-program]').forEach(function(btn){
       btn.addEventListener('click', function(){
         var program = btn.dataset.program;
         // Tutup semua sub-group
-        document.querySelectorAll('.sidebar .sub-group').forEach(function(g){
-          g.classList.remove('open');
-        });
+        document.querySelectorAll('.sidebar .sub-group').forEach(function(g){ g.classList.remove('open'); });
         // Buka sub-group yang sesuai
         var targetGroup = document.querySelector('.sidebar .sub-group[data-parent="' + program + '"]');
         if (targetGroup) {
           targetGroup.classList.add('open');
-          // Klik otomatis sub-item pertama (input)
           var firstSub = targetGroup.querySelector('.sub-item');
-          if (firstSub) {
-            firstSub.click();
-          }
+          if (firstSub) firstSub.click();
         }
-        // Update active program
         document.querySelectorAll('.sidebar button[data-program]').forEach(function(b){ b.classList.remove('active'); });
         btn.classList.add('active');
         closeMobileSidebar();
       });
     });
 
-    // Klik sub-item
     document.querySelectorAll('.sidebar .sub-item, .sidebar button[data-tab="setting"]').forEach(function(btn){
       btn.addEventListener('click', function(){
         var tabId = btn.dataset.tab;
         if (!tabId) return;
-        // Update active sub-item
         document.querySelectorAll('.sidebar .sub-item, .sidebar button[data-tab="setting"]').forEach(function(b){
           b.classList.remove('active');
         });
         btn.classList.add('active');
-        // Tampilkan tab
         document.querySelectorAll('.main-content .tab').forEach(function(t){ t.classList.remove('active'); t.style.display = 'none'; });
         var target = document.getElementById('tab-' + tabId);
         if (target) { target.style.display = 'block'; target.classList.add('active'); }
@@ -703,14 +1006,12 @@
       });
     });
 
-    // Tombol Home
     document.getElementById('btnGoHome').addEventListener('click', function(){
       document.querySelectorAll('.sidebar button[data-program]').forEach(function(b){ b.classList.remove('active'); });
       var firstProgram = document.querySelector('.sidebar button[data-program]');
-      if (firstProgram) { firstProgram.click(); }
+      if (firstProgram) firstProgram.click();
     });
 
-    // Mobile toggle
     var sidebar = document.getElementById('sidebar');
     var backdrop = document.getElementById('sidebarBackdrop');
     document.getElementById('mobileMenuToggle').addEventListener('click', function(){
@@ -725,7 +1026,7 @@
   }
 
   // =================================================================
-  // TAB OPENED (dengan cache)
+  // TAB OPENED
   // =================================================================
   function onTabOpened(tabId){
     // Malaria Laporan
@@ -750,11 +1051,85 @@
         applyFilterMalariaLab();
       });
     }
-    // Hyperhep, Tuberkulin, Rabies (placeholder)
-    if (tabId === 'hyperhep-laporan') { /* ... */ }
-    if (tabId === 'tuberkulin-laporan') { /* ... */ }
-    if (tabId === 'rabies-laporan') { /* ... */ }
-
+    // Hyperhep Stok
+    if (tabId === 'hyperhep-stok') {
+      showMsg('msgHyperhepStok', 'Memuat stok...', 'info');
+      getDataWithCache('HyperhepStok', false, function(errStok, stokData){
+        if (errStok) { showMsg('msgHyperhepStok', 'Gagal stok: ' + errStok, 'err'); return; }
+        getDataWithCache('HyperhepPasien', false, function(errPasien, pasienData){
+          if (errPasien) { showMsg('msgHyperhepStok', 'Gagal pasien: ' + errPasien, 'err'); return; }
+          var masuk = 0; stokData.forEach(function(r){ masuk += parseFloat(r.jumlahVialMasuk) || 0; });
+          var terpakai = pasienData.length;
+          var sisa = masuk - terpakai;
+          document.getElementById('stokMasukTotal').textContent = masuk;
+          document.getElementById('stokTerpakaiTotal').textContent = terpakai;
+          document.getElementById('stokSisaTotal').textContent = sisa;
+          document.getElementById('stokSisaBox').classList.toggle('warn', sisa <= 5);
+          renderStokRiwayat(stokData);
+          hideMsg('msgHyperhepStok');
+        });
+      });
+    }
+    // Hyperhep Pasien (info stok)
+    if (tabId === 'hyperhep-pasien') {
+      updateInfoSisaStok();
+    }
+    // Hyperhep Laporan
+    if (tabId === 'hyperhep-laporan') {
+      showMsg('msgHyperhepLaporan', 'Memuat data...', 'info');
+      getDataWithCache('HyperhepPasien', false, function(err, data){
+        if (err) { showMsg('msgHyperhepLaporan', 'Gagal: ' + err, 'err'); renderHyperhepLaporan([]); return; }
+        state.data.HyperhepPasien = data;
+        hideMsg('msgHyperhepLaporan');
+        populateFilterTahunHyperhep(data);
+        applyFilterHyperhep();
+      });
+    }
+    // Tuberkulin Laporan
+    if (tabId === 'tuberkulin-laporan') {
+      showMsg('msgTuberkulinLaporan', 'Memuat data...', 'info');
+      getDataWithCache('Tuberkulin', false, function(err, data){
+        if (err) { showMsg('msgTuberkulinLaporan', 'Gagal: ' + err, 'err'); renderTuberkulinLaporan([]); return; }
+        state.data.Tuberkulin = data;
+        hideMsg('msgTuberkulinLaporan');
+        populateFilterTahunTuberkulin(data);
+        applyFilterTuberkulin();
+      });
+    }
+    // Rabies Stok
+    if (tabId === 'rabies-stok') {
+      showMsg('msgRabiesStok', 'Memuat stok...', 'info');
+      getDataWithCache('RabiesStok', false, function(errStok, stokData){
+        if (errStok) { showMsg('msgRabiesStok', 'Gagal stok: ' + errStok, 'err'); return; }
+        getDataWithCache('RabiesPasien', false, function(errPasien, pasienData){
+          if (errPasien) { showMsg('msgRabiesStok', 'Gagal pasien: ' + errPasien, 'err'); return; }
+          var masuk = 0; stokData.forEach(function(r){ masuk += parseFloat(r.jumlahVialMasuk) || 0; });
+          var terpakai = 0; pasienData.forEach(function(r){ terpakai += parseFloat(r.jumlahVialRabies) || 0; });
+          var sisa = masuk - terpakai;
+          document.getElementById('stokMasukTotalRabies').textContent = masuk;
+          document.getElementById('stokTerpakaiTotalRabies').textContent = terpakai;
+          document.getElementById('stokSisaTotalRabies').textContent = sisa;
+          document.getElementById('stokSisaBoxRabies').classList.toggle('warn', sisa <= 5);
+          renderStokRiwayatRabies(stokData);
+          hideMsg('msgRabiesStok');
+        });
+      });
+    }
+    // Rabies Pasien (info stok)
+    if (tabId === 'rabies-pasien') {
+      updateInfoSisaStokRabies();
+    }
+    // Rabies Laporan
+    if (tabId === 'rabies-laporan') {
+      showMsg('msgRabiesLaporan', 'Memuat data...', 'info');
+      getDataWithCache('RabiesPasien', false, function(err, data){
+        if (err) { showMsg('msgRabiesLaporan', 'Gagal: ' + err, 'err'); renderRabiesLaporan([]); return; }
+        state.data.RabiesPasien = data;
+        hideMsg('msgRabiesLaporan');
+        populateFilterTahunRabies(data);
+        applyFilterRabies();
+      });
+    }
     // SUSU
     if (tabId === 'susu-laporan') {
       showMsg('msgSusuLaporan', 'Memuat data...', 'info');
@@ -788,18 +1163,334 @@
   }
 
   // =================================================================
-  // FUNGSI MALARIA (sudah ada)
+  // FUNGSI RENDER DAN FILTER UNTUK SEMUA PROGRAM
   // =================================================================
-  function renderLaporan(list){ /* ... */ }
-  function applyFilter(){ /* ... */ }
-  function populateFilterTahunMalaria(list){ /* ... */ }
-  function renderMalariaLabLaporan(list){ /* ... */ }
-  function applyFilterMalariaLab(){ /* ... */ }
-  function populateFilterTahunMalariaLab(list){ /* ... */ }
 
-  // =================================================================
-  // SUSU STUNTING
-  // =================================================================
+  // ---- MALARIA ----
+  function renderLaporan(list){
+    var tbody = document.getElementById('bodyLaporan');
+    var empty = document.getElementById('emptyState');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    if (!list || !list.length){ if (empty) empty.style.display = 'block'; return; }
+    if (empty) empty.style.display = 'none';
+    list.forEach(function(item, idx){
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td>' + escapeHtml(item.namaPasien) + '</td>' +
+        '<td>' + escapeHtml(item.umur) + '</td>' +
+        '<td>' + escapeHtml(item.noReg) + '</td>' +
+        '<td>' + escapeHtml(item.noTelp) + '</td>' +
+        '<td>' + escapeHtml(item.hasilMalaria) + '</td>' +
+        '<td>' + escapeHtml(item.derajatMalaria) + '</td>' +
+        '<td>' + escapeHtml(item.tglKejadian) + '</td>' +
+        '<td>' + escapeHtml(item.faskes) + '</td>' +
+        '<td><button class="btn btn-secondary" data-idx="' + idx + '">📋</button></td>';
+      tbody.appendChild(tr);
+    });
+  }
+  function applyFilter(){
+    var q = document.getElementById('searchBox').value.trim().toLowerCase();
+    var bulan = document.getElementById('filterBulanMalaria').value;
+    var tahun = document.getElementById('filterTahunMalaria').value;
+    var list = state.data.Malaria || [];
+    var filtered = list.filter(function(item){
+      var matchQ = !q || (item.namaPasien||'').toLowerCase().indexOf(q)>-1 || (item.noReg||'').toLowerCase().indexOf(q)>-1;
+      var bt = hitungBulanTahun(item.tglKejadian);
+      var matchBulan = !bulan || bt.bulan === bulan;
+      var matchTahun = !tahun || bt.tahun === tahun;
+      return matchQ && matchBulan && matchTahun;
+    });
+    renderLaporan(filtered);
+  }
+  function populateFilterTahunMalaria(list){
+    var select = document.getElementById('filterTahunMalaria');
+    if (!select) return;
+    var tahunSet = {};
+    list.forEach(function(item){
+      var bt = hitungBulanTahun(item.tglKejadian);
+      if (bt.tahun) tahunSet[bt.tahun] = true;
+    });
+    var tahunList = Object.keys(tahunSet).sort(function(a,b){ return b-a; });
+    select.innerHTML = '<option value="">Semua Tahun</option>' + tahunList.map(function(t){ return '<option value="'+t+'">'+t+'</option>'; }).join('');
+  }
+
+  // ---- MALARIA LAB ----
+  function renderMalariaLabLaporan(list){
+    var tbody = document.getElementById('bodyMalariaLabLaporan');
+    var empty = document.getElementById('emptyMalariaLabState');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    if (!list || !list.length){ if (empty) empty.style.display = 'block'; return; }
+    if (empty) empty.style.display = 'none';
+    list.forEach(function(item, idx){
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td>' + escapeHtml(item.noRegLab) + '</td>' +
+        '<td>' + escapeHtml(item.namaPasienLab) + '</td>' +
+        '<td>' + escapeHtml(item.jenisKelamin) + '</td>' +
+        '<td>' + escapeHtml(item.tglLahirLab) + '</td>' +
+        '<td>' + escapeHtml(item.usiaLab) + '</td>' +
+        '<td>' + escapeHtml(item.metodePemeriksaan) + '</td>' +
+        '<td>' + escapeHtml(item.alasanPemeriksaan) + '</td>' +
+        '<td>' + escapeHtml(item.hasilMikroskopis) + '</td>' +
+        '<td>' + escapeHtml(item.gametosit) + '</td>' +
+        '<td>' + escapeHtml(item.kepadatanParasit) + '</td>' +
+        '<td>' + escapeHtml(item.kodeSlide) + '</td>' +
+        '<td>' + escapeHtml(item.tglSDdiperiksa) + '</td>' +
+        '<td>' + escapeHtml(item.bulanLab) + '</td>' +
+        '<td>' + escapeHtml(item.tahunLab) + '</td>' +
+        '<td><button class="btn btn-secondary" data-idx="' + idx + '">📋</button></td>';
+      tbody.appendChild(tr);
+    });
+  }
+  function applyFilterMalariaLab(){
+    var q = document.getElementById('searchBoxMalariaLab').value.trim().toLowerCase();
+    var bulan = document.getElementById('filterBulanMalariaLab').value;
+    var tahun = document.getElementById('filterTahunMalariaLab').value;
+    var list = state.data.MalariaLab || [];
+    var filtered = list.filter(function(item){
+      var matchQ = !q || (item.namaPasienLab||'').toLowerCase().indexOf(q)>-1 || (item.noRegLab||'').toLowerCase().indexOf(q)>-1;
+      var matchBulan = !bulan || item.bulanLab === bulan;
+      var matchTahun = !tahun || String(item.tahunLab) === tahun;
+      return matchQ && matchBulan && matchTahun;
+    });
+    renderMalariaLabLaporan(filtered);
+  }
+  function populateFilterTahunMalariaLab(list){
+    var select = document.getElementById('filterTahunMalariaLab');
+    if (!select) return;
+    var tahunSet = {};
+    list.forEach(function(item){ if (item.tahunLab) tahunSet[String(item.tahunLab)] = true; });
+    var tahunList = Object.keys(tahunSet).sort(function(a,b){ return b-a; });
+    select.innerHTML = '<option value="">Semua Tahun</option>' + tahunList.map(function(t){ return '<option value="'+t+'">'+t+'</option>'; }).join('');
+  }
+
+  // ---- HYPERHEP ----
+  function renderStokRiwayat(list){
+    var tbody = document.getElementById('bodyStokRiwayat');
+    var empty = document.getElementById('emptyStokState');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    if (!list || !list.length){ if (empty) empty.style.display = 'block'; return; }
+    if (empty) empty.style.display = 'none';
+    list.forEach(function(item){
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td>' + escapeHtml(item.tanggalInput) + '</td>' +
+        '<td>' + escapeHtml(item.jumlahVialMasuk) + '</td>' +
+        '<td>' + escapeHtml(item.noBatch) + '</td>' +
+        '<td>' + escapeHtml(item.tanggalKadaluarsa) + '</td>' +
+        '<td>' + escapeHtml(item.sumberDistributor) + '</td>' +
+        '<td>' + escapeHtml(item.catatanStok) + '</td>';
+      tbody.appendChild(tr);
+    });
+  }
+  function updateInfoSisaStok(){
+    var infoEl = document.getElementById('infoSisaStok');
+    if (!infoEl) return;
+    infoEl.textContent = 'Memuat info stok...';
+    infoEl.classList.remove('warn');
+    if (!state.webAppUrl){ infoEl.textContent = 'URL belum diatur.'; infoEl.classList.add('warn'); return; }
+    getDataWithCache('HyperhepStok', false, function(errStok, stokData){
+      if (errStok) { infoEl.textContent = 'Gagal stok: ' + errStok; infoEl.classList.add('warn'); return; }
+      getDataWithCache('HyperhepPasien', false, function(errPasien, pasienData){
+        if (errPasien) { infoEl.textContent = 'Gagal pasien: ' + errPasien; infoEl.classList.add('warn'); return; }
+        var masuk = 0; stokData.forEach(function(r){ masuk += parseFloat(r.jumlahVialMasuk) || 0; });
+        var terpakai = pasienData.length;
+        var sisa = masuk - terpakai;
+        infoEl.textContent = '💉 Sisa stok Hyperhep: ' + sisa + ' vial (Masuk: ' + masuk + ', Terpakai: ' + terpakai + ')';
+        if (sisa <= 0){ infoEl.classList.add('warn'); infoEl.textContent += ' — STOK HABIS!'; }
+        else if (sisa <= 5){ infoEl.classList.add('warn'); infoEl.textContent += ' — stok menipis!'; }
+      });
+    });
+  }
+  function renderHyperhepLaporan(list){
+    var tbody = document.getElementById('bodyHyperhepLaporan');
+    var empty = document.getElementById('emptyHyperhepState');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    if (!list || !list.length){ if (empty) empty.style.display = 'block'; return; }
+    if (empty) empty.style.display = 'none';
+    list.forEach(function(item, idx){
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td>' + escapeHtml(item.namaBayi) + '</td>' +
+        '<td>' + escapeHtml(item.namaIbu) + '</td>' +
+        '<td>' + escapeHtml(item.nikIbu) + '</td>' +
+        '<td>' + escapeHtml(item.noHp) + '</td>' +
+        '<td>' + escapeHtml(item.jumlahAnak) + '</td>' +
+        '<td>' + escapeHtml(item.tglHBIG) + ' ' + escapeHtml(item.jamHBIG) + '</td>' +
+        '<td>' + escapeHtml(item.tglHB0) + ' ' + escapeHtml(item.jamHB0) + '</td>' +
+        '<td>' + escapeHtml(item.skriningAwal) + '</td>' +
+        '<td><button class="btn btn-secondary" data-idx="' + idx + '">📋</button></td>';
+      tbody.appendChild(tr);
+    });
+  }
+  function applyFilterHyperhep(){
+    var q = document.getElementById('searchBoxHyperhep').value.trim().toLowerCase();
+    var bulan = document.getElementById('filterBulanHyperhep').value;
+    var tahun = document.getElementById('filterTahunHyperhep').value;
+    var list = state.data.HyperhepPasien || [];
+    var filtered = list.filter(function(item){
+      var matchQ = !q || (item.namaBayi||'').toLowerCase().indexOf(q)>-1 || (item.namaIbu||'').toLowerCase().indexOf(q)>-1;
+      var bt = hitungBulanTahun(item.tglMelahirkan);
+      var matchBulan = !bulan || bt.bulan === bulan;
+      var matchTahun = !tahun || bt.tahun === tahun;
+      return matchQ && matchBulan && matchTahun;
+    });
+    renderHyperhepLaporan(filtered);
+  }
+  function populateFilterTahunHyperhep(list){
+    var select = document.getElementById('filterTahunHyperhep');
+    if (!select) return;
+    var tahunSet = {};
+    list.forEach(function(item){
+      var bt = hitungBulanTahun(item.tglMelahirkan);
+      if (bt.tahun) tahunSet[bt.tahun] = true;
+    });
+    var tahunList = Object.keys(tahunSet).sort(function(a,b){ return b-a; });
+    select.innerHTML = '<option value="">Semua Tahun</option>' + tahunList.map(function(t){ return '<option value="'+t+'">'+t+'</option>'; }).join('');
+  }
+
+  // ---- TUBERKULIN ----
+  function renderTuberkulinLaporan(list){
+    var tbody = document.getElementById('bodyTuberkulinLaporan');
+    var empty = document.getElementById('emptyTuberkulinState');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    if (!list || !list.length){ if (empty) empty.style.display = 'block'; return; }
+    if (empty) empty.style.display = 'none';
+    list.forEach(function(item, idx){
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td>' + escapeHtml(item.namaPasien) + '</td>' +
+        '<td>' + escapeHtml(item.tglLahir) + '</td>' +
+        '<td>' + escapeHtml(item.umur) + '</td>' +
+        '<td>' + escapeHtml(item.noHpOrtu) + '</td>' +
+        '<td>' + escapeHtml(item.tglPemberianObat) + '</td>' +
+        '<td>' + escapeHtml(item.bulanPemberian) + '</td>' +
+        '<td>' + escapeHtml(item.tahunPemberian) + '</td>' +
+        '<td><button class="btn btn-secondary" data-idx="' + idx + '">📋</button></td>';
+      tbody.appendChild(tr);
+    });
+  }
+  function applyFilterTuberkulin(){
+    var q = document.getElementById('searchBoxTuberkulin').value.trim().toLowerCase();
+    var bulan = document.getElementById('filterBulanTuberkulin').value;
+    var tahun = document.getElementById('filterTahunTuberkulin').value;
+    var list = state.data.Tuberkulin || [];
+    var filtered = list.filter(function(item){
+      var matchQ = !q || (item.namaPasien||'').toLowerCase().indexOf(q)>-1;
+      var matchBulan = !bulan || item.bulanPemberian === bulan;
+      var matchTahun = !tahun || String(item.tahunPemberian) === tahun;
+      return matchQ && matchBulan && matchTahun;
+    });
+    renderTuberkulinLaporan(filtered);
+  }
+  function populateFilterTahunTuberkulin(list){
+    var select = document.getElementById('filterTahunTuberkulin');
+    if (!select) return;
+    var tahunSet = {};
+    list.forEach(function(item){ if (item.tahunPemberian) tahunSet[String(item.tahunPemberian)] = true; });
+    var tahunList = Object.keys(tahunSet).sort(function(a,b){ return b-a; });
+    select.innerHTML = '<option value="">Semua Tahun</option>' + tahunList.map(function(t){ return '<option value="'+t+'">'+t+'</option>'; }).join('');
+  }
+
+  // ---- RABIES ----
+  function renderStokRiwayatRabies(list){
+    var tbody = document.getElementById('bodyStokRiwayatRabies');
+    var empty = document.getElementById('emptyStokStateRabies');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    if (!list || !list.length){ if (empty) empty.style.display = 'block'; return; }
+    if (empty) empty.style.display = 'none';
+    list.forEach(function(item){
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td>' + escapeHtml(item.tanggalInput) + '</td>' +
+        '<td>' + escapeHtml(item.jumlahVialMasuk) + '</td>' +
+        '<td>' + escapeHtml(item.noBatch) + '</td>' +
+        '<td>' + escapeHtml(item.tanggalKadaluarsa) + '</td>' +
+        '<td>' + escapeHtml(item.sumberDistributor) + '</td>' +
+        '<td>' + escapeHtml(item.catatanStok) + '</td>';
+      tbody.appendChild(tr);
+    });
+  }
+  function updateInfoSisaStokRabies(){
+    var infoEl = document.getElementById('infoSisaStokRabies');
+    if (!infoEl) return;
+    infoEl.textContent = 'Memuat info stok...';
+    infoEl.classList.remove('warn');
+    if (!state.webAppUrl){ infoEl.textContent = 'URL belum diatur.'; infoEl.classList.add('warn'); return; }
+    getDataWithCache('RabiesStok', false, function(errStok, stokData){
+      if (errStok) { infoEl.textContent = 'Gagal stok: ' + errStok; infoEl.classList.add('warn'); return; }
+      getDataWithCache('RabiesPasien', false, function(errPasien, pasienData){
+        if (errPasien) { infoEl.textContent = 'Gagal pasien: ' + errPasien; infoEl.classList.add('warn'); return; }
+        var masuk = 0; stokData.forEach(function(r){ masuk += parseFloat(r.jumlahVialMasuk) || 0; });
+        var terpakai = 0; pasienData.forEach(function(r){ terpakai += parseFloat(r.jumlahVialRabies) || 0; });
+        var sisa = masuk - terpakai;
+        infoEl.textContent = '💉 Sisa stok Rabies: ' + sisa + ' vial (Masuk: ' + masuk + ', Terpakai: ' + terpakai + ')';
+        if (sisa <= 0){ infoEl.classList.add('warn'); infoEl.textContent += ' — STOK HABIS!'; }
+        else if (sisa <= 5){ infoEl.classList.add('warn'); infoEl.textContent += ' — stok menipis!'; }
+      });
+    });
+  }
+  function renderRabiesLaporan(list){
+    var tbody = document.getElementById('bodyRabiesLaporan');
+    var empty = document.getElementById('emptyRabiesState');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    if (!list || !list.length){ if (empty) empty.style.display = 'block'; return; }
+    if (empty) empty.style.display = 'none';
+    list.forEach(function(item, idx){
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td>' + escapeHtml(item.noReg) + '</td>' +
+        '<td>' + escapeHtml(item.namaPasien) + '</td>' +
+        '<td>' + escapeHtml(item.nikKtp) + '</td>' +
+        '<td>' + escapeHtml(item.tglLahir) + '</td>' +
+        '<td>' + escapeHtml(item.umur) + '</td>' +
+        '<td>' + escapeHtml(item.noHp) + '</td>' +
+        '<td>' + escapeHtml(item.alamatKtp) + '</td>' +
+        '<td>' + escapeHtml(item.vaksinKe) + '</td>' +
+        '<td>' + escapeHtml(item.puskesmasRujukan) + '</td>' +
+        '<td>' + escapeHtml(item.jenisHewan) + '</td>' +
+        '<td>' + escapeHtml(item.lokasiGigitan) + '</td>' +
+        '<td>' + escapeHtml(item.tglDigigit) + '</td>' +
+        '<td>' + escapeHtml(item.tglKeRS) + '</td>' +
+        '<td>' + escapeHtml(item.tglCuciLuka) + '</td>' +
+        '<td>' + escapeHtml(item.tglVaksin) + '</td>' +
+        '<td>' + escapeHtml(item.bulanKeRS) + '</td>' +
+        '<td>' + escapeHtml(item.tahunKeRS) + '</td>' +
+        '<td>' + escapeHtml(item.jumlahVialRabies) + '</td>' +
+        '<td><button class="btn btn-secondary" data-idx="' + idx + '">📋</button></td>';
+      tbody.appendChild(tr);
+    });
+  }
+  function applyFilterRabies(){
+    var q = document.getElementById('searchBoxRabies').value.trim().toLowerCase();
+    var bulan = document.getElementById('filterBulanRabies').value;
+    var tahun = document.getElementById('filterTahunRabies').value;
+    var list = state.data.RabiesPasien || [];
+    var filtered = list.filter(function(item){
+      var matchQ = !q || (item.namaPasien||'').toLowerCase().indexOf(q)>-1 || (item.noReg||'').toLowerCase().indexOf(q)>-1;
+      var matchBulan = !bulan || item.bulanKeRS === bulan;
+      var matchTahun = !tahun || String(item.tahunKeRS) === tahun;
+      return matchQ && matchBulan && matchTahun;
+    });
+    renderRabiesLaporan(filtered);
+  }
+  function populateFilterTahunRabies(list){
+    var select = document.getElementById('filterTahunRabies');
+    if (!select) return;
+    var tahunSet = {};
+    list.forEach(function(item){ if (item.tahunKeRS) tahunSet[String(item.tahunKeRS)] = true; });
+    var tahunList = Object.keys(tahunSet).sort(function(a,b){ return b-a; });
+    select.innerHTML = '<option value="">Semua Tahun</option>' + tahunList.map(function(t){ return '<option value="'+t+'">'+t+'</option>'; }).join('');
+  }
+
+  // ---- SUSU ----
   function renderSusuLaporan(list){
     var tbody = document.getElementById('bodySusuLaporan');
     var empty = document.getElementById('emptySusuState');
@@ -828,13 +1519,11 @@
       tbody.appendChild(tr);
     });
   }
-
   function filterSusu(){
     var q = document.getElementById('searchBoxSusu').value.trim().toLowerCase();
     var list = state.data.Susu || [];
     renderSusuLaporan(list.filter(function(item){ return (item.namaPasien||'').toLowerCase().indexOf(q)>-1; }));
   }
-
   function refreshSusu(){
     showMsg('msgSusuLaporan', 'Memuat ulang...', 'info');
     getDataWithCache('Susu', true, function(err, data){
@@ -845,52 +1534,7 @@
     });
   }
 
-  function initFormSusu(){
-    var form = document.getElementById('formSusu');
-    if (!form) return;
-    var tglLahir = document.getElementById('tglLahirSusu');
-    var umur = document.getElementById('umurSusu');
-    if (tglLahir && umur) { tglLahir.addEventListener('change', function(){ umur.value = hitungUmur(tglLahir.value); }); }
-    var tglInput = document.querySelector('#formSusu input[name="tanggalInputLaporan"]');
-    var bulan = document.getElementById('bulanSusu');
-    var tahun = document.getElementById('tahunSusu');
-    if (tglInput && bulan && tahun) {
-      tglInput.addEventListener('change', function(){
-        var bt = hitungBulanTahun(tglInput.value);
-        bulan.value = bt.bulan;
-        tahun.value = bt.tahun;
-      });
-    }
-    form.addEventListener('submit', function(ev){
-      ev.preventDefault();
-      hideMsg('msgSusuInput');
-      var payload = serializeForm(form);
-      if (!payload.tanggalInputLaporan || !payload.tanggalResep || !payload.namaPasien) {
-        showMsg('msgSusuInput', 'Tanggal Input Laporan, Tanggal Resep, dan Nama Pasien wajib diisi.', 'err');
-        return;
-      }
-      if (!state.webAppUrl){ showMsg('msgSusuInput', 'URL belum diatur.', 'err'); return; }
-      var btn = document.getElementById('btnSimpanSusu');
-      btn.disabled = true; btn.textContent = 'Menyimpan...';
-      postToSheet('Susu', payload)
-        .then(function(json){
-          if (json.status === 'success'){
-            showMsg('msgSusuInput', 'Data berhasil disimpan.', 'ok');
-            form.reset();
-            document.getElementById('umurSusu').value = '';
-            document.getElementById('bulanSusu').value = '';
-            document.getElementById('tahunSusu').value = '';
-            state.cache.Susu = null;
-          } else { showMsg('msgSusuInput', 'Gagal: ' + (json.message || ''), 'err'); }
-        })
-        .catch(function(err){ showMsg('msgSusuInput', 'Gagal: ' + err.message, 'err'); })
-        .finally(function(){ btn.disabled = false; btn.textContent = '💾 Simpan'; });
-    });
-  }
-
-  // =================================================================
-  // GIGITAN COBRA
-  // =================================================================
+  // ---- COBRA ----
   function renderCobraLaporan(list){
     var tbody = document.getElementById('bodyCobraLaporan');
     var empty = document.getElementById('emptyCobraState');
@@ -924,13 +1568,11 @@
       tbody.appendChild(tr);
     });
   }
-
   function filterCobra(){
     var q = document.getElementById('searchBoxCobra').value.trim().toLowerCase();
     var list = state.data.Cobra || [];
     renderCobraLaporan(list.filter(function(item){ return (item.namaPasien||'').toLowerCase().indexOf(q)>-1; }));
   }
-
   function refreshCobra(){
     showMsg('msgCobraLaporan', 'Memuat ulang...', 'info');
     getDataWithCache('Cobra', true, function(err, data){
@@ -941,52 +1583,7 @@
     });
   }
 
-  function initFormCobra(){
-    var form = document.getElementById('formCobra');
-    if (!form) return;
-    var tglLahir = document.getElementById('tglLahirCobra');
-    var umur = document.getElementById('umurCobra');
-    if (tglLahir && umur) { tglLahir.addEventListener('change', function(){ umur.value = hitungUmur(tglLahir.value); }); }
-    var tgl = document.getElementById('tanggalCobra');
-    var bulan = document.getElementById('bulanCobra');
-    var tahun = document.getElementById('tahunCobra');
-    if (tgl && bulan && tahun) {
-      tgl.addEventListener('change', function(){
-        var bt = hitungBulanTahun(tgl.value);
-        bulan.value = bt.bulan;
-        tahun.value = bt.tahun;
-      });
-    }
-    form.addEventListener('submit', function(ev){
-      ev.preventDefault();
-      hideMsg('msgCobraInput');
-      var payload = serializeForm(form);
-      if (!payload.tanggal || !payload.namaPasien) {
-        showMsg('msgCobraInput', 'Tanggal dan Nama Pasien wajib diisi.', 'err');
-        return;
-      }
-      if (!state.webAppUrl){ showMsg('msgCobraInput', 'URL belum diatur.', 'err'); return; }
-      var btn = document.getElementById('btnSimpanCobra');
-      btn.disabled = true; btn.textContent = 'Menyimpan...';
-      postToSheet('Cobra', payload)
-        .then(function(json){
-          if (json.status === 'success'){
-            showMsg('msgCobraInput', 'Data berhasil disimpan.', 'ok');
-            form.reset();
-            document.getElementById('umurCobra').value = '';
-            document.getElementById('bulanCobra').value = '';
-            document.getElementById('tahunCobra').value = '';
-            state.cache.Cobra = null;
-          } else { showMsg('msgCobraInput', 'Gagal: ' + (json.message || ''), 'err'); }
-        })
-        .catch(function(err){ showMsg('msgCobraInput', 'Gagal: ' + err.message, 'err'); })
-        .finally(function(){ btn.disabled = false; btn.textContent = '💾 Simpan'; });
-    });
-  }
-
-  // =================================================================
-  // DIFTERI
-  // =================================================================
+  // ---- DIFTERI ----
   function renderDifteriLaporan(list){
     var tbody = document.getElementById('bodyDifteriLaporan');
     var empty = document.getElementById('emptyDifteriState');
@@ -1015,13 +1612,11 @@
       tbody.appendChild(tr);
     });
   }
-
   function filterDifteri(){
     var q = document.getElementById('searchBoxDifteri').value.trim().toLowerCase();
     var list = state.data.Difteri || [];
     renderDifteriLaporan(list.filter(function(item){ return (item.namaPasien||'').toLowerCase().indexOf(q)>-1; }));
   }
-
   function refreshDifteri(){
     showMsg('msgDifteriLaporan', 'Memuat ulang...', 'info');
     getDataWithCache('Difteri', true, function(err, data){
@@ -1032,43 +1627,297 @@
     });
   }
 
+  // =================================================================
+  // FORM SUBMIT
+  // =================================================================
+  function initFormMalaria(){
+    var form = document.getElementById('formMalaria');
+    if (!form) return;
+    document.getElementById('tglLahir').addEventListener('change', function(){
+      document.getElementById('umur').value = hitungUmur(this.value);
+    });
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      hideMsg('msgInput');
+      var payload = serializeForm(form);
+      if (!payload.namaPasien || !payload.tglLahir || !payload.noReg) {
+        showMsg('msgInput', 'Nama, Tgl Lahir, No.Reg wajib.', 'err'); return;
+      }
+      if (!state.webAppUrl){ showMsg('msgInput', 'URL belum diatur.', 'err'); return; }
+      var btn = document.getElementById('btnSimpan');
+      btn.disabled = true; btn.textContent = 'Menyimpan...';
+      postToSheet('Malaria', payload)
+        .then(function(json){
+          if (json.status === 'success'){ showMsg('msgInput', 'Data berhasil disimpan.', 'ok'); form.reset(); document.getElementById('umur').value = ''; state.cache.Malaria = null; }
+          else { showMsg('msgInput', 'Gagal: ' + (json.message||''), 'err'); }
+        })
+        .catch(function(err){ showMsg('msgInput', 'Gagal: ' + err.message, 'err'); })
+        .finally(function(){ btn.disabled = false; btn.textContent = '💾 Simpan'; });
+    });
+  }
+
+  function initFormMalariaLab(){
+    var form = document.getElementById('formMalariaLab');
+    if (!form) return;
+    document.getElementById('tglLahirLab').addEventListener('change', function(){
+      document.getElementById('usiaLab').value = hitungUmur(this.value);
+    });
+    document.getElementById('tglSDdiperiksa').addEventListener('change', function(){
+      var bt = hitungBulanTahun(this.value);
+      document.getElementById('bulanLab').value = bt.bulan;
+      document.getElementById('tahunLab').value = bt.tahun;
+    });
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      hideMsg('msgMalariaLab');
+      var payload = serializeForm(form);
+      if (!payload.noRegLab || !payload.namaPasienLab || !payload.tglSDdiperiksa) {
+        showMsg('msgMalariaLab', 'No.Reg Lab, Nama, Tgl SD Diperiksa wajib.', 'err'); return;
+      }
+      if (!state.webAppUrl){ showMsg('msgMalariaLab', 'URL belum diatur.', 'err'); return; }
+      var btn = document.getElementById('btnSimpanMalariaLab');
+      btn.disabled = true; btn.textContent = 'Menyimpan...';
+      postToSheet('MalariaLab', payload)
+        .then(function(json){
+          if (json.status === 'success'){ showMsg('msgMalariaLab', 'Data lab berhasil disimpan.', 'ok'); form.reset(); document.getElementById('usiaLab').value = ''; document.getElementById('bulanLab').value = ''; document.getElementById('tahunLab').value = ''; state.cache.MalariaLab = null; }
+          else { showMsg('msgMalariaLab', 'Gagal: ' + (json.message||''), 'err'); }
+        })
+        .catch(function(err){ showMsg('msgMalariaLab', 'Gagal: ' + err.message, 'err'); })
+        .finally(function(){ btn.disabled = false; btn.textContent = '💾 Simpan'; });
+    });
+  }
+
+  function initFormHyperhepStok(){
+    var form = document.getElementById('formHyperhepStok');
+    if (!form) return;
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      hideMsg('msgHyperhepStok');
+      var payload = serializeForm(form);
+      if (!payload.tanggalInput || !payload.jumlahVialMasuk) {
+        showMsg('msgHyperhepStok', 'Tanggal dan Jumlah wajib.', 'err'); return;
+      }
+      if (!state.webAppUrl){ showMsg('msgHyperhepStok', 'URL belum diatur.', 'err'); return; }
+      var btn = document.getElementById('btnSimpanStok');
+      btn.disabled = true; btn.textContent = 'Menyimpan...';
+      postToSheet('HyperhepStok', payload)
+        .then(function(json){
+          if (json.status === 'success'){ showMsg('msgHyperhepStok', 'Stok masuk berhasil.', 'ok'); form.reset(); state.cache.HyperhepStok = null; refreshHyperhepStok(); }
+          else { showMsg('msgHyperhepStok', 'Gagal: ' + (json.message||''), 'err'); }
+        })
+        .catch(function(err){ showMsg('msgHyperhepStok', 'Gagal: ' + err.message, 'err'); })
+        .finally(function(){ btn.disabled = false; btn.textContent = '💾 Simpan Stok Masuk'; });
+    });
+  }
+
+  function initFormHyperhepPasien(){
+    var form = document.getElementById('formHyperhepPasien');
+    if (!form) return;
+    var namaIbu = document.getElementById('namaIbuHyperhep');
+    var namaBayi = document.getElementById('namaBayiHyperhep');
+    var userEditedNamaBayi = false;
+    if (namaIbu && namaBayi) {
+      namaBayi.addEventListener('input', function(){ userEditedNamaBayi = true; });
+      namaIbu.addEventListener('input', function(){
+        if (!userEditedNamaBayi){ namaBayi.value = namaIbu.value ? ('By. ' + namaIbu.value) : ''; }
+      });
+    }
+    document.getElementById('tglLahirIbuHyperhep').addEventListener('change', function(){
+      document.getElementById('umurIbuHyperhep').value = hitungUmur(this.value);
+    });
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      hideMsg('msgHyperhepPasien');
+      var payload = serializeForm(form);
+      if (!payload.namaIbu || !payload.namaBayi) {
+        showMsg('msgHyperhepPasien', 'Nama Ibu dan Nama Bayi wajib.', 'err'); return;
+      }
+      payload.jumlahVialHBIG = 1;
+      if (!state.webAppUrl){ showMsg('msgHyperhepPasien', 'URL belum diatur.', 'err'); return; }
+      var btn = document.getElementById('btnSimpanHyperhepPasien');
+      btn.disabled = true; btn.textContent = 'Menyimpan...';
+      postToSheet('HyperhepPasien', payload)
+        .then(function(json){
+          if (json.status === 'success'){ showMsg('msgHyperhepPasien', 'Data pasien berhasil.', 'ok'); form.reset(); userEditedNamaBayi = false; state.cache.HyperhepPasien = null; updateInfoSisaStok(); }
+          else { showMsg('msgHyperhepPasien', 'Gagal: ' + (json.message||''), 'err'); }
+        })
+        .catch(function(err){ showMsg('msgHyperhepPasien', 'Gagal: ' + err.message, 'err'); })
+        .finally(function(){ btn.disabled = false; btn.textContent = '💾 Simpan Data Pasien'; });
+    });
+  }
+
+  function initFormTuberkulin(){
+    var form = document.getElementById('formTuberkulin');
+    if (!form) return;
+    document.getElementById('tglLahirTB').addEventListener('change', function(){
+      document.getElementById('umurTB').value = hitungUmur(this.value);
+    });
+    document.getElementById('tglPemberianObatTB').addEventListener('change', function(){
+      var bt = hitungBulanTahun(this.value);
+      document.getElementById('bulanPemberianTB').value = bt.bulan;
+      document.getElementById('tahunPemberianTB').value = bt.tahun;
+    });
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      hideMsg('msgTuberkulin');
+      var payload = serializeForm(form);
+      if (!payload.namaPasien || !payload.tglLahir || !payload.tglPemberianObat) {
+        showMsg('msgTuberkulin', 'Nama, Tgl Lahir, Tgl Pemberian wajib.', 'err'); return;
+      }
+      if (!state.webAppUrl){ showMsg('msgTuberkulin', 'URL belum diatur.', 'err'); return; }
+      var btn = document.getElementById('btnSimpanTuberkulin');
+      btn.disabled = true; btn.textContent = 'Menyimpan...';
+      postToSheet('Tuberkulin', payload)
+        .then(function(json){
+          if (json.status === 'success'){ showMsg('msgTuberkulin', 'Data berhasil disimpan.', 'ok'); form.reset(); document.getElementById('umurTB').value = ''; document.getElementById('bulanPemberianTB').value = ''; document.getElementById('tahunPemberianTB').value = ''; state.cache.Tuberkulin = null; }
+          else { showMsg('msgTuberkulin', 'Gagal: ' + (json.message||''), 'err'); }
+        })
+        .catch(function(err){ showMsg('msgTuberkulin', 'Gagal: ' + err.message, 'err'); })
+        .finally(function(){ btn.disabled = false; btn.textContent = '💾 Simpan'; });
+    });
+  }
+
+  function initFormRabiesStok(){
+    var form = document.getElementById('formRabiesStok');
+    if (!form) return;
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      hideMsg('msgRabiesStok');
+      var payload = serializeForm(form);
+      if (!payload.tanggalInput || !payload.jumlahVialMasuk) {
+        showMsg('msgRabiesStok', 'Tanggal dan Jumlah wajib.', 'err'); return;
+      }
+      if (!state.webAppUrl){ showMsg('msgRabiesStok', 'URL belum diatur.', 'err'); return; }
+      var btn = document.getElementById('btnSimpanStokRabies');
+      btn.disabled = true; btn.textContent = 'Menyimpan...';
+      postToSheet('RabiesStok', payload)
+        .then(function(json){
+          if (json.status === 'success'){ showMsg('msgRabiesStok', 'Stok masuk berhasil.', 'ok'); form.reset(); state.cache.RabiesStok = null; refreshRabiesStok(); }
+          else { showMsg('msgRabiesStok', 'Gagal: ' + (json.message||''), 'err'); }
+        })
+        .catch(function(err){ showMsg('msgRabiesStok', 'Gagal: ' + err.message, 'err'); })
+        .finally(function(){ btn.disabled = false; btn.textContent = '💾 Simpan Stok Masuk'; });
+    });
+  }
+
+  function initFormRabiesPasien(){
+    var form = document.getElementById('formRabiesPasien');
+    if (!form) return;
+    document.getElementById('tglLahirRabies').addEventListener('change', function(){
+      document.getElementById('umurRabies').value = hitungUmur(this.value);
+    });
+    document.getElementById('tglKeRSRabies').addEventListener('change', function(){
+      var bt = hitungBulanTahun(this.value);
+      document.getElementById('bulanKeRSRabies').value = bt.bulan;
+      document.getElementById('tahunKeRSRabies').value = bt.tahun;
+    });
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      hideMsg('msgRabiesPasien');
+      var payload = serializeForm(form);
+      if (!payload.noReg || !payload.namaPasien || !payload.jumlahVialRabies) {
+        showMsg('msgRabiesPasien', 'No.Reg, Nama, Jumlah Vial wajib.', 'err'); return;
+      }
+      if (!state.webAppUrl){ showMsg('msgRabiesPasien', 'URL belum diatur.', 'err'); return; }
+      var btn = document.getElementById('btnSimpanRabiesPasien');
+      btn.disabled = true; btn.textContent = 'Menyimpan...';
+      postToSheet('RabiesPasien', payload)
+        .then(function(json){
+          if (json.status === 'success'){ showMsg('msgRabiesPasien', 'Data pasien berhasil.', 'ok'); form.reset(); document.getElementById('umurRabies').value = ''; document.getElementById('bulanKeRSRabies').value = ''; document.getElementById('tahunKeRSRabies').value = ''; state.cache.RabiesPasien = null; updateInfoSisaStokRabies(); }
+          else { showMsg('msgRabiesPasien', 'Gagal: ' + (json.message||''), 'err'); }
+        })
+        .catch(function(err){ showMsg('msgRabiesPasien', 'Gagal: ' + err.message, 'err'); })
+        .finally(function(){ btn.disabled = false; btn.textContent = '💾 Simpan Data Pasien'; });
+    });
+  }
+
+  function initFormSusu(){
+    var form = document.getElementById('formSusu');
+    if (!form) return;
+    document.getElementById('tglLahirSusu').addEventListener('change', function(){
+      document.getElementById('umurSusu').value = hitungUmur(this.value);
+    });
+    document.querySelector('#formSusu input[name="tanggalInputLaporan"]').addEventListener('change', function(){
+      var bt = hitungBulanTahun(this.value);
+      document.getElementById('bulanSusu').value = bt.bulan;
+      document.getElementById('tahunSusu').value = bt.tahun;
+    });
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      hideMsg('msgSusuInput');
+      var payload = serializeForm(form);
+      if (!payload.tanggalInputLaporan || !payload.tanggalResep || !payload.namaPasien) {
+        showMsg('msgSusuInput', 'Tgl Input Laporan, Tgl Resep, Nama wajib.', 'err'); return;
+      }
+      if (!state.webAppUrl){ showMsg('msgSusuInput', 'URL belum diatur.', 'err'); return; }
+      var btn = document.getElementById('btnSimpanSusu');
+      btn.disabled = true; btn.textContent = 'Menyimpan...';
+      postToSheet('Susu', payload)
+        .then(function(json){
+          if (json.status === 'success'){ showMsg('msgSusuInput', 'Data berhasil disimpan.', 'ok'); form.reset(); document.getElementById('umurSusu').value = ''; document.getElementById('bulanSusu').value = ''; document.getElementById('tahunSusu').value = ''; state.cache.Susu = null; }
+          else { showMsg('msgSusuInput', 'Gagal: ' + (json.message||''), 'err'); }
+        })
+        .catch(function(err){ showMsg('msgSusuInput', 'Gagal: ' + err.message, 'err'); })
+        .finally(function(){ btn.disabled = false; btn.textContent = '💾 Simpan'; });
+    });
+  }
+
+  function initFormCobra(){
+    var form = document.getElementById('formCobra');
+    if (!form) return;
+    document.getElementById('tglLahirCobra').addEventListener('change', function(){
+      document.getElementById('umurCobra').value = hitungUmur(this.value);
+    });
+    document.getElementById('tanggalCobra').addEventListener('change', function(){
+      var bt = hitungBulanTahun(this.value);
+      document.getElementById('bulanCobra').value = bt.bulan;
+      document.getElementById('tahunCobra').value = bt.tahun;
+    });
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      hideMsg('msgCobraInput');
+      var payload = serializeForm(form);
+      if (!payload.tanggal || !payload.namaPasien) {
+        showMsg('msgCobraInput', 'Tanggal dan Nama wajib.', 'err'); return;
+      }
+      if (!state.webAppUrl){ showMsg('msgCobraInput', 'URL belum diatur.', 'err'); return; }
+      var btn = document.getElementById('btnSimpanCobra');
+      btn.disabled = true; btn.textContent = 'Menyimpan...';
+      postToSheet('Cobra', payload)
+        .then(function(json){
+          if (json.status === 'success'){ showMsg('msgCobraInput', 'Data berhasil disimpan.', 'ok'); form.reset(); document.getElementById('umurCobra').value = ''; document.getElementById('bulanCobra').value = ''; document.getElementById('tahunCobra').value = ''; state.cache.Cobra = null; }
+          else { showMsg('msgCobraInput', 'Gagal: ' + (json.message||''), 'err'); }
+        })
+        .catch(function(err){ showMsg('msgCobraInput', 'Gagal: ' + err.message, 'err'); })
+        .finally(function(){ btn.disabled = false; btn.textContent = '💾 Simpan'; });
+    });
+  }
+
   function initFormDifteri(){
     var form = document.getElementById('formDifteri');
     if (!form) return;
-    var tglLahir = document.getElementById('tglLahirDifteri');
-    var umur = document.getElementById('umurDifteri');
-    if (tglLahir && umur) { tglLahir.addEventListener('change', function(){ umur.value = hitungUmur(tglLahir.value); }); }
-    var tgl = document.getElementById('tanggalDifteri');
-    var bulan = document.getElementById('bulanDifteri');
-    var tahun = document.getElementById('tahunDifteri');
-    if (tgl && bulan && tahun) {
-      tgl.addEventListener('change', function(){
-        var bt = hitungBulanTahun(tgl.value);
-        bulan.value = bt.bulan;
-        tahun.value = bt.tahun;
-      });
-    }
+    document.getElementById('tglLahirDifteri').addEventListener('change', function(){
+      document.getElementById('umurDifteri').value = hitungUmur(this.value);
+    });
+    document.getElementById('tanggalDifteri').addEventListener('change', function(){
+      var bt = hitungBulanTahun(this.value);
+      document.getElementById('bulanDifteri').value = bt.bulan;
+      document.getElementById('tahunDifteri').value = bt.tahun;
+    });
     form.addEventListener('submit', function(ev){
       ev.preventDefault();
       hideMsg('msgDifteriInput');
       var payload = serializeForm(form);
       if (!payload.tanggal || !payload.namaPasien) {
-        showMsg('msgDifteriInput', 'Tanggal dan Nama Pasien wajib diisi.', 'err');
-        return;
+        showMsg('msgDifteriInput', 'Tanggal dan Nama wajib.', 'err'); return;
       }
       if (!state.webAppUrl){ showMsg('msgDifteriInput', 'URL belum diatur.', 'err'); return; }
       var btn = document.getElementById('btnSimpanDifteri');
       btn.disabled = true; btn.textContent = 'Menyimpan...';
       postToSheet('Difteri', payload)
         .then(function(json){
-          if (json.status === 'success'){
-            showMsg('msgDifteriInput', 'Data berhasil disimpan.', 'ok');
-            form.reset();
-            document.getElementById('umurDifteri').value = '';
-            document.getElementById('bulanDifteri').value = '';
-            document.getElementById('tahunDifteri').value = '';
-            state.cache.Difteri = null;
-          } else { showMsg('msgDifteriInput', 'Gagal: ' + (json.message || ''), 'err'); }
+          if (json.status === 'success'){ showMsg('msgDifteriInput', 'Data berhasil disimpan.', 'ok'); form.reset(); document.getElementById('umurDifteri').value = ''; document.getElementById('bulanDifteri').value = ''; document.getElementById('tahunDifteri').value = ''; state.cache.Difteri = null; }
+          else { showMsg('msgDifteriInput', 'Gagal: ' + (json.message||''), 'err'); }
         })
         .catch(function(err){ showMsg('msgDifteriInput', 'Gagal: ' + err.message, 'err'); })
         .finally(function(){ btn.disabled = false; btn.textContent = '💾 Simpan'; });
@@ -1098,11 +1947,100 @@
       fetch(state.webAppUrl, { method: 'GET' })
         .then(function(res){ return res.json(); })
         .then(function(json){
-          if (json.status === 'success'){
-            showMsg('msgSetting', 'Koneksi berhasil. Jumlah data: ' + json.data.length, 'ok');
-          } else { showMsg('msgSetting', 'Error: ' + json.message, 'err'); }
+          if (json.status === 'success'){ showMsg('msgSetting', 'Koneksi berhasil. Jumlah data: ' + json.data.length, 'ok'); }
+          else { showMsg('msgSetting', 'Error: ' + json.message, 'err'); }
         })
         .catch(function(err){ showMsg('msgSetting', 'Gagal: ' + err.message, 'err'); });
+    });
+  }
+
+  // =================================================================
+  // REFRESH FUNCTIONS
+  // =================================================================
+  function refreshLaporan(){
+    showMsg('msgLaporan', 'Memuat ulang...', 'info');
+    getDataWithCache('Malaria', true, function(err, data){
+      if (err) { showMsg('msgLaporan', 'Gagal: ' + err, 'err'); renderLaporan([]); return; }
+      state.data.Malaria = data;
+      hideMsg('msgLaporan');
+      populateFilterTahunMalaria(data);
+      applyFilter();
+    });
+  }
+  function refreshMalariaLabLaporan(){
+    showMsg('msgMalariaLabLaporan', 'Memuat ulang...', 'info');
+    getDataWithCache('MalariaLab', true, function(err, data){
+      if (err) { showMsg('msgMalariaLabLaporan', 'Gagal: ' + err, 'err'); renderMalariaLabLaporan([]); return; }
+      state.data.MalariaLab = data;
+      hideMsg('msgMalariaLabLaporan');
+      populateFilterTahunMalariaLab(data);
+      applyFilterMalariaLab();
+    });
+  }
+  function refreshHyperhepStok(){
+    showMsg('msgHyperhepStok', 'Memuat ulang stok...', 'info');
+    getDataWithCache('HyperhepStok', true, function(errStok, stokData){
+      if (errStok) { showMsg('msgHyperhepStok', 'Gagal stok: ' + errStok, 'err'); return; }
+      getDataWithCache('HyperhepPasien', true, function(errPasien, pasienData){
+        if (errPasien) { showMsg('msgHyperhepStok', 'Gagal pasien: ' + errPasien, 'err'); return; }
+        var masuk = 0; stokData.forEach(function(r){ masuk += parseFloat(r.jumlahVialMasuk) || 0; });
+        var terpakai = pasienData.length;
+        var sisa = masuk - terpakai;
+        document.getElementById('stokMasukTotal').textContent = masuk;
+        document.getElementById('stokTerpakaiTotal').textContent = terpakai;
+        document.getElementById('stokSisaTotal').textContent = sisa;
+        document.getElementById('stokSisaBox').classList.toggle('warn', sisa <= 5);
+        renderStokRiwayat(stokData);
+        hideMsg('msgHyperhepStok');
+      });
+    });
+  }
+  function refreshHyperhepLaporan(){
+    showMsg('msgHyperhepLaporan', 'Memuat ulang...', 'info');
+    getDataWithCache('HyperhepPasien', true, function(err, data){
+      if (err) { showMsg('msgHyperhepLaporan', 'Gagal: ' + err, 'err'); renderHyperhepLaporan([]); return; }
+      state.data.HyperhepPasien = data;
+      hideMsg('msgHyperhepLaporan');
+      populateFilterTahunHyperhep(data);
+      applyFilterHyperhep();
+    });
+  }
+  function refreshTuberkulinLaporan(){
+    showMsg('msgTuberkulinLaporan', 'Memuat ulang...', 'info');
+    getDataWithCache('Tuberkulin', true, function(err, data){
+      if (err) { showMsg('msgTuberkulinLaporan', 'Gagal: ' + err, 'err'); renderTuberkulinLaporan([]); return; }
+      state.data.Tuberkulin = data;
+      hideMsg('msgTuberkulinLaporan');
+      populateFilterTahunTuberkulin(data);
+      applyFilterTuberkulin();
+    });
+  }
+  function refreshRabiesStok(){
+    showMsg('msgRabiesStok', 'Memuat ulang stok...', 'info');
+    getDataWithCache('RabiesStok', true, function(errStok, stokData){
+      if (errStok) { showMsg('msgRabiesStok', 'Gagal stok: ' + errStok, 'err'); return; }
+      getDataWithCache('RabiesPasien', true, function(errPasien, pasienData){
+        if (errPasien) { showMsg('msgRabiesStok', 'Gagal pasien: ' + errPasien, 'err'); return; }
+        var masuk = 0; stokData.forEach(function(r){ masuk += parseFloat(r.jumlahVialMasuk) || 0; });
+        var terpakai = 0; pasienData.forEach(function(r){ terpakai += parseFloat(r.jumlahVialRabies) || 0; });
+        var sisa = masuk - terpakai;
+        document.getElementById('stokMasukTotalRabies').textContent = masuk;
+        document.getElementById('stokTerpakaiTotalRabies').textContent = terpakai;
+        document.getElementById('stokSisaTotalRabies').textContent = sisa;
+        document.getElementById('stokSisaBoxRabies').classList.toggle('warn', sisa <= 5);
+        renderStokRiwayatRabies(stokData);
+        hideMsg('msgRabiesStok');
+      });
+    });
+  }
+  function refreshRabiesLaporan(){
+    showMsg('msgRabiesLaporan', 'Memuat ulang...', 'info');
+    getDataWithCache('RabiesPasien', true, function(err, data){
+      if (err) { showMsg('msgRabiesLaporan', 'Gagal: ' + err, 'err'); renderRabiesLaporan([]); return; }
+      state.data.RabiesPasien = data;
+      hideMsg('msgRabiesLaporan');
+      populateFilterTahunRabies(data);
+      applyFilterRabies();
     });
   }
 
@@ -1116,96 +2054,91 @@
     document.getElementById('modalOverlay').addEventListener('click', function(ev){
       if (ev.target.id === 'modalOverlay') document.getElementById('modalOverlay').style.display = 'none';
     });
-    // Copy, WA, Download bisa ditambahkan nanti
+    document.getElementById('btnCopyNote').addEventListener('click', function(){
+      var text = document.getElementById('notePreview').value;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function(){ showMsg('msgModal', 'Teks disalin.', 'ok'); })
+          .catch(function(){ fallbackCopy(); });
+      } else { fallbackCopy(); }
+      function fallbackCopy(){
+        try { var ta = document.getElementById('notePreview'); ta.focus(); ta.select(); document.execCommand('copy'); showMsg('msgModal', 'Teks disalin.', 'ok'); }
+        catch(e){ showMsg('msgModal', 'Gagal salin.', 'err'); }
+      }
+    });
+    document.getElementById('btnSendWa').addEventListener('click', function(){
+      var text = document.getElementById('notePreview').value;
+      window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+    });
+    document.getElementById('btnDownloadTxt').addEventListener('click', function(){
+      var text = document.getElementById('notePreview').value;
+      var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url; a.download = 'catatan.txt'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
   }
 
   // =================================================================
   // INISIALISASI
   // =================================================================
-  function initButtons(){
-    document.getElementById('btnRefresh').addEventListener('click', function(){
-      showMsg('msgLaporan', 'Memuat ulang...', 'info');
-      getDataWithCache('Malaria', true, function(err, data){
-        if (err) { showMsg('msgLaporan', 'Gagal: ' + err, 'err'); renderLaporan([]); return; }
-        state.data.Malaria = data;
-        hideMsg('msgLaporan');
-        populateFilterTahunMalaria(data);
-        applyFilter();
-      });
-    });
-    document.getElementById('searchBox').addEventListener('input', applyFilter);
-    document.getElementById('filterBulanMalaria').addEventListener('change', applyFilter);
-    document.getElementById('filterTahunMalaria').addEventListener('change', applyFilter);
-
-    document.getElementById('btnRefreshSusu').addEventListener('click', refreshSusu);
-    document.getElementById('searchBoxSusu').addEventListener('input', filterSusu);
-    document.getElementById('btnRefreshCobra').addEventListener('click', refreshCobra);
-    document.getElementById('searchBoxCobra').addEventListener('input', filterCobra);
-    document.getElementById('btnRefreshDifteri').addEventListener('click', refreshDifteri);
-    document.getElementById('searchBoxDifteri').addEventListener('input', filterDifteri);
-  }
-
-  // Fungsi untuk malaria (sebagian diisi sederhana agar tidak error)
-  window.renderLaporan = function(list){
-    var tbody = document.getElementById('bodyLaporan');
-    if (!tbody) return;
-    tbody.innerHTML = '';
-    if (!list || !list.length){ document.getElementById('emptyState').style.display = 'block'; return; }
-    document.getElementById('emptyState').style.display = 'none';
-    list.forEach(function(item){
-      var tr = document.createElement('tr');
-      tr.innerHTML = '<td>'+escapeHtml(item.namaPasien)+'</td><td>'+escapeHtml(item.umur)+'</td><td>'+escapeHtml(item.noReg)+'</td><td>'+escapeHtml(item.noTelp)+'</td><td>'+escapeHtml(item.hasilMalaria)+'</td><td>'+escapeHtml(item.derajatMalaria)+'</td><td>'+escapeHtml(item.tglKejadian)+'</td><td>'+escapeHtml(item.faskes)+'</td><td><button class="btn btn-secondary">📋</button></td>';
-      tbody.appendChild(tr);
-    });
-  };
-  window.applyFilter = function(){
-    var q = document.getElementById('searchBox').value.trim().toLowerCase();
-    var bulan = document.getElementById('filterBulanMalaria').value;
-    var tahun = document.getElementById('filterTahunMalaria').value;
-    var list = state.data.Malaria || [];
-    var filtered = list.filter(function(item){
-      var matchQ = !q || (item.namaPasien||'').toLowerCase().indexOf(q)>-1 || (item.noReg||'').toLowerCase().indexOf(q)>-1;
-      var bt = hitungBulanTahun(item.tglKejadian);
-      var matchBulan = !bulan || bt.bulan === bulan;
-      var matchTahun = !tahun || bt.tahun === tahun;
-      return matchQ && matchBulan && matchTahun;
-    });
-    renderLaporan(filtered);
-  };
-  window.populateFilterTahunMalaria = function(list){
-    var select = document.getElementById('filterTahunMalaria');
-    if (!select) return;
-    var tahunSet = {};
-    list.forEach(function(item){
-      var bt = hitungBulanTahun(item.tglKejadian);
-      if (bt.tahun) tahunSet[bt.tahun] = true;
-    });
-    var tahunList = Object.keys(tahunSet).sort(function(a,b){ return b-a; });
-    select.innerHTML = '<option value="">Semua Tahun</option>' + tahunList.map(function(t){ return '<option value="'+t+'">'+t+'</option>'; }).join('');
-  };
-  // Lab malaria (placeholder)
-  window.renderMalariaLabLaporan = function(list){};
-  window.applyFilterMalariaLab = function(){};
-  window.populateFilterTahunMalariaLab = function(list){};
-
   function init(){
     loadConfig();
     initSidebarNavigation();
     initSettings();
-    initButtons();
     initModal();
+    initFormMalaria();
+    initFormMalariaLab();
+    initFormHyperhepStok();
+    initFormHyperhepPasien();
+    initFormTuberkulin();
+    initFormRabiesStok();
+    initFormRabiesPasien();
     initFormSusu();
     initFormCobra();
     initFormDifteri();
-    // Inisialisasi form Malaria (sederhana)
-    var form = document.getElementById('formMalaria');
-    if (form) {
-      form.addEventListener('submit', function(ev){
-        ev.preventDefault();
-        showMsg('msgInput', 'Fungsi simpan Malaria tersedia.', 'ok');
-      });
-    }
-    // Buka tab pertama (Malaria Input sudah aktif)
+
+    // Tombol refresh
+    document.getElementById('btnRefresh').addEventListener('click', refreshLaporan);
+    document.getElementById('btnRefreshMalariaLabLaporan').addEventListener('click', refreshMalariaLabLaporan);
+    document.getElementById('btnRefreshStok').addEventListener('click', refreshHyperhepStok);
+    document.getElementById('btnRefreshHyperhepLaporan').addEventListener('click', refreshHyperhepLaporan);
+    document.getElementById('btnRefreshTuberkulinLaporan').addEventListener('click', refreshTuberkulinLaporan);
+    document.getElementById('btnRefreshStokRabies').addEventListener('click', refreshRabiesStok);
+    document.getElementById('btnRefreshRabiesLaporan').addEventListener('click', refreshRabiesLaporan);
+    document.getElementById('btnRefreshSusu').addEventListener('click', refreshSusu);
+    document.getElementById('btnRefreshCobra').addEventListener('click', refreshCobra);
+    document.getElementById('btnRefreshDifteri').addEventListener('click', refreshDifteri);
+
+    // Filter
+    document.getElementById('searchBox').addEventListener('input', applyFilter);
+    document.getElementById('filterBulanMalaria').addEventListener('change', applyFilter);
+    document.getElementById('filterTahunMalaria').addEventListener('change', applyFilter);
+    document.getElementById('searchBoxMalariaLab').addEventListener('input', applyFilterMalariaLab);
+    document.getElementById('filterBulanMalariaLab').addEventListener('change', applyFilterMalariaLab);
+    document.getElementById('filterTahunMalariaLab').addEventListener('change', applyFilterMalariaLab);
+    document.getElementById('searchBoxHyperhep').addEventListener('input', applyFilterHyperhep);
+    document.getElementById('filterBulanHyperhep').addEventListener('change', applyFilterHyperhep);
+    document.getElementById('filterTahunHyperhep').addEventListener('change', applyFilterHyperhep);
+    document.getElementById('searchBoxTuberkulin').addEventListener('input', applyFilterTuberkulin);
+    document.getElementById('filterBulanTuberkulin').addEventListener('change', applyFilterTuberkulin);
+    document.getElementById('filterTahunTuberkulin').addEventListener('change', applyFilterTuberkulin);
+    document.getElementById('searchBoxRabies').addEventListener('input', applyFilterRabies);
+    document.getElementById('filterBulanRabies').addEventListener('change', applyFilterRabies);
+    document.getElementById('filterTahunRabies').addEventListener('change', applyFilterRabies);
+    document.getElementById('searchBoxSusu').addEventListener('input', filterSusu);
+    document.getElementById('searchBoxCobra').addEventListener('input', filterCobra);
+    document.getElementById('searchBoxDifteri').addEventListener('input', filterDifteri);
+
+    // Export Excel (placeholder)
+    document.getElementById('btnExportExcelMalariaLab').addEventListener('click', function(){
+      showMsg('msgMalariaLabLaporan', 'Fitur export Excel tersedia.', 'info');
+    });
+    document.getElementById('btnExportExcelRabies').addEventListener('click', function(){
+      showMsg('msgRabiesLaporan', 'Fitur export Excel tersedia.', 'info');
+    });
+
+    // Buka tab pertama
     var firstProgram = document.querySelector('.sidebar button[data-program].active');
     if (firstProgram) {
       var firstSub = document.querySelector('.sidebar .sub-group.open .sub-item');
