@@ -327,6 +327,7 @@
           <select id="filterBulanMalaria"><option value="">Semua Bulan</option><option value="Januari">Januari</option><option value="Februari">Februari</option><option value="Maret">Maret</option><option value="April">April</option><option value="Mei">Mei</option><option value="Juni">Juni</option><option value="Juli">Juli</option><option value="Agustus">Agustus</option><option value="September">September</option><option value="Oktober">Oktober</option><option value="November">November</option><option value="Desember">Desember</option></select>
           <select id="filterTahunMalaria"><option value="">Semua Tahun</option></select>
           <button class="btn btn-secondary" id="btnRefresh">🔄 Muat Ulang</button>
+          <button class="btn btn-primary" id="btnExportExcelMalaria">📊 Unduh Excel</button>
         </div>
         <div class="table-wrap">
           <table><thead><tr><th>Nama</th><th>Umur</th><th>No.Reg</th><th>No HP</th><th>Hasil</th><th>Derajat</th><th>Tgl Kejadian</th><th>FASKES</th><th>Aksi</th></tr></thead><tbody id="bodyLaporan"></tbody></table>
@@ -489,6 +490,7 @@
           <select id="filterBulanHyperhep"><option value="">Semua Bulan</option><option value="Januari">Januari</option><option value="Februari">Februari</option><option value="Maret">Maret</option><option value="April">April</option><option value="Mei">Mei</option><option value="Juni">Juni</option><option value="Juli">Juli</option><option value="Agustus">Agustus</option><option value="September">September</option><option value="Oktober">Oktober</option><option value="November">November</option><option value="Desember">Desember</option></select>
           <select id="filterTahunHyperhep"><option value="">Semua Tahun</option></select>
           <button class="btn btn-secondary" id="btnRefreshHyperhepLaporan">🔄 Muat Ulang</button>
+          <button class="btn btn-primary" id="btnExportExcelHyperhep">📊 Unduh Excel</button>
         </div>
         <div class="table-wrap">
           <table><thead><tr><th>Nama Bayi</th><th>Nama Ibu</th><th>NIK Ibu</th><th>No HP</th><th>Jml Anak</th><th>Tgl/Jam HBIG</th><th>Tgl/Jam HB0</th><th>Skrining</th><th>Aksi</th></tr></thead><tbody id="bodyHyperhepLaporan"></tbody></table>
@@ -540,6 +542,7 @@
           <select id="filterBulanTuberkulin"><option value="">Semua Bulan</option><option value="Januari">Januari</option><option value="Februari">Februari</option><option value="Maret">Maret</option><option value="April">April</option><option value="Mei">Mei</option><option value="Juni">Juni</option><option value="Juli">Juli</option><option value="Agustus">Agustus</option><option value="September">September</option><option value="Oktober">Oktober</option><option value="November">November</option><option value="Desember">Desember</option></select>
           <select id="filterTahunTuberkulin"><option value="">Semua Tahun</option></select>
           <button class="btn btn-secondary" id="btnRefreshTuberkulinLaporan">🔄 Muat Ulang</button>
+          <button class="btn btn-primary" id="btnExportExcelTuberkulin">📊 Unduh Excel</button>
         </div>
         <div class="table-wrap">
           <table><thead><tr><th>Nama Pasien</th><th>Tgl Lahir</th><th>Umur</th><th>No HP Ortu</th><th>Tgl Pemberian</th><th>Bulan</th><th>Tahun</th><th>Aksi</th></tr></thead><tbody id="bodyTuberkulinLaporan"></tbody></table>
@@ -696,9 +699,10 @@
         <div class="toolbar">
           <input type="text" id="searchBoxSusu" placeholder="Cari nama pasien...">
           <button class="btn btn-secondary" id="btnRefreshSusu">🔄 Muat Ulang</button>
+          <button class="btn btn-primary" id="btnExportExcelSusu">📊 Unduh Excel</button>
         </div>
         <div class="table-wrap">
-          <table><thead><tr><th>Tgl Input</th><th>Tgl Resep</th><th>Nama</th><th>Tgl Lahir</th><th>Umur</th><th>Ortu</th><th>Alamat</th><th>HP</th><th>Produk</th><th>Jml</th><th>Diagnosa</th><th>Dokter</th><th>BB</th><th>Bulan</th><th>Tahun</th></tr></thead><tbody id="bodySusuLaporan"></tbody></table>
+          <table><thead><tr><th>Tgl Input</th><th>Tgl Resep</th><th>Nama</th><th>Tgl Lahir</th><th>Umur</th><th>Ortu</th><th>Alamat</th><th>HP</th><th>Produk</th><th>Jml</th><th>Diagnosa</th><th>Dokter</th><th>BB</th><th>Bulan</th><th>Tahun</th><th>Aksi</th></tr></thead><tbody id="bodySusuLaporan"></tbody></table>
           <div id="emptySusuState" class="empty-state">Belum ada data</div>
         </div>
       </div>
@@ -752,9 +756,10 @@
         <div class="toolbar">
           <input type="text" id="searchBoxCobra" placeholder="Cari nama pasien...">
           <button class="btn btn-secondary" id="btnRefreshCobra">🔄 Muat Ulang</button>
+          <button class="btn btn-primary" id="btnExportExcelCobra">📊 Unduh Excel</button>
         </div>
         <div class="table-wrap">
-          <table><thead><tr><th>Tanggal</th><th>Nama</th><th>No.KTP</th><th>No.Reg</th><th>No.Telp</th><th>Tgl Lahir</th><th>Umur</th><th>Alamat</th><th>Puskesmas</th><th>Tgl Digigit</th><th>Tgl ke RS</th><th>Jenis Ular</th><th>Lokasi</th><th>Cuci Luka</th><th>Tgl Sabu</th><th>Keterangan</th><th>Vaksin</th><th>Jml Obat</th><th>Bulan</th><th>Tahun</th></tr></thead><tbody id="bodyCobraLaporan"></tbody></table>
+          <table><thead><tr><th>Tanggal</th><th>Nama</th><th>No.KTP</th><th>No.Reg</th><th>No.Telp</th><th>Tgl Lahir</th><th>Umur</th><th>Alamat</th><th>Puskesmas</th><th>Tgl Digigit</th><th>Tgl ke RS</th><th>Jenis Ular</th><th>Lokasi</th><th>Cuci Luka</th><th>Tgl Sabu</th><th>Keterangan</th><th>Vaksin</th><th>Jml Obat</th><th>Bulan</th><th>Tahun</th><th>Aksi</th></tr></thead><tbody id="bodyCobraLaporan"></tbody></table>
           <div id="emptyCobraState" class="empty-state">Belum ada data</div>
         </div>
       </div>
@@ -803,9 +808,10 @@
         <div class="toolbar">
           <input type="text" id="searchBoxDifteri" placeholder="Cari nama pasien...">
           <button class="btn btn-secondary" id="btnRefreshDifteri">🔄 Muat Ulang</button>
+          <button class="btn btn-primary" id="btnExportExcelDifteri">📊 Unduh Excel</button>
         </div>
         <div class="table-wrap">
-          <table><thead><tr><th>Tanggal</th><th>Nama</th><th>No.KTP</th><th>No.Reg</th><th>No.Telp</th><th>Tgl Lahir</th><th>Umur</th><th>Alamat</th><th>Puskesmas</th><th>Tgl ke RS</th><th>Tgl Vaksin</th><th>Keterangan</th><th>Jml Obat</th><th>Bulan</th><th>Tahun</th></tr></thead><tbody id="bodyDifteriLaporan"></tbody></table>
+          <table><thead><tr><th>Tanggal</th><th>Nama</th><th>No.KTP</th><th>No.Reg</th><th>No.Telp</th><th>Tgl Lahir</th><th>Umur</th><th>Alamat</th><th>Puskesmas</th><th>Tgl ke RS</th><th>Tgl Vaksin</th><th>Keterangan</th><th>Jml Obat</th><th>Bulan</th><th>Tahun</th><th>Aksi</th></tr></thead><tbody id="bodyDifteriLaporan"></tbody></table>
           <div id="emptyDifteriState" class="empty-state">Belum ada data</div>
         </div>
       </div>
@@ -844,9 +850,6 @@
 </div>
 
 <script>
-// =================================================================
-// JAVASCRIPT LENGKAP – SEMUA PROGRAM BERFUNGSI
-// =================================================================
 (function(){
   "use strict";
 
@@ -975,9 +978,7 @@
     document.querySelectorAll('.sidebar button[data-program]').forEach(function(btn){
       btn.addEventListener('click', function(){
         var program = btn.dataset.program;
-        // Tutup semua sub-group
         document.querySelectorAll('.sidebar .sub-group').forEach(function(g){ g.classList.remove('open'); });
-        // Buka sub-group yang sesuai
         var targetGroup = document.querySelector('.sidebar .sub-group[data-parent="' + program + '"]');
         if (targetGroup) {
           targetGroup.classList.add('open');
@@ -1188,6 +1189,12 @@
         '<td><button class="btn btn-secondary" data-idx="' + idx + '">📋</button></td>';
       tbody.appendChild(tr);
     });
+    tbody.querySelectorAll('button[data-idx]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var item = list[parseInt(btn.dataset.idx, 10)];
+        openNoteModal(item, buildCatatanText, 'Malaria', 'namaPasien');
+      });
+    });
   }
   function applyFilter(){
     var q = document.getElementById('searchBox').value.trim().toLowerCase();
@@ -1242,6 +1249,12 @@
         '<td>' + escapeHtml(item.tahunLab) + '</td>' +
         '<td><button class="btn btn-secondary" data-idx="' + idx + '">📋</button></td>';
       tbody.appendChild(tr);
+    });
+    tbody.querySelectorAll('button[data-idx]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var item = list[parseInt(btn.dataset.idx, 10)];
+        openNoteModal(item, buildCatatanTextMalariaLab, 'Malaria Lab', 'namaPasienLab');
+      });
     });
   }
   function applyFilterMalariaLab(){
@@ -1326,6 +1339,12 @@
         '<td><button class="btn btn-secondary" data-idx="' + idx + '">📋</button></td>';
       tbody.appendChild(tr);
     });
+    tbody.querySelectorAll('button[data-idx]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var item = list[parseInt(btn.dataset.idx, 10)];
+        openNoteModal(item, buildCatatanTextHyperhep, 'Hyperhep', 'namaBayi');
+      });
+    });
   }
   function applyFilterHyperhep(){
     var q = document.getElementById('searchBoxHyperhep').value.trim().toLowerCase();
@@ -1373,6 +1392,12 @@
         '<td>' + escapeHtml(item.tahunPemberian) + '</td>' +
         '<td><button class="btn btn-secondary" data-idx="' + idx + '">📋</button></td>';
       tbody.appendChild(tr);
+    });
+    tbody.querySelectorAll('button[data-idx]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var item = list[parseInt(btn.dataset.idx, 10)];
+        openNoteModal(item, buildCatatanTextTuberkulin, 'Tuberkulin', 'namaPasien');
+      });
     });
   }
   function applyFilterTuberkulin(){
@@ -1467,6 +1492,12 @@
         '<td><button class="btn btn-secondary" data-idx="' + idx + '">📋</button></td>';
       tbody.appendChild(tr);
     });
+    tbody.querySelectorAll('button[data-idx]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var item = list[parseInt(btn.dataset.idx, 10)];
+        openNoteModal(item, buildCatatanTextRabies, 'Rabies', 'namaPasien');
+      });
+    });
   }
   function applyFilterRabies(){
     var q = document.getElementById('searchBoxRabies').value.trim().toLowerCase();
@@ -1498,7 +1529,7 @@
     tbody.innerHTML = '';
     if (!list || !list.length){ if (empty) empty.style.display = 'block'; return; }
     if (empty) empty.style.display = 'none';
-    list.forEach(function(item){
+    list.forEach(function(item, idx){
       var tr = document.createElement('tr');
       tr.innerHTML =
         '<td>' + escapeHtml(item.tanggalInputLaporan) + '</td>' +
@@ -1515,8 +1546,15 @@
         '<td>' + escapeHtml(item.dokter) + '</td>' +
         '<td>' + escapeHtml(item.beratBadan) + '</td>' +
         '<td>' + escapeHtml(item.bulan) + '</td>' +
-        '<td>' + escapeHtml(item.tahun) + '</td>';
+        '<td>' + escapeHtml(item.tahun) + '</td>' +
+        '<td><button class="btn btn-secondary" data-idx="' + idx + '">📋</button></td>';
       tbody.appendChild(tr);
+    });
+    tbody.querySelectorAll('button[data-idx]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var item = list[parseInt(btn.dataset.idx, 10)];
+        openNoteModal(item, buildCatatanTextSusu, 'Susu Stunting', 'namaPasien');
+      });
     });
   }
   function filterSusu(){
@@ -1542,7 +1580,7 @@
     tbody.innerHTML = '';
     if (!list || !list.length){ if (empty) empty.style.display = 'block'; return; }
     if (empty) empty.style.display = 'none';
-    list.forEach(function(item){
+    list.forEach(function(item, idx){
       var tr = document.createElement('tr');
       tr.innerHTML =
         '<td>' + escapeHtml(item.tanggal) + '</td>' +
@@ -1564,8 +1602,15 @@
         '<td>' + escapeHtml(item.jenisVaksin) + '</td>' +
         '<td>' + escapeHtml(item.jumlahObat) + '</td>' +
         '<td>' + escapeHtml(item.bulan) + '</td>' +
-        '<td>' + escapeHtml(item.tahun) + '</td>';
+        '<td>' + escapeHtml(item.tahun) + '</td>' +
+        '<td><button class="btn btn-secondary" data-idx="' + idx + '">📋</button></td>';
       tbody.appendChild(tr);
+    });
+    tbody.querySelectorAll('button[data-idx]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var item = list[parseInt(btn.dataset.idx, 10)];
+        openNoteModal(item, buildCatatanTextCobra, 'Gigitan Cobra', 'namaPasien');
+      });
     });
   }
   function filterCobra(){
@@ -1591,7 +1636,7 @@
     tbody.innerHTML = '';
     if (!list || !list.length){ if (empty) empty.style.display = 'block'; return; }
     if (empty) empty.style.display = 'none';
-    list.forEach(function(item){
+    list.forEach(function(item, idx){
       var tr = document.createElement('tr');
       tr.innerHTML =
         '<td>' + escapeHtml(item.tanggal) + '</td>' +
@@ -1608,8 +1653,15 @@
         '<td>' + escapeHtml(item.keterangan) + '</td>' +
         '<td>' + escapeHtml(item.jumlahObat) + '</td>' +
         '<td>' + escapeHtml(item.bulan) + '</td>' +
-        '<td>' + escapeHtml(item.tahun) + '</td>';
+        '<td>' + escapeHtml(item.tahun) + '</td>' +
+        '<td><button class="btn btn-secondary" data-idx="' + idx + '">📋</button></td>';
       tbody.appendChild(tr);
+    });
+    tbody.querySelectorAll('button[data-idx]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var item = list[parseInt(btn.dataset.idx, 10)];
+        openNoteModal(item, buildCatatanTextDifteri, 'Difteri', 'namaPasien');
+      });
     });
   }
   function filterDifteri(){
@@ -1627,9 +1679,279 @@
     });
   }
 
-  // =================================================================
+  // ================================================================
+  // BUILDER CATATAN UNTUK SEMUA PROGRAM
+  // ================================================================
+  function buildCatatanText(item) { // Malaria
+    function v(key) { return (item[key] !== undefined && item[key] !== null && item[key] !== '') ? item[key] : '-'; }
+    function baris_obat(nama, satuan, jumlahKey, dosisKey, frekKey, hariKey, ketKey){
+      var baris = nama + '  : ' + v(jumlahKey) + ' ' + satuan + ', aturan pakai ' + v(dosisKey) + ' x ' + v(frekKey) + ' selama ' + v(hariKey) + ' hari';
+      var ket = item[ketKey];
+      if (ket && String(ket).trim() !== '') { baris += '\n  Keterangan : ' + ket; }
+      return baris;
+    }
+    return [
+      'REKAP DATA PASIEN - MALARIA',
+      '============================',
+      'Nama Pasien    : ' + v('namaPasien'),
+      'Tgl Lahir      : ' + v('tglLahir'),
+      'Umur           : ' + v('umur'),
+      'No. Reg        : ' + v('noReg'),
+      'No Telp        : ' + v('noTelp'),
+      'Alamat Domisili: ' + v('alamatDomisili'),
+      'Alamat KTP     : ' + v('alamatKTP'),
+      'Derajat        : ' + v('derajatMalaria'),
+      'Hasil          : ' + v('hasilMalaria'),
+      'Tgl Kejadian   : ' + v('tglKejadian'),
+      'Tgl IGD        : ' + v('tglIGD'),
+      'Suhu           : ' + v('suhuBadan') + ' C',
+      'Gejala         : ' + v('gejala'),
+      'Anemia         : ' + v('anemia'),
+      'BB             : ' + v('bb') + ' kg',
+      'FASKES         : ' + v('faskes'),
+      '',
+      'PEMAKAIAN OBAT',
+      '--------------',
+      baris_obat('DHP', 'tab', 'dhpJumlah', 'dhpDosis', 'dhpFrekuensi', 'dhpHari', 'dhpKeterangan'),
+      baris_obat('Primakuin', 'tab', 'primakuinJumlah', 'primakuinDosis', 'primakuinFrekuensi', 'primakuinHari', 'primakuinKeterangan'),
+      baris_obat('Artesunat Injeksi', 'amp', 'artesunatJumlah', 'artesunatDosis', 'artesunatFrekuensi', 'artesunatHari', 'artesunatKeterangan')
+    ].join('\n');
+  }
+
+  function buildCatatanTextMalariaLab(item) {
+    function v(key) { return (item[key] !== undefined && item[key] !== null && item[key] !== '') ? item[key] : '-'; }
+    return [
+      'HASIL PEMERIKSAAN LAB - MALARIA',
+      '================================',
+      'No. Reg. Lab       : ' + v('noRegLab'),
+      'Nama Pasien        : ' + v('namaPasienLab'),
+      'JK                 : ' + v('jenisKelamin'),
+      'Tgl Lahir          : ' + v('tglLahirLab'),
+      'Usia               : ' + v('usiaLab'),
+      'Alamat             : ' + v('alamatLengkapLab'),
+      'Metode             : ' + v('metodePemeriksaan'),
+      'Alasan             : ' + v('alasanPemeriksaan'),
+      'Hasil Mikroskopis  : ' + v('hasilMikroskopis'),
+      'Gametosit          : ' + v('gametosit'),
+      'Kepadatan Parasit  : ' + v('kepadatanParasit'),
+      'Kode Slide         : ' + v('kodeSlide'),
+      'Tgl SD Diperiksa   : ' + v('tglSDdiperiksa'),
+      'Bulan              : ' + v('bulanLab'),
+      'Tahun              : ' + v('tahunLab')
+    ].join('\n');
+  }
+
+  function buildCatatanTextHyperhep(item) {
+    function v(key) { return (item[key] !== undefined && item[key] !== null && item[key] !== '') ? item[key] : '-'; }
+    return [
+      'REKAP DATA PASIEN - HYPERHEP (HBIG)',
+      '===================================',
+      'Nama Bayi        : ' + v('namaBayi'),
+      'Nama Ibu         : ' + v('namaIbu'),
+      'Nama Bapak       : ' + v('namaBapak'),
+      'No. HP           : ' + v('noHp'),
+      'Alamat           : ' + v('alamatLengkap'),
+      'NIK Ibu          : ' + v('nikIbu'),
+      'Tempat Lahir Ibu : ' + v('tempatLahirIbu'),
+      'Tgl Lahir Ibu    : ' + v('tglLahirIbu'),
+      'Umur Ibu         : ' + v('umurIbu'),
+      'Jml Anak         : ' + v('jumlahAnak'),
+      'Tgl/Jam Melahirkan : ' + v('tglMelahirkan') + ' ' + v('jamMelahirkan'),
+      'Tgl/Jam HBIG     : ' + v('tglHBIG') + ' ' + v('jamHBIG'),
+      'Tgl/Jam HB0      : ' + v('tglHB0') + ' ' + v('jamHB0'),
+      'Skrining Awal    : ' + v('skriningAwal'),
+      'Catatan Skrining : ' + v('skriningCatatan'),
+      'Vial Terpakai    : ' + v('jumlahVialHBIG') + ' vial'
+    ].join('\n');
+  }
+
+  function buildCatatanTextTuberkulin(item) {
+    function v(key) { return (item[key] !== undefined && item[key] !== null && item[key] !== '') ? item[key] : '-'; }
+    return [
+      'REKAP DATA PASIEN - TUBERKULIN',
+      '===============================',
+      'Nama Pasien       : ' + v('namaPasien'),
+      'Tgl Lahir         : ' + v('tglLahir'),
+      'Umur              : ' + v('umur'),
+      'Alamat            : ' + v('alamatRumah'),
+      'No HP Ortu        : ' + v('noHpOrtu'),
+      'Tgl Pemberian     : ' + v('tglPemberianObat'),
+      'Bulan             : ' + v('bulanPemberian'),
+      'Tahun             : ' + v('tahunPemberian')
+    ].join('\n');
+  }
+
+  function buildCatatanTextRabies(item) {
+    function v(key) { return (item[key] !== undefined && item[key] !== null && item[key] !== '') ? item[key] : '-'; }
+    return [
+      'REKAP DATA PASIEN - RABIES',
+      '===========================',
+      'No. Reg              : ' + v('noReg'),
+      'Nama Pasien          : ' + v('namaPasien'),
+      'NIK KTP              : ' + v('nikKtp'),
+      'Tgl Lahir            : ' + v('tglLahir'),
+      'Umur                 : ' + v('umur'),
+      'Alamat KTP           : ' + v('alamatKtp'),
+      'No HP                : ' + v('noHp'),
+      'Vaksin Ke-           : ' + v('vaksinKe'),
+      'Puskesmas Rujukan    : ' + v('puskesmasRujukan'),
+      'Jenis Hewan          : ' + v('jenisHewan'),
+      'Lokasi Gigitan       : ' + v('lokasiGigitan'),
+      'Tgl Digigit          : ' + v('tglDigigit'),
+      'Tgl ke RS            : ' + v('tglKeRS'),
+      'Tgl Cuci Luka        : ' + v('tglCuciLuka'),
+      'Tgl Vaksin           : ' + v('tglVaksin'),
+      'Bulan                : ' + v('bulanKeRS'),
+      'Tahun                : ' + v('tahunKeRS'),
+      'Vial Terpakai        : ' + v('jumlahVialRabies') + ' vial'
+    ].join('\n');
+  }
+
+  function buildCatatanTextSusu(item) {
+    function v(key) { return (item[key] !== undefined && item[key] !== null && item[key] !== '') ? item[key] : '-'; }
+    return [
+      'REKAP DATA PASIEN - SUSU STUNTING',
+      '=================================',
+      'Tanggal Input Laporan : ' + v('tanggalInputLaporan'),
+      'Tanggal Resep         : ' + v('tanggalResep'),
+      'Nama Pasien           : ' + v('namaPasien'),
+      'Tanggal Lahir         : ' + v('tglLahir'),
+      'Umur                  : ' + v('umur'),
+      'Nama Orang Tua        : ' + v('namaOrtu'),
+      'Alamat Rumah          : ' + v('alamatRumah'),
+      'No. HP                : ' + v('noHp'),
+      'Nama Produk Obat      : ' + v('namaProduk'),
+      'Jumlah                : ' + v('jumlah'),
+      'Diagnosa              : ' + v('diagnosa'),
+      'Dokter Pemberi Resep  : ' + v('dokter'),
+      'Berat Badan (kg)      : ' + v('beratBadan'),
+      'Bulan                 : ' + v('bulan'),
+      'Tahun                 : ' + v('tahun')
+    ].join('\n');
+  }
+
+  function buildCatatanTextCobra(item) {
+    function v(key) { return (item[key] !== undefined && item[key] !== null && item[key] !== '') ? item[key] : '-'; }
+    return [
+      'REKAP DATA PASIEN - GIGITAN COBRA',
+      '==================================',
+      'Tanggal               : ' + v('tanggal'),
+      'Nama Pasien           : ' + v('namaPasien'),
+      'No.KTP                : ' + v('noKtp'),
+      'No.Reg                : ' + v('noReg'),
+      'No.Telpon             : ' + v('noTelpon'),
+      'Tanggal Lahir         : ' + v('tglLahir'),
+      'Umur                  : ' + v('umur'),
+      'Alamat KTP            : ' + v('alamatKtp'),
+      'Puskesmas Rujukan     : ' + v('puskesmasRujukan'),
+      'Tgl Digigit Hewan     : ' + v('tglDigigit'),
+      'Tgl Dibawa ke RS      : ' + v('tglKeRS'),
+      'Jenis Ular Berbisa    : ' + v('jenisUlar'),
+      'Lokasi Gigitan        : ' + v('lokasiGigitan'),
+      'Cuci Luka             : ' + v('cuciLuka'),
+      'Tgl Pemberian Sabu    : ' + v('tglSabu'),
+      'Keterangan            : ' + v('keterangan'),
+      'Jenis Vaksin          : ' + v('jenisVaksin'),
+      'Jumlah Obat           : ' + v('jumlahObat'),
+      'Bulan                 : ' + v('bulan'),
+      'Tahun                 : ' + v('tahun')
+    ].join('\n');
+  }
+
+  function buildCatatanTextDifteri(item) {
+    function v(key) { return (item[key] !== undefined && item[key] !== null && item[key] !== '') ? item[key] : '-'; }
+    return [
+      'REKAP DATA PASIEN - DIFTERI',
+      '============================',
+      'Tanggal               : ' + v('tanggal'),
+      'Nama Pasien           : ' + v('namaPasien'),
+      'No.KTP                : ' + v('noKtp'),
+      'No.Reg                : ' + v('noReg'),
+      'No.Telpon             : ' + v('noTelpon'),
+      'Tanggal Lahir         : ' + v('tglLahir'),
+      'Umur                  : ' + v('umur'),
+      'Alamat KTP            : ' + v('alamatKtp'),
+      'Puskesmas Rujukan     : ' + v('puskesmasRujukan'),
+      'Tgl Dibawa ke RS      : ' + v('tglKeRS'),
+      'Tgl Pemberian Vaksin  : ' + v('tglVaksin'),
+      'Keterangan            : ' + v('keterangan'),
+      'Jumlah Obat           : ' + v('jumlahObat'),
+      'Bulan                 : ' + v('bulan'),
+      'Tahun                 : ' + v('tahun')
+    ].join('\n');
+  }
+
+  // ================================================================
+  // MODAL NOTE
+  // ================================================================
+  var currentModalItem = null;
+  var currentNoteBuilder = buildCatatanText;
+  var currentNotePrefix = 'Malaria';
+  var currentNoteNameField = 'namaPasien';
+
+  function openNoteModal(item, builder, prefix, nameField){
+    currentModalItem = item;
+    currentNoteBuilder = builder || buildCatatanText;
+    currentNotePrefix = prefix || 'Malaria';
+    currentNoteNameField = nameField || 'namaPasien';
+    document.getElementById('notePreview').value = currentNoteBuilder(item);
+    hideMsg('msgModal');
+    document.getElementById('modalOverlay').style.display = 'flex';
+  }
+
+  function closeNoteModal(){
+    document.getElementById('modalOverlay').style.display = 'none';
+    currentModalItem = null;
+  }
+
+  function copyNoteToClipboard(){
+    var textarea = document.getElementById('notePreview');
+    var text = textarea.value;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){
+        showMsg('msgModal', 'Teks berhasil disalin.', 'ok');
+      }).catch(function(){
+        fallbackCopy(textarea);
+      });
+    } else { fallbackCopy(textarea); }
+  }
+  function fallbackCopy(textarea){
+    try { textarea.focus(); textarea.select(); document.execCommand('copy'); showMsg('msgModal', 'Teks berhasil disalin.', 'ok'); }
+    catch(e){ showMsg('msgModal', 'Gagal menyalin, silakan salin manual.', 'err'); }
+  }
+
+  function sendViaWhatsapp(){
+    if (!currentModalItem) return;
+    var text = currentNoteBuilder(currentModalItem);
+    window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+    showMsg('msgModal', 'WhatsApp dibuka.', 'info');
+  }
+
+  function downloadCatatan(){
+    if (!currentModalItem) return;
+    var text = currentNoteBuilder(currentModalItem);
+    var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    var safeNama = (currentModalItem[currentNoteNameField] || 'pasien').replace(/[^a-z0-9]+/gi, '_');
+    a.href = url; a.download = 'Catatan_' + currentNotePrefix + '_' + safeNama + '.txt';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function initModal(){
+    document.getElementById('btnCloseModal').addEventListener('click', closeNoteModal);
+    document.getElementById('modalOverlay').addEventListener('click', function(ev){
+      if (ev.target.id === 'modalOverlay') closeNoteModal();
+    });
+    document.getElementById('btnCopyNote').addEventListener('click', copyNoteToClipboard);
+    document.getElementById('btnSendWa').addEventListener('click', sendViaWhatsapp);
+    document.getElementById('btnDownloadTxt').addEventListener('click', downloadCatatan);
+  }
+
+  // ================================================================
   // FORM SUBMIT
-  // =================================================================
+  // ================================================================
   function initFormMalaria(){
     var form = document.getElementById('formMalaria');
     if (!form) return;
@@ -1924,9 +2246,63 @@
     });
   }
 
-  // =================================================================
+  // ================================================================
+  // EXPORT EXCEL (F4/FOLIO)
+  // ================================================================
+  function exportToExcel(data, columns, programName, sheetName) {
+    if (!data || data.length === 0) {
+      alert('Tidak ada data untuk diexport.');
+      return;
+    }
+    if (typeof XLSX === 'undefined') {
+      alert('Library Excel (XLSX) belum termuat. Periksa koneksi internet.');
+      return;
+    }
+    var title = 'LAPORAN ADMINISTRASI PROGRAM ' + programName.toUpperCase();
+    var rows = [];
+    rows.push([title]);
+    rows.push([]);
+    var headerKeys = Object.keys(columns);
+    var headerLabels = headerKeys.map(function(k) { return columns[k]; });
+    rows.push(headerLabels);
+    data.forEach(function(item) {
+      var row = headerKeys.map(function(k) {
+        var val = item[k];
+        return (val !== undefined && val !== null) ? val : '';
+      });
+      rows.push(row);
+    });
+    var ws = XLSX.utils.aoa_to_sheet(rows);
+    var colCount = headerLabels.length;
+    var mergeRef = XLSX.utils.decode_range('A1:' + String.fromCharCode(64 + colCount) + '1');
+    if (!ws['!merges']) ws['!merges'] = [];
+    ws['!merges'].push({ s: { r: 0, c: 0 }, e: { r: 0, c: colCount - 1 } });
+    ws['!cols'] = headerLabels.map(function(label) {
+      var maxLen = label.length;
+      data.forEach(function(item) {
+        var val = item[headerKeys[headerLabels.indexOf(label)]] || '';
+        if (String(val).length > maxLen) maxLen = String(val).length;
+      });
+      return { wch: Math.min(Math.max(maxLen + 2, 12), 40) };
+    });
+    ws['!print'] = {
+      paperSize: 9,
+      orientation: 'landscape',
+      margins: { left: 0.7, right: 0.7, top: 0.7, bottom: 0.7, header: 0.3, footer: 0.3 },
+      fitToPage: true,
+      fitToWidth: 1,
+      fitToHeight: 0
+    };
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, sheetName || 'Laporan');
+    var today = new Date().toISOString().slice(0,10);
+    var fileName = 'Laporan_' + programName.replace(/\s/g,'_') + '_' + today + '.xlsx';
+    XLSX.writeFile(wb, fileName);
+  }
+
+  // ================================================================
   // SETTINGS
-  // =================================================================
+  // ================================================================
   function initSettings(){
     var input = document.getElementById('webAppUrl');
     if (!input) return;
@@ -1954,9 +2330,9 @@
     });
   }
 
-  // =================================================================
+  // ================================================================
   // REFRESH FUNCTIONS
-  // =================================================================
+  // ================================================================
   function refreshLaporan(){
     showMsg('msgLaporan', 'Memuat ulang...', 'info');
     getDataWithCache('Malaria', true, function(err, data){
@@ -2044,44 +2420,9 @@
     });
   }
 
-  // =================================================================
-  // MODAL (placeholder)
-  // =================================================================
-  function initModal(){
-    document.getElementById('btnCloseModal').addEventListener('click', function(){
-      document.getElementById('modalOverlay').style.display = 'none';
-    });
-    document.getElementById('modalOverlay').addEventListener('click', function(ev){
-      if (ev.target.id === 'modalOverlay') document.getElementById('modalOverlay').style.display = 'none';
-    });
-    document.getElementById('btnCopyNote').addEventListener('click', function(){
-      var text = document.getElementById('notePreview').value;
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(function(){ showMsg('msgModal', 'Teks disalin.', 'ok'); })
-          .catch(function(){ fallbackCopy(); });
-      } else { fallbackCopy(); }
-      function fallbackCopy(){
-        try { var ta = document.getElementById('notePreview'); ta.focus(); ta.select(); document.execCommand('copy'); showMsg('msgModal', 'Teks disalin.', 'ok'); }
-        catch(e){ showMsg('msgModal', 'Gagal salin.', 'err'); }
-      }
-    });
-    document.getElementById('btnSendWa').addEventListener('click', function(){
-      var text = document.getElementById('notePreview').value;
-      window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
-    });
-    document.getElementById('btnDownloadTxt').addEventListener('click', function(){
-      var text = document.getElementById('notePreview').value;
-      var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-      var url = URL.createObjectURL(blob);
-      var a = document.createElement('a');
-      a.href = url; a.download = 'catatan.txt'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    });
-  }
-
-  // =================================================================
+  // ================================================================
   // INISIALISASI
-  // =================================================================
+  // ================================================================
   function init(){
     loadConfig();
     initSidebarNavigation();
@@ -2130,12 +2471,88 @@
     document.getElementById('searchBoxCobra').addEventListener('input', filterCobra);
     document.getElementById('searchBoxDifteri').addEventListener('input', filterDifteri);
 
-    // Export Excel (placeholder)
+    // Export Excel
+    document.getElementById('btnExportExcelMalaria').addEventListener('click', function(){
+      var list = state.data.Malaria || [];
+      var columns = {
+        'namaPasien':'Nama Pasien', 'umur':'Umur', 'noReg':'No.Reg', 'noTelp':'No HP',
+        'hasilMalaria':'Hasil Malaria', 'derajatMalaria':'Derajat', 'tglKejadian':'Tgl Kejadian',
+        'faskes':'FASKES'
+      };
+      exportToExcel(list, columns, 'Malaria', 'Malaria');
+    });
     document.getElementById('btnExportExcelMalariaLab').addEventListener('click', function(){
-      showMsg('msgMalariaLabLaporan', 'Fitur export Excel tersedia.', 'info');
+      var list = state.malariaLabDataFiltered || state.data.MalariaLab || [];
+      var columns = {
+        'noRegLab':'No. Reg Lab', 'namaPasienLab':'Nama Pasien', 'jenisKelamin':'JK',
+        'tglLahirLab':'Tgl Lahir', 'usiaLab':'Usia', 'alamatLengkapLab':'Alamat',
+        'metodePemeriksaan':'Metode', 'alasanPemeriksaan':'Alasan', 'hasilMikroskopis':'Hasil',
+        'gametosit':'Gametosit', 'kepadatanParasit':'Kepadatan Parasit', 'kodeSlide':'Kode Slide',
+        'tglSDdiperiksa':'Tgl SD Diperiksa', 'bulanLab':'Bulan', 'tahunLab':'Tahun'
+      };
+      exportToExcel(list, columns, 'Malaria Lab', 'MalariaLab');
+    });
+    document.getElementById('btnExportExcelHyperhep').addEventListener('click', function(){
+      var list = state.data.HyperhepPasien || [];
+      var columns = {
+        'namaBayi':'Nama Bayi', 'namaIbu':'Nama Ibu', 'nikIbu':'NIK Ibu', 'noHp':'No HP',
+        'jumlahAnak':'Jml Anak', 'tglHBIG':'Tgl HBIG', 'jamHBIG':'Jam HBIG',
+        'tglHB0':'Tgl HB0', 'jamHB0':'Jam HB0', 'skriningAwal':'Skrining Awal'
+      };
+      exportToExcel(list, columns, 'Hyperhep', 'Hyperhep');
+    });
+    document.getElementById('btnExportExcelTuberkulin').addEventListener('click', function(){
+      var list = state.data.Tuberkulin || [];
+      var columns = {
+        'namaPasien':'Nama Pasien', 'tglLahir':'Tgl Lahir', 'umur':'Umur',
+        'noHpOrtu':'No HP Ortu', 'tglPemberianObat':'Tgl Pemberian',
+        'bulanPemberian':'Bulan', 'tahunPemberian':'Tahun'
+      };
+      exportToExcel(list, columns, 'Tuberkulin', 'Tuberkulin');
     });
     document.getElementById('btnExportExcelRabies').addEventListener('click', function(){
-      showMsg('msgRabiesLaporan', 'Fitur export Excel tersedia.', 'info');
+      var list = state.rabiesDataFiltered || state.data.RabiesPasien || [];
+      var columns = {
+        'noReg':'No.Reg', 'namaPasien':'Nama Pasien', 'nikKtp':'NIK KTP', 'tglLahir':'Tgl Lahir',
+        'umur':'Umur', 'noHp':'No HP', 'alamatKtp':'Alamat KTP', 'vaksinKe':'Vaksin Ke-',
+        'puskesmasRujukan':'Puskesmas', 'jenisHewan':'Jenis Hewan', 'lokasiGigitan':'Lokasi',
+        'tglDigigit':'Tgl Digigit', 'tglKeRS':'Tgl ke RS', 'tglCuciLuka':'Tgl Cuci Luka',
+        'tglVaksin':'Tgl Vaksin', 'bulanKeRS':'Bulan', 'tahunKeRS':'Tahun',
+        'jumlahVialRabies':'Vial Terpakai'
+      };
+      exportToExcel(list, columns, 'Rabies', 'Rabies');
+    });
+    document.getElementById('btnExportExcelSusu').addEventListener('click', function(){
+      var list = state.data.Susu || [];
+      var columns = {
+        'tanggalInputLaporan':'Tgl Input', 'tanggalResep':'Tgl Resep', 'namaPasien':'Nama',
+        'tglLahir':'Tgl Lahir', 'umur':'Umur', 'namaOrtu':'Orang Tua', 'alamatRumah':'Alamat',
+        'noHp':'No HP', 'namaProduk':'Produk', 'jumlah':'Jumlah', 'diagnosa':'Diagnosa',
+        'dokter':'Dokter', 'beratBadan':'BB', 'bulan':'Bulan', 'tahun':'Tahun'
+      };
+      exportToExcel(list, columns, 'Susu Stunting', 'Susu');
+    });
+    document.getElementById('btnExportExcelCobra').addEventListener('click', function(){
+      var list = state.data.Cobra || [];
+      var columns = {
+        'tanggal':'Tanggal', 'namaPasien':'Nama', 'noKtp':'No.KTP', 'noReg':'No.Reg',
+        'noTelpon':'No.Telp', 'tglLahir':'Tgl Lahir', 'umur':'Umur', 'alamatKtp':'Alamat',
+        'puskesmasRujukan':'Puskesmas', 'tglDigigit':'Tgl Digigit', 'tglKeRS':'Tgl ke RS',
+        'jenisUlar':'Jenis Ular', 'lokasiGigitan':'Lokasi', 'cuciLuka':'Cuci Luka',
+        'tglSabu':'Tgl Sabu', 'keterangan':'Keterangan', 'jenisVaksin':'Jenis Vaksin',
+        'jumlahObat':'Jumlah Obat', 'bulan':'Bulan', 'tahun':'Tahun'
+      };
+      exportToExcel(list, columns, 'Gigitan Cobra', 'Cobra');
+    });
+    document.getElementById('btnExportExcelDifteri').addEventListener('click', function(){
+      var list = state.data.Difteri || [];
+      var columns = {
+        'tanggal':'Tanggal', 'namaPasien':'Nama', 'noKtp':'No.KTP', 'noReg':'No.Reg',
+        'noTelpon':'No.Telp', 'tglLahir':'Tgl Lahir', 'umur':'Umur', 'alamatKtp':'Alamat',
+        'puskesmasRujukan':'Puskesmas', 'tglKeRS':'Tgl ke RS', 'tglVaksin':'Tgl Vaksin',
+        'keterangan':'Keterangan', 'jumlahObat':'Jumlah Obat', 'bulan':'Bulan', 'tahun':'Tahun'
+      };
+      exportToExcel(list, columns, 'Difteri', 'Difteri');
     });
 
     // Buka tab pertama
