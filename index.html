@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rekap Obat Program</title>
 <style>
-  /* ===== CSS SAMA SEPERTI SEBELUMNYA (tidak diubah) ===== */
+  /* ===== CSS SAMA ===== */
   :root{
     --primary:#0f6b52; --primary-dark:#0a4d3a; --bg:#f4f7f6; --card:#ffffff;
     --border:#dbe4e1; --text:#1f2d29; --muted:#6b7a75; --danger:#c0392b; --warn:#e08e0b;
@@ -122,6 +122,20 @@
   .mobile-menu-toggle{display:none;background:rgba(255,255,255,.15);color:#fff;border:none;border-radius:6px;padding:6px 12px;font-size:18px;cursor:pointer;}
   .sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:40;}
   .sidebar-backdrop.active{display:block;}
+
+  /* ===== PRINT SURAT ===== */
+  @media print {
+    body * { visibility: hidden; }
+    #suratPrintArea, #suratPrintArea * { visibility: visible; }
+    #suratPrintArea {
+      position: absolute; left: 0; top: 0; width: 100%; padding: 40px 50px; box-sizing: border-box;
+    }
+    .no-print { display: none !important; }
+    @page {
+      size: F4 portrait;
+      margin: 1.5cm 1.5cm;
+    }
+  }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
@@ -330,7 +344,7 @@
     </div>
 
     <!-- ========================================================== -->
-    <!-- HYPERHEP PASIEN -->
+    <!-- HYPERHEP PASIEN – DENGAN FIELD TAMBAHAN UNTUK SURAT -->
     <!-- ========================================================== -->
     <div id="tab-hyperhep-pasien" class="tab">
       <div class="card"><h2>Input Data Pasien Hyperhep (Bayi)</h2>
@@ -342,13 +356,31 @@
             <div class="field"><label class="required">Nama Bayi</label><input type="text" name="namaBayi" id="namaBayiHyperhep" placeholder="By. ..."></div>
             <div class="field"><label>Nama Bapak</label><input type="text" name="namaBapak"></div>
             <div class="field"><label>No. HP</label><input type="text" name="noHp"></div>
-            <div class="field" style="grid-column:1/-1;"><label>Alamat</label><textarea name="alamatLengkap"></textarea></div>
+            <div class="field" style="grid-column:1/-1;"><label>Alamat Lengkap</label><textarea name="alamatLengkap"></textarea></div>
             <div class="field"><label>NIK Ibu</label><input type="text" name="nikIbu" maxlength="16"></div>
             <div class="field"><label>Tempat Lahir Ibu</label><input type="text" name="tempatLahirIbu"></div>
             <div class="field"><label>Tgl Lahir Ibu</label><input type="date" name="tglLahirIbu" id="tglLahirIbuHyperhep"></div>
             <div class="field"><label>Umur Ibu (otomatis)</label><input type="text" name="umurIbu" id="umurIbuHyperhep" readonly></div>
             <div class="field"><label>Jml Anak</label><input type="number" name="jumlahAnak" min="1"></div>
           </div>
+          <!-- ===== FIELD TAMBAHAN UNTUK SURAT ===== -->
+          <fieldset><legend>Data Tambahan untuk Surat Pernyataan HBIG</legend>
+            <div class="grid">
+              <div class="field"><label>Hubungan dengan Bayi</label>
+                <select name="hubungan">
+                  <option value="Ibu">Ibu</option>
+                  <option value="Ayah">Ayah</option>
+                  <option value="Keluarga">Keluarga</option>
+                </select>
+              </div>
+              <div class="field"><label>Tempat Lahir Bayi</label><input type="text" name="tempatLahirBayi" placeholder="cth: RS Tenggarong"></div>
+              <div class="field"><label>Tempat Skrining (RS/PKM)</label><input type="text" name="tempatSkrining" placeholder="cth: RS A.W. Sjahranie"></div>
+              <div class="field"><label>Pihak RS/Fasyankes</label><input type="text" name="pihakFasyankes" placeholder="Nama petugas/fasyankes"></div>
+              <div class="field"><label>Tanggal Surat</label><input type="date" name="tanggalSurat" id="tanggalSuratHyperhep"></div>
+              <div class="field"><label>Nama Penerima (yang menandatangani)</label><input type="text" name="namaPenerima" id="namaPenerimaHyperhep" placeholder="Isi dengan nama Ibu/Bapak"></div>
+            </div>
+          </fieldset>
+          <!-------------------------------------------->
           <fieldset><legend>Tgl &amp; Jam</legend>
             <div class="field"><label>Tgl/Jam Melahirkan</label><div class="tgljam"><input type="date" name="tglMelahirkan"><input type="time" name="jamMelahirkan"></div></div>
             <div class="field"><label>Tgl/Jam HBIG</label><div class="tgljam"><input type="date" name="tglHBIG"><input type="time" name="jamHBIG"></div></div>
@@ -361,7 +393,10 @@
             </div>
           </fieldset>
           <p class="info-line">💉 Jumlah vial Hyperhep terpakai: <strong>1 vial (otomatis)</strong></p>
-          <div class="actions"><button type="submit" class="btn btn-primary" id="btnSimpanHyperhepPasien">💾 Simpan</button><button type="reset" class="btn btn-secondary">Bersihkan</button></div>
+          <div class="actions">
+            <button type="submit" class="btn btn-primary" id="btnSimpanHyperhepPasien">💾 Simpan</button>
+            <button type="reset" class="btn btn-secondary">Bersihkan</button>
+          </div>
         </form>
       </div>
     </div>
@@ -691,7 +726,7 @@
 
 <script>
 // =================================================================
-// JAVASCRIPT LENGKAP – DENGAN PRINT BERDASARKAN FILTER
+// JAVASCRIPT LENGKAP – SEMUA PROGRAM + SURAT HYPERHEP
 // =================================================================
 (function(){
   "use strict";
@@ -824,7 +859,7 @@
   }
 
   // =================================================================
-  // EXPORT EXCEL & PRINT (PRINT MENGGUNAKAN DATA FILTER)
+  // EXPORT EXCEL
   // =================================================================
   function exportToExcel(data, columns, programName, sheetName) {
     if (!data || data.length === 0) { alert('Tidak ada data.'); return; }
@@ -856,6 +891,9 @@
     XLSX.writeFile(wb, 'Laporan_' + programName + '_' + new Date().toISOString().slice(0,10) + '.xlsx');
   }
 
+  // =================================================================
+  // PRINT LAPORAN (BERDASARKAN FILTER)
+  // =================================================================
   function printReport(data, columns, programName) {
     if (!data || data.length === 0) {
       alert('Tidak ada data untuk dicetak.');
@@ -888,50 +926,85 @@
   }
 
   // =================================================================
-  // NAVIGASI SIDEBAR
+  // CETAK SURAT PERNYATAAN HBIG (HYPERHEP) – F4 PORTRAIT
   // =================================================================
-  function initSidebarNavigation(){
-    document.querySelectorAll('.sidebar button[data-program]').forEach(function(btn){
-      btn.addEventListener('click', function(){
-        var program = btn.dataset.program;
-        document.querySelectorAll('.sidebar .sub-group').forEach(function(g){ g.classList.remove('open'); });
-        var targetGroup = document.querySelector('.sidebar .sub-group[data-parent="' + program + '"]');
-        if (targetGroup) { targetGroup.classList.add('open'); var firstSub = targetGroup.querySelector('.sub-item'); if (firstSub) firstSub.click(); }
-        document.querySelectorAll('.sidebar button[data-program]').forEach(function(b){ b.classList.remove('active'); });
-        btn.classList.add('active');
-        closeMobileSidebar();
-      });
-    });
-    document.querySelectorAll('.sidebar .sub-item, .sidebar button[data-tab="setting"]').forEach(function(btn){
-      btn.addEventListener('click', function(){
-        var tabId = btn.dataset.tab;
-        if (!tabId) return;
-        document.querySelectorAll('.sidebar .sub-item, .sidebar button[data-tab="setting"]').forEach(function(b){ b.classList.remove('active'); });
-        btn.classList.add('active');
-        document.querySelectorAll('.main-content .tab').forEach(function(t){ t.classList.remove('active'); t.style.display = 'none'; });
-        var target = document.getElementById('tab-' + tabId);
-        if (target) { target.style.display = 'block'; target.classList.add('active'); }
-        onTabOpened(tabId);
-        closeMobileSidebar();
-      });
-    });
-    document.getElementById('btnGoHome').addEventListener('click', function(){
-      document.querySelectorAll('.sidebar button[data-program]').forEach(function(b){ b.classList.remove('active'); });
-      var firstProgram = document.querySelector('.sidebar button[data-program]');
-      if (firstProgram) firstProgram.click();
-    });
-    var sidebar = document.getElementById('sidebar');
-    var backdrop = document.getElementById('sidebarBackdrop');
-    document.getElementById('mobileMenuToggle').addEventListener('click', function(){
-      sidebar.classList.toggle('open');
-      backdrop.classList.toggle('active');
-    });
-    backdrop.addEventListener('click', function(){ sidebar.classList.remove('open'); backdrop.classList.remove('active'); });
-    function closeMobileSidebar(){ sidebar.classList.remove('open'); backdrop.classList.remove('active'); }
+  function printSuratHyperhep(item) {
+    if (!item) {
+      alert('Data tidak ditemukan.');
+      return;
+    }
+    function v(key) {
+      var val = item[key];
+      return (val !== undefined && val !== null && val !== '') ? val : '........';
+    }
+
+    var hubungan = v('hubungan');
+    var namaPemberi = (hubungan === 'Ibu') ? v('namaIbu') : (hubungan === 'Ayah') ? v('namaBapak') : v('namaIbu') + ' / ' + v('namaBapak');
+    var tglLahirPemberi = v('tglLahirIbu');
+    var tempatLahirPemberi = v('tempatLahirIbu');
+    var alamatPemberi = v('alamatLengkap');
+    var noHp = v('noHp');
+    var namaBayi = v('namaBayi');
+    var tglLahirBayi = v('tglMelahirkan');
+    var tempatLahirBayi = v('tempatLahirBayi');
+    var alamatBayi = v('alamatLengkap');
+    var namaIbuBayi = v('namaIbu');
+    var nikIbu = v('nikIbu');
+    var skriningAwal = v('skriningAwal');
+    var tempatSkrining = v('tempatSkrining');
+    var pihakFasyankes = v('pihakFasyankes');
+    var tanggalSurat = v('tanggalSurat') || new Date().toISOString().slice(0,10);
+    var namaPenerima = v('namaPenerima') || v('namaIbu');
+
+    var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Surat Pernyataan HBIG</title>';
+    html += '<style>' +
+      'body { font-family: Times New Roman, serif; margin: 40px 50px; font-size: 12pt; }' +
+      '.judul { text-align: center; font-weight: bold; font-size: 14pt; text-decoration: underline; margin-bottom: 20pt; }' +
+      '.konten { line-height: 1.8; }' +
+      '.field { display: flex; margin-bottom: 6pt; }' +
+      '.label { width: 140pt; flex-shrink: 0; }' +
+      '.value { border-bottom: 1px solid #000; padding-left: 6pt; flex: 1; }' +
+      '.tandatangan { display: flex; justify-content: space-between; margin-top: 30pt; }' +
+      '.ttd { text-align: center; width: 45%; }' +
+      '.ttd .garis { border-top: 1px solid #000; margin-top: 40pt; padding-top: 6pt; }' +
+      '.catatan { margin-top: 25pt; font-size: 11pt; border-top: 1px solid #000; padding-top: 10pt; }' +
+      '@page { size: F4 portrait; margin: 1.5cm 1.5cm; }' +
+      '@media print { body { margin: 0; } }' +
+    '</style></head><body>';
+
+    html += '<div class="judul">SURAT PERNYATAAN PENGGUNAAN VAKSIN HBIG</div>';
+    html += '<div class="konten">';
+    html += '<div class="field"><span class="label">Nama</span><span class="value">' + escapeHtml(namaPemberi) + '</span></div>';
+    html += '<div class="field"><span class="label">Tempat/Tgl lahir</span><span class="value">' + escapeHtml(tempatLahirPemberi) + ', ' + escapeHtml(tglLahirPemberi) + '</span></div>';
+    html += '<div class="field"><span class="label">Alamat</span><span class="value">' + escapeHtml(alamatPemberi) + '</span></div>';
+    html += '<div class="field"><span class="label">Nomor HP/telephone</span><span class="value">' + escapeHtml(noHp) + '</span></div>';
+    html += '<p style="margin-top:12pt;">Dengan ini menyatakan bahwa saya selaku (<strong>' + escapeHtml(hubungan) + '</strong>)<br>' +
+            'bahwa telah menerima Hepatitis B Immunoglobin (HBIG) <strong>tanpa di pungut biaya/gratis</strong>, yang akan di pergunakan untuk bayi :</p>';
+    html += '<div class="field"><span class="label">Nama Bayi</span><span class="value">' + escapeHtml(namaBayi) + '</span></div>';
+    html += '<div class="field"><span class="label">Tempat/Tgl Lahir</span><span class="value">' + escapeHtml(tempatLahirBayi) + ', ' + escapeHtml(tglLahirBayi) + '</span></div>';
+    html += '<div class="field"><span class="label">Alamat</span><span class="value">' + escapeHtml(alamatBayi) + '</span></div>';
+    html += '<div class="field"><span class="label">Nama Ibu Bayi</span><span class="value">' + escapeHtml(namaIbuBayi) + '</span></div>';
+    html += '<div class="field"><span class="label">NIK KTP Ibu Bayi</span><span class="value">' + escapeHtml(nikIbu) + '</span></div>';
+    html += '<div class="field"><span class="label">Skrining awal</span><span class="value">' + escapeHtml(skriningAwal) + ' &nbsp; ( ' + escapeHtml(tempatSkrining) + ' )</span></div>';
+    html += '<p style="margin-top:12pt;">Demikian surat pernyataan ini saya buat dengan sebenar-benarnya, tanpa ada paksaan dari unsur manapun. Kami ucapkan terima kasih atas perhatiannya.</p>';
+    html += '<div class="tandatangan">';
+    html += '<div class="ttd">Pihak Rumah Sakit/Fasyankes Tenggarong, ' + escapeHtml(tanggalSurat) + '<br><br><br><div class="garis">( ' + escapeHtml(pihakFasyankes) + ' )</div></div>';
+    html += '<div class="ttd">Yang menerima<br><br><br><div class="garis">( ' + escapeHtml(namaPenerima) + ' )</div></div>';
+    html += '</div>';
+    html += '<div class="catatan"><strong>Catatan :</strong><br>' +
+            'Syarat pemberian HBIG anak/pasien agar di vaksin kembali sesuai jadwal imunisasi di posyandu/puskesmas terdekat, dan pada <strong>umur 9-12 bulan</strong> setelah vaksin campak, anak(pasien) <strong>diperiksa kembali HBsAgnya di puskesmas terdekat.</strong></div>';
+    html += '</div></body></html>';
+
+    var win = window.open('', '_blank', 'width=800,height=600');
+    if (!win) { alert('Pop-up diblokir. Izinkan pop-up untuk mencetak surat.'); return; }
+    win.document.write(html);
+    win.document.close();
+    win.focus();
+    win.print();
   }
 
   // =================================================================
-  // BADGE UNTUK HASIL
+  // BADGE
   // =================================================================
   function badgeHasil(hasil){
     if (!hasil) return '';
@@ -943,8 +1016,10 @@
   }
 
   // =================================================================
-  // RENDER & FILTER MALARIA (DENGAN MENYIMPAN HASIL FILTER)
+  // RENDER & FILTER UNTUK SETIAP PROGRAM
   // =================================================================
+
+  // ---- MALARIA ----
   function renderLaporan(list){
     var tbody = document.getElementById('bodyLaporan');
     var empty = document.getElementById('emptyState');
@@ -1014,9 +1089,7 @@
     });
   }
 
-  // =================================================================
-  // MALARIA LAB
-  // =================================================================
+  // ---- MALARIA LAB ----
   function renderMalariaLabLaporan(list){
     var tbody = document.getElementById('bodyMalariaLabLaporan');
     var empty = document.getElementById('emptyMalariaLabState');
@@ -1089,9 +1162,7 @@
     });
   }
 
-  // =================================================================
-  // HYPERHEP
-  // =================================================================
+  // ---- HYPERHEP STOK ----
   function renderStokRiwayat(list){
     var tbody = document.getElementById('bodyStokRiwayat');
     var empty = document.getElementById('emptyStokState');
@@ -1111,6 +1182,28 @@
       tbody.appendChild(tr);
     });
   }
+
+  function refreshHyperhepStok(){
+    showMsg('msgHyperhepStok', 'Memuat ulang stok...', 'info');
+    getDataWithCache('HyperhepStok', true, function(errStok, stokData){
+      if (errStok) { showMsg('msgHyperhepStok', 'Gagal stok: ' + errStok, 'err'); return; }
+      getDataWithCache('HyperhepPasien', true, function(errPasien, pasienData){
+        if (errPasien) { showMsg('msgHyperhepStok', 'Gagal pasien: ' + errPasien, 'err'); return; }
+        var masuk = 0; stokData.forEach(function(r){ masuk += parseFloat(r.jumlahVialMasuk) || 0; });
+        var terpakai = pasienData.length;
+        var sisa = masuk - terpakai;
+        document.getElementById('stokMasukTotal').textContent = masuk;
+        document.getElementById('stokTerpakaiTotal').textContent = terpakai;
+        document.getElementById('stokSisaTotal').textContent = sisa;
+        document.getElementById('stokSisaBox').classList.toggle('warn', sisa <= 5);
+        renderStokRiwayat(stokData);
+        hideMsg('msgHyperhepStok');
+      });
+    });
+  }
+
+  // ---- HYPERHEP PASIEN ----
+  var userEditedNamaBayi = false;
 
   function updateInfoSisaStok(){
     var infoEl = document.getElementById('infoSisaStok');
@@ -1150,7 +1243,10 @@
         '<td>' + escapeHtml(item.tglHBIG) + ' ' + escapeHtml(item.jamHBIG) + '</td>' +
         '<td>' + escapeHtml(item.tglHB0) + ' ' + escapeHtml(item.jamHB0) + '</td>' +
         '<td>' + escapeHtml(item.skriningAwal) + '</td>' +
-        '<td><button class="btn btn-secondary note-btn" data-idx="' + idx + '">📋</button></td>';
+        '<td>' +
+          '<button class="btn btn-secondary note-btn" data-idx="' + idx + '" title="Catatan">📋</button> ' +
+          '<button class="btn btn-secondary surat-btn" data-idx="' + idx + '" title="Cetak Surat Pernyataan">📄</button>' +
+        '</td>';
       tbody.appendChild(tr);
     });
     tbody.querySelectorAll('.note-btn').forEach(function(btn){
@@ -1158,6 +1254,13 @@
         var idx = parseInt(btn.dataset.idx);
         var item = list[idx];
         openNoteModal(item, buildCatatanTextHyperhep, 'Hyperhep', 'namaBayi');
+      });
+    });
+    tbody.querySelectorAll('.surat-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var idx = parseInt(btn.dataset.idx);
+        var item = list[idx];
+        printSuratHyperhep(item);
       });
     });
   }
@@ -1201,28 +1304,7 @@
     });
   }
 
-  function refreshHyperhepStok(){
-    showMsg('msgHyperhepStok', 'Memuat ulang stok...', 'info');
-    getDataWithCache('HyperhepStok', true, function(errStok, stokData){
-      if (errStok) { showMsg('msgHyperhepStok', 'Gagal stok: ' + errStok, 'err'); return; }
-      getDataWithCache('HyperhepPasien', true, function(errPasien, pasienData){
-        if (errPasien) { showMsg('msgHyperhepStok', 'Gagal pasien: ' + errPasien, 'err'); return; }
-        var masuk = 0; stokData.forEach(function(r){ masuk += parseFloat(r.jumlahVialMasuk) || 0; });
-        var terpakai = pasienData.length;
-        var sisa = masuk - terpakai;
-        document.getElementById('stokMasukTotal').textContent = masuk;
-        document.getElementById('stokTerpakaiTotal').textContent = terpakai;
-        document.getElementById('stokSisaTotal').textContent = sisa;
-        document.getElementById('stokSisaBox').classList.toggle('warn', sisa <= 5);
-        renderStokRiwayat(stokData);
-        hideMsg('msgHyperhepStok');
-      });
-    });
-  }
-
-  // =================================================================
-  // TUBERKULIN
-  // =================================================================
+  // ---- TUBERKULIN ----
   function renderTuberkulinLaporan(list){
     var tbody = document.getElementById('bodyTuberkulinLaporan');
     var empty = document.getElementById('emptyTuberkulinState');
@@ -1287,9 +1369,7 @@
     });
   }
 
-  // =================================================================
-  // RABIES
-  // =================================================================
+  // ---- RABIES ----
   function renderStokRiwayatRabies(list){
     var tbody = document.getElementById('bodyStokRiwayatRabies');
     var empty = document.getElementById('emptyStokStateRabies');
@@ -1425,9 +1505,7 @@
     });
   }
 
-  // =================================================================
-  // SUSU STUNTING
-  // =================================================================
+  // ---- SUSU STUNTING ----
   function renderSusuLaporan(list){
     var tbody = document.getElementById('bodySusuLaporan');
     var empty = document.getElementById('emptySusuState');
@@ -1500,9 +1578,7 @@
     });
   }
 
-  // =================================================================
-  // COBRA
-  // =================================================================
+  // ---- COBRA ----
   function renderCobraLaporan(list){
     var tbody = document.getElementById('bodyCobraLaporan');
     var empty = document.getElementById('emptyCobraState');
@@ -1580,9 +1656,7 @@
     });
   }
 
-  // =================================================================
-  // DIFTERI
-  // =================================================================
+  // ---- DIFTERI ----
   function renderDifteriLaporan(list){
     var tbody = document.getElementById('bodyDifteriLaporan');
     var empty = document.getElementById('emptyDifteriState');
@@ -1656,7 +1730,7 @@
   }
 
   // =================================================================
-  // FUNGSI BUILDER CATATAN (NOTE) – tetap sama
+  // FUNGSI BUILDER CATATAN (NOTE)
   // =================================================================
   function buildCatatanTextMalaria(item) {
     function v(key){ return (item[key]!==undefined && item[key]!==null && item[key]!=='') ? item[key] : '-'; }
@@ -1951,6 +2025,7 @@
       if (tglLahir.value) umur.value = hitungUmur(tglLahir.value);
     }
   }
+
   function initAutoMalariaLab() {
     var tglLahir = document.getElementById('tglLahirLab');
     var usia = document.getElementById('usiaLab');
@@ -1974,6 +2049,7 @@
       }
     }
   }
+
   function initAutoHyperhep() {
     var tglLahirIbu = document.getElementById('tglLahirIbuHyperhep');
     var umurIbu = document.getElementById('umurIbuHyperhep');
@@ -1982,6 +2058,7 @@
       if (tglLahirIbu.value) umurIbu.value = hitungUmur(tglLahirIbu.value);
     }
   }
+
   function initAutoTuberkulin() {
     var tglLahir = document.getElementById('tglLahirTB');
     var umur = document.getElementById('umurTB');
@@ -2005,6 +2082,7 @@
       }
     }
   }
+
   function initAutoRabies() {
     var tglLahir = document.getElementById('tglLahirRabies');
     var umur = document.getElementById('umurRabies');
@@ -2028,6 +2106,7 @@
       }
     }
   }
+
   function initAutoSusu() {
     var tglLahir = document.getElementById('tglLahirSusu');
     var umur = document.getElementById('umurSusu');
@@ -2051,6 +2130,7 @@
       }
     }
   }
+
   function initAutoCobra() {
     var tglLahir = document.getElementById('tglLahirCobra');
     var umur = document.getElementById('umurCobra');
@@ -2074,6 +2154,7 @@
       }
     }
   }
+
   function initAutoDifteri() {
     var tglLahir = document.getElementById('tglLahirDifteri');
     var umur = document.getElementById('umurDifteri');
@@ -2099,8 +2180,10 @@
   }
 
   // =================================================================
-  // FORM SUBMIT UNTUK SEMUA PROGRAM (sama seperti sebelumnya)
+  // FORM SUBMIT UNTUK SEMUA PROGRAM
   // =================================================================
+
+  // ---- MALARIA ----
   function initFormMalaria(){
     var form = document.getElementById('formMalaria');
     if (!form) return;
@@ -2124,6 +2207,7 @@
     });
   }
 
+  // ---- MALARIA LAB ----
   function initFormMalariaLab(){
     var form = document.getElementById('formMalariaLab');
     if (!form) return;
@@ -2147,6 +2231,7 @@
     });
   }
 
+  // ---- HYPERHEP STOK ----
   function initFormHyperhepStok(){
     var form = document.getElementById('formHyperhepStok');
     if (!form) return;
@@ -2170,24 +2255,54 @@
     });
   }
 
+  // ---- HYPERHEP PASIEN ----
   function initFormHyperhepPasien(){
     var form = document.getElementById('formHyperhepPasien');
     if (!form) return;
+
+    // Set default tanggal surat
+    var tglSurat = document.getElementById('tanggalSuratHyperhep');
+    if (tglSurat && !tglSurat.value) {
+      tglSurat.value = new Date().toISOString().slice(0,10);
+    }
+
+    // Auto-fill nama penerima dari nama Ibu
     var namaIbu = document.getElementById('namaIbuHyperhep');
-    var namaBayi = document.getElementById('namaBayiHyperhep');
-    var userEdited = false;
-    if (namaIbu && namaBayi) {
-      namaBayi.addEventListener('input', function(){ userEdited = true; });
+    var namaPenerima = document.getElementById('namaPenerimaHyperhep');
+    if (namaIbu && namaPenerima) {
       namaIbu.addEventListener('input', function(){
-        if (!userEdited){ namaBayi.value = namaIbu.value ? ('By. ' + namaIbu.value) : ''; }
+        if (!namaPenerima.value) {
+          namaPenerima.value = namaIbu.value;
+        }
       });
     }
+
+    // Auto umur ibu
+    var tglLahirIbu = document.getElementById('tglLahirIbuHyperhep');
+    var umurIbu = document.getElementById('umurIbuHyperhep');
+    if (tglLahirIbu && umurIbu) {
+      tglLahirIbu.addEventListener('change', function(){ umurIbu.value = hitungUmur(tglLahirIbu.value); });
+      if (tglLahirIbu.value) umurIbu.value = hitungUmur(tglLahirIbu.value);
+    }
+
+    // Auto nama bayi
+    var namaBayi = document.getElementById('namaBayiHyperhep');
+    if (namaIbu && namaBayi) {
+      namaBayi.addEventListener('input', function(){ userEditedNamaBayi = true; });
+      namaIbu.addEventListener('input', function(){
+        if (!userEditedNamaBayi && namaIbu.value) {
+          namaBayi.value = 'By. ' + namaIbu.value;
+        }
+      });
+    }
+
     form.addEventListener('submit', function(ev){
       ev.preventDefault();
       hideMsg('msgHyperhepPasien');
       var payload = serializeForm(form);
       if (!payload.namaIbu || !payload.namaBayi) {
-        showMsg('msgHyperhepPasien', 'Nama Ibu dan Nama Bayi wajib.', 'err'); return;
+        showMsg('msgHyperhepPasien', 'Nama Ibu dan Nama Bayi wajib.', 'err');
+        return;
       }
       payload.jumlahVialHBIG = 1;
       if (!state.webAppUrl){ showMsg('msgHyperhepPasien', 'URL belum diatur.', 'err'); return; }
@@ -2195,14 +2310,23 @@
       btn.disabled = true; btn.textContent = 'Menyimpan...';
       postToSheet('HyperhepPasien', payload)
         .then(function(json){
-          if (json.status === 'success'){ showMsg('msgHyperhepPasien', 'Data pasien berhasil.', 'ok'); form.reset(); userEdited = false; state.cache.HyperhepPasien = null; updateInfoSisaStok(); }
-          else { showMsg('msgHyperhepPasien', 'Gagal: ' + (json.message||''), 'err'); }
+          if (json.status === 'success'){
+            showMsg('msgHyperhepPasien', 'Data pasien berhasil.', 'ok');
+            form.reset();
+            userEditedNamaBayi = false;
+            document.getElementById('tanggalSuratHyperhep').value = new Date().toISOString().slice(0,10);
+            state.cache.HyperhepPasien = null;
+            updateInfoSisaStok();
+          } else {
+            showMsg('msgHyperhepPasien', 'Gagal: ' + (json.message||''), 'err');
+          }
         })
         .catch(function(err){ showMsg('msgHyperhepPasien', 'Gagal: ' + err.message, 'err'); })
         .finally(function(){ btn.disabled = false; btn.textContent = '💾 Simpan Data Pasien'; });
     });
   }
 
+  // ---- TUBERKULIN ----
   function initFormTuberkulin(){
     var form = document.getElementById('formTuberkulin');
     if (!form) return;
@@ -2226,6 +2350,7 @@
     });
   }
 
+  // ---- RABIES STOK ----
   function initFormRabiesStok(){
     var form = document.getElementById('formRabiesStok');
     if (!form) return;
@@ -2249,6 +2374,7 @@
     });
   }
 
+  // ---- RABIES PASIEN ----
   function initFormRabiesPasien(){
     var form = document.getElementById('formRabiesPasien');
     if (!form) return;
@@ -2272,6 +2398,7 @@
     });
   }
 
+  // ---- SUSU ----
   function initFormSusu(){
     var form = document.getElementById('formSusu');
     if (!form) return;
@@ -2295,6 +2422,7 @@
     });
   }
 
+  // ---- COBRA ----
   function initFormCobra(){
     var form = document.getElementById('formCobra');
     if (!form) return;
@@ -2318,6 +2446,7 @@
     });
   }
 
+  // ---- DIFTERI ----
   function initFormDifteri(){
     var form = document.getElementById('formDifteri');
     if (!form) return;
@@ -2342,7 +2471,7 @@
   }
 
   // =================================================================
-  // TAB OPENED (sama seperti sebelumnya)
+  // TAB OPENED
   // =================================================================
   function onTabOpened(tabId){
     if (tabId === 'malaria-laporan') {
@@ -2383,7 +2512,14 @@
         });
       });
     }
-    if (tabId === 'hyperhep-pasien') { updateInfoSisaStok(); }
+    if (tabId === 'hyperhep-pasien') {
+      updateInfoSisaStok();
+      // Set default tanggal surat
+      var tglSurat = document.getElementById('tanggalSuratHyperhep');
+      if (tglSurat && !tglSurat.value) {
+        tglSurat.value = new Date().toISOString().slice(0,10);
+      }
+    }
     if (tabId === 'hyperhep-laporan') {
       showMsg('msgHyperhepLaporan', 'Memuat data...', 'info');
       getDataWithCache('HyperhepPasien', false, function(err, data){
@@ -2474,7 +2610,7 @@
     initSettings();
     initModal();
 
-    // Otomatisasi umur
+    // Otomatisasi
     initAutoMalaria();
     initAutoMalariaLab();
     initAutoHyperhep();
@@ -2576,11 +2712,10 @@
       exportToExcel(list, columns, 'Difteri', 'Difteri');
     });
 
-    // ===== PRINT PREVIEW – MENGGUNAKAN DATA FILTER =====
+    // Print Preview
     document.querySelectorAll('.print-btn').forEach(function(btn) {
       btn.addEventListener('click', function() {
         var program = btn.dataset.program;
-        // Gunakan data hasil filter jika ada, jika tidak gunakan data mentah
         var data = state.filteredData[program] || state.data[program] || [];
         var columns = getColumnsForProgram(program);
         if (columns && data.length > 0) {
@@ -2613,6 +2748,49 @@
       var firstSub = document.querySelector('.sidebar .sub-group.open .sub-item');
       if (firstSub) firstSub.click();
     }
+  }
+
+  // =================================================================
+  // NAVIGASI SIDEBAR (dipindahkan ke atas agar tidak error)
+  // =================================================================
+  function initSidebarNavigation(){
+    document.querySelectorAll('.sidebar button[data-program]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var program = btn.dataset.program;
+        document.querySelectorAll('.sidebar .sub-group').forEach(function(g){ g.classList.remove('open'); });
+        var targetGroup = document.querySelector('.sidebar .sub-group[data-parent="' + program + '"]');
+        if (targetGroup) { targetGroup.classList.add('open'); var firstSub = targetGroup.querySelector('.sub-item'); if (firstSub) firstSub.click(); }
+        document.querySelectorAll('.sidebar button[data-program]').forEach(function(b){ b.classList.remove('active'); });
+        btn.classList.add('active');
+        closeMobileSidebar();
+      });
+    });
+    document.querySelectorAll('.sidebar .sub-item, .sidebar button[data-tab="setting"]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var tabId = btn.dataset.tab;
+        if (!tabId) return;
+        document.querySelectorAll('.sidebar .sub-item, .sidebar button[data-tab="setting"]').forEach(function(b){ b.classList.remove('active'); });
+        btn.classList.add('active');
+        document.querySelectorAll('.main-content .tab').forEach(function(t){ t.classList.remove('active'); t.style.display = 'none'; });
+        var target = document.getElementById('tab-' + tabId);
+        if (target) { target.style.display = 'block'; target.classList.add('active'); }
+        onTabOpened(tabId);
+        closeMobileSidebar();
+      });
+    });
+    document.getElementById('btnGoHome').addEventListener('click', function(){
+      document.querySelectorAll('.sidebar button[data-program]').forEach(function(b){ b.classList.remove('active'); });
+      var firstProgram = document.querySelector('.sidebar button[data-program]');
+      if (firstProgram) firstProgram.click();
+    });
+    var sidebar = document.getElementById('sidebar');
+    var backdrop = document.getElementById('sidebarBackdrop');
+    document.getElementById('mobileMenuToggle').addEventListener('click', function(){
+      sidebar.classList.toggle('open');
+      backdrop.classList.toggle('active');
+    });
+    backdrop.addEventListener('click', function(){ sidebar.classList.remove('open'); backdrop.classList.remove('active'); });
+    function closeMobileSidebar(){ sidebar.classList.remove('open'); backdrop.classList.remove('active'); }
   }
 
   if (typeof document !== 'undefined') {
