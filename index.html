@@ -926,82 +926,127 @@
   }
 
   // =================================================================
-  // CETAK SURAT PERNYATAAN HBIG (HYPERHEP) – F4 PORTRAIT
-  // =================================================================
-  function printSuratHyperhep(item) {
-    if (!item) {
-      alert('Data tidak ditemukan.');
-      return;
-    }
-    function v(key) {
-      var val = item[key];
-      return (val !== undefined && val !== null && val !== '') ? val : '........';
-    }
-
-    var hubungan = v('hubungan');
-    var namaPemberi = (hubungan === 'Ibu') ? v('namaIbu') : (hubungan === 'Ayah') ? v('namaBapak') : v('namaIbu') + ' / ' + v('namaBapak');
-    var tglLahirPemberi = v('tglLahirIbu');
-    var tempatLahirPemberi = v('tempatLahirIbu');
-    var alamatPemberi = v('alamatLengkap');
-    var noHp = v('noHp');
-    var namaBayi = v('namaBayi');
-    var tglLahirBayi = v('tglMelahirkan');
-    var tempatLahirBayi = v('tempatLahirBayi');
-    var alamatBayi = v('alamatLengkap');
-    var namaIbuBayi = v('namaIbu');
-    var nikIbu = v('nikIbu');
-    var skriningAwal = v('skriningAwal');
-    var tempatSkrining = v('tempatSkrining');
-    var pihakFasyankes = v('pihakFasyankes');
-    var tanggalSurat = v('tanggalSurat') || new Date().toISOString().slice(0,10);
-    var namaPenerima = v('namaPenerima') || v('namaIbu');
-
-    var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Surat Pernyataan HBIG</title>';
-    html += '<style>' +
-      'body { font-family: Times New Roman, serif; margin: 40px 50px; font-size: 12pt; }' +
-      '.judul { text-align: center; font-weight: bold; font-size: 14pt; text-decoration: underline; margin-bottom: 20pt; }' +
-      '.konten { line-height: 1.8; }' +
-      '.field { display: flex; margin-bottom: 6pt; }' +
-      '.label { width: 140pt; flex-shrink: 0; }' +
-      '.value { border-bottom: 1px solid #000; padding-left: 6pt; flex: 1; }' +
-      '.tandatangan { display: flex; justify-content: space-between; margin-top: 30pt; }' +
-      '.ttd { text-align: center; width: 45%; }' +
-      '.ttd .garis { border-top: 1px solid #000; margin-top: 40pt; padding-top: 6pt; }' +
-      '.catatan { margin-top: 25pt; font-size: 11pt; border-top: 1px solid #000; padding-top: 10pt; }' +
-      '@page { size: F4 portrait; margin: 1.5cm 1.5cm; }' +
-      '@media print { body { margin: 0; } }' +
-    '</style></head><body>';
-
-    html += '<div class="judul">SURAT PERNYATAAN PENGGUNAAN VAKSIN HBIG</div>';
-    html += '<div class="konten">';
-    html += '<div class="field"><span class="label">Nama</span><span class="value">' + escapeHtml(namaPemberi) + '</span></div>';
-    html += '<div class="field"><span class="label">Tempat/Tgl lahir</span><span class="value">' + escapeHtml(tempatLahirPemberi) + ', ' + escapeHtml(tglLahirPemberi) + '</span></div>';
-    html += '<div class="field"><span class="label">Alamat</span><span class="value">' + escapeHtml(alamatPemberi) + '</span></div>';
-    html += '<div class="field"><span class="label">Nomor HP/telephone</span><span class="value">' + escapeHtml(noHp) + '</span></div>';
-    html += '<p style="margin-top:12pt;">Dengan ini menyatakan bahwa saya selaku (<strong>' + escapeHtml(hubungan) + '</strong>)<br>' +
-            'bahwa telah menerima Hepatitis B Immunoglobin (HBIG) <strong>tanpa di pungut biaya/gratis</strong>, yang akan di pergunakan untuk bayi :</p>';
-    html += '<div class="field"><span class="label">Nama Bayi</span><span class="value">' + escapeHtml(namaBayi) + '</span></div>';
-    html += '<div class="field"><span class="label">Tempat/Tgl Lahir</span><span class="value">' + escapeHtml(tempatLahirBayi) + ', ' + escapeHtml(tglLahirBayi) + '</span></div>';
-    html += '<div class="field"><span class="label">Alamat</span><span class="value">' + escapeHtml(alamatBayi) + '</span></div>';
-    html += '<div class="field"><span class="label">Nama Ibu Bayi</span><span class="value">' + escapeHtml(namaIbuBayi) + '</span></div>';
-    html += '<div class="field"><span class="label">NIK KTP Ibu Bayi</span><span class="value">' + escapeHtml(nikIbu) + '</span></div>';
-    html += '<div class="field"><span class="label">Skrining awal</span><span class="value">' + escapeHtml(skriningAwal) + ' &nbsp; ( ' + escapeHtml(tempatSkrining) + ' )</span></div>';
-    html += '<p style="margin-top:12pt;">Demikian surat pernyataan ini saya buat dengan sebenar-benarnya, tanpa ada paksaan dari unsur manapun. Kami ucapkan terima kasih atas perhatiannya.</p>';
-    html += '<div class="tandatangan">';
-    html += '<div class="ttd">Pihak Rumah Sakit/Fasyankes Tenggarong, ' + escapeHtml(tanggalSurat) + '<br><br><br><div class="garis">( ' + escapeHtml(pihakFasyankes) + ' )</div></div>';
-    html += '<div class="ttd">Yang menerima<br><br><br><div class="garis">( ' + escapeHtml(namaPenerima) + ' )</div></div>';
-    html += '</div>';
-    html += '<div class="catatan"><strong>Catatan :</strong><br>' +
-            'Syarat pemberian HBIG anak/pasien agar di vaksin kembali sesuai jadwal imunisasi di posyandu/puskesmas terdekat, dan pada <strong>umur 9-12 bulan</strong> setelah vaksin campak, anak(pasien) <strong>diperiksa kembali HBsAgnya di puskesmas terdekat.</strong></div>';
-    html += '</div></body></html>';
-
-    var win = window.open('', '_blank', 'width=800,height=600');
-    if (!win) { alert('Pop-up diblokir. Izinkan pop-up untuk mencetak surat.'); return; }
-    win.document.write(html);
-    win.document.close();
-    win.focus();
-    win.print();
+// CETAK SURAT PERNYATAAN HBIG (HYPERHEP) – F4 PORTRAIT + KOP RSUD
+// =================================================================
+function printSuratHyperhep(item) {
+  if (!item) {
+    alert('Data tidak ditemukan.');
+    return;
   }
+  function v(key) {
+    var val = item[key];
+    return (val !== undefined && val !== null && val !== '') ? val : '..................';
+  }
+
+  var hubungan = v('hubungan');
+  var namaPemberi = (hubungan === 'Ibu') ? v('namaIbu') : (hubungan === 'Ayah') ? v('namaBapak') : v('namaIbu') + ' / ' + v('namaBapak');
+  var tglLahirPemberi = v('tglLahirIbu');
+  var tempatLahirPemberi = v('tempatLahirIbu');
+  var alamatPemberi = v('alamatLengkap');
+  var noHp = v('noHp');
+  var namaBayi = v('namaBayi');
+  var tglLahirBayi = v('tglMelahirkan');
+  var tempatLahirBayi = v('tempatLahirBayi');
+  var alamatBayi = v('alamatLengkap');
+  var namaIbuBayi = v('namaIbu');
+  var nikIbu = v('nikIbu');
+  var skriningAwal = v('skriningAwal');
+  var tempatSkrining = v('tempatSkrining');
+  var pihakFasyankes = v('pihakFasyankes');
+  var tanggalSurat = v('tanggalSurat') || new Date().toISOString().slice(0,10);
+  var namaPenerima = v('namaPenerima') || v('namaIbu');
+
+  // Konversi tanggal ke format Indonesia (dd-mm-yyyy)
+  function formatTanggal(tgl) {
+    if (!tgl || tgl === '..................') return '..................';
+    var parts = tgl.split('-');
+    if (parts.length === 3) {
+      return parts[2] + '-' + parts[1] + '-' + parts[0];
+    }
+    return tgl;
+  }
+
+  var tglSuratFormatted = formatTanggal(tanggalSurat);
+  var tglLahirPemberiFormatted = formatTanggal(tglLahirPemberi);
+  var tglLahirBayiFormatted = formatTanggal(tglLahirBayi);
+
+  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Surat Pernyataan HBIG</title>';
+  html += '<style>' +
+    'body { font-family: Times New Roman, serif; margin: 1.8cm 1.8cm; font-size: 11pt; line-height: 1.4; }' +
+    '.kop { text-align: center; font-size: 12pt; font-weight: bold; margin-bottom: 2pt; }' +
+    '.kop-sub { text-align: center; font-size: 10pt; margin-bottom: 2pt; }' +
+    '.garis-kop { border-top: 2px solid #000; margin-bottom: 4pt; }' +
+    '.garis-kop-bawah { border-top: 1px solid #000; margin-bottom: 12pt; }' +
+    '.judul { text-align: center; font-weight: bold; font-size: 13pt; text-decoration: underline; margin-bottom: 12pt; }' +
+    '.field { display: flex; margin-bottom: 2pt; }' +
+    '.label { width: 130pt; flex-shrink: 0; }' +
+    '.value { border-bottom: 1px solid #000; padding-left: 4pt; flex: 1; }' +
+    '.value-dots { border-bottom: 1px solid #000; padding-left: 4pt; flex: 1; letter-spacing: 1pt; }' +
+    '.tandatangan { display: flex; justify-content: space-between; margin-top: 20pt; }' +
+    '.ttd { text-align: center; width: 45%; }' +
+    '.ttd .garis { border-top: 1px solid #000; margin-top: 30pt; padding-top: 4pt; }' +
+    '.catatan { margin-top: 12pt; font-size: 10pt; border-top: 1px solid #000; padding-top: 6pt; }' +
+    '.catatan strong { font-weight: bold; }' +
+    '@page { size: F4 portrait; margin: 1.5cm 1.5cm; }' +
+    '@media print { body { margin: 0; } }' +
+  '</style></head><body>';
+
+  // KOP SURAT
+  html += '<div class="kop">PEMERINTAH KABUPATEN KUTAI KARTANEGARA</div>';
+  html += '<div class="kop">RUMAH SAKIT UMUM DAERAH TENGGARONG</div>';
+  html += '<div class="kop-sub">Jalan ....... No. ....... Telp. ....... Kode Pos .......</div>';
+  html += '<div class="garis-kop"></div>';
+  html += '<div class="garis-kop-bawah"></div>';
+
+  html += '<div class="judul">SURAT PERNYATAAN PENGGUNAAN VAKSIN HBIG</div>';
+  html += '<div style="margin-top:4pt;">';
+
+  // Nama
+  html += '<div class="field"><span class="label">Nama</span><span class="value">' + escapeHtml(namaPemberi) + '</span></div>';
+  // Tempat/Tgl lahir
+  html += '<div class="field"><span class="label">Tempat/Tgl lahir</span><span class="value">' + escapeHtml(tempatLahirPemberi) + ', ' + escapeHtml(tglLahirPemberiFormatted) + '</span></div>';
+  // Alamat
+  html += '<div class="field"><span class="label">Alamat</span><span class="value">' + escapeHtml(alamatPemberi) + '</span></div>';
+  // Nomor HP/telephone
+  html += '<div class="field"><span class="label">Nomor HP/telephone</span><span class="value">' + escapeHtml(noHp) + '</span></div>';
+
+  html += '<p style="margin-top:8pt; margin-bottom:4pt;">Dengan ini menyatakan bahwa saya selaku (<strong>' + escapeHtml(hubungan) + '</strong>)<br>' +
+          'bahwa telah menerima Hepatitis B Immunoglobin (HBIG) <strong>tanpa di pungut biaya/gratis</strong>, yang akan di pergunakan untuk bayi :</p>';
+
+  // Nama Bayi
+  html += '<div class="field"><span class="label">Nama Bayi</span><span class="value">' + escapeHtml(namaBayi) + '</span></div>';
+  // Tempat/Tgl Lahir Bayi
+  html += '<div class="field"><span class="label">Tempat/Tgl Lahir</span><span class="value">' + escapeHtml(tempatLahirBayi) + ', ' + escapeHtml(tglLahirBayiFormatted) + '</span></div>';
+  // Alamat Bayi
+  html += '<div class="field"><span class="label">Alamat</span><span class="value">' + escapeHtml(alamatBayi) + '</span></div>';
+  // Nama Ibu Bayi
+  html += '<div class="field"><span class="label">Nama Ibu Bayi</span><span class="value">' + escapeHtml(namaIbuBayi) + '</span></div>';
+  // NIK KTP Ibu Bayi
+  html += '<div class="field"><span class="label">NIK KTP Ibu Bayi</span><span class="value">' + escapeHtml(nikIbu) + '</span></div>';
+  // Skrining awal
+  html += '<div class="field"><span class="label">Skrining awal</span><span class="value">' + escapeHtml(skriningAwal) + ' &nbsp; ( ' + escapeHtml(tempatSkrining) + ' )</span></div>';
+
+  html += '<p style="margin-top:10pt; margin-bottom:4pt;">Demikian surat pernyataan ini saya buat dengan sebenar-benarnya, tanpa ada paksaan dari unsur manapun. Kami ucapkan terima kasih atas perhatiannya.</p>';
+
+  // Tanda tangan
+  html += '<div class="tandatangan">';
+  html += '<div class="ttd">Pihak Rumah Sakit/Fasyankes Tenggarong, ' + escapeHtml(tglSuratFormatted) + '<br><br><br><div class="garis">( ' + escapeHtml(pihakFasyankes) + ' )</div></div>';
+  html += '<div class="ttd">Yang menerima<br><br><br><div class="garis">( ' + escapeHtml(namaPenerima) + ' )</div></div>';
+  html += '</div>';
+
+  // Catatan
+  html += '<div class="catatan"><strong>Catatan :</strong><br>' +
+          'Syarat pemberian HBIG anak/pasien agar di vaksin kembali sesuai jadwal imunisasi di posyandu/puskesmas terdekat, dan pada <strong>umur 9-12 bulan</strong> setelah vaksin campak, anak(pasien) <strong>diperiksa kembali HBsAgnya di puskesmas terdekat.</strong></div>';
+
+  html += '</div></body></html>';
+
+  var win = window.open('', '_blank', 'width=800,height=600');
+  if (!win) { alert('Pop-up diblokir. Izinkan pop-up untuk mencetak surat.'); return; }
+  win.document.write(html);
+  win.document.close();
+  win.focus();
+  win.print();
+}
 
   // =================================================================
   // BADGE
