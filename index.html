@@ -2494,18 +2494,28 @@
     });
   }
 
-  // ===== FUNGSI PEMBANTU UNTUK URUTKAN BULAN =====
-  function sortMonthKeys(keys) {
-    return keys.sort(function(a, b) {
+  // ===== FUNGSI UNTUK MENDAPATKAN SEMUA BULAN KRONOLOGIS =====
+  function getAllMonthKeys(data, dateField) {
+    var keys = new Set();
+    data.forEach(function(item) {
+      var dateVal = item[dateField];
+      if (!dateVal) return;
+      var bt = hitungBulanTahun(dateVal);
+      if (bt.tahun && bt.bulan) {
+        keys.add(bt.tahun + '-' + bt.bulan);
+      }
+    });
+    var keyArray = Array.from(keys);
+    // Urutkan berdasarkan tahun lalu bulan
+    keyArray.sort(function(a, b) {
       var partsA = a.split('-');
       var partsB = b.split('-');
       var tahunA = parseInt(partsA[0], 10);
       var tahunB = parseInt(partsB[0], 10);
       if (tahunA !== tahunB) return tahunA - tahunB;
-      var bulanA = NAMA_BULAN.indexOf(partsA[1]);
-      var bulanB = NAMA_BULAN.indexOf(partsB[1]);
-      return bulanA - bulanB;
+      return NAMA_BULAN.indexOf(partsA[1]) - NAMA_BULAN.indexOf(partsB[1]);
     });
+    return keyArray;
   }
 
   var chartConfigs = [];
@@ -2514,89 +2524,97 @@
   var malariaData = filterData(dataMap.Malaria.data, 'tglKejadian');
   var malariaGroup = groupDataByMonth(malariaData, 'tglKejadian', 'hasilMalaria');
   var malariaCats = getUniqueCategories(malariaData, 'hasilMalaria');
-  var malariaLabels = sortMonthKeys(Object.keys(malariaGroup));
+  var malariaAllKeys = getAllMonthKeys(malariaData, 'tglKejadian');
   var malariaDatasets = malariaCats.map(function(cat, idx) {
-    var vals = malariaLabels.map(function(key) { return malariaGroup[key].count[cat] || 0; });
+    var vals = malariaAllKeys.map(function(key) {
+      return (malariaGroup[key] && malariaGroup[key].count[cat]) ? malariaGroup[key].count[cat] : 0;
+    });
     return { label: cat, data: vals, borderColor: COLORS[idx % COLORS.length], backgroundColor: 'transparent', tension: 0.2, fill: false };
   });
-  chartConfigs.push({ id: 'chartMalaria', labels: malariaLabels, datasets: malariaDatasets });
+  chartConfigs.push({ id: 'chartMalaria', labels: malariaAllKeys, datasets: malariaDatasets });
 
   // ---- Malaria Lab ----
   var labData = filterData(dataMap.MalariaLab.data, 'tglSDdiperiksa');
   var labGroup = groupDataByMonth(labData, 'tglSDdiperiksa', 'hasilMikroskopis');
   var labCats = getUniqueCategories(labData, 'hasilMikroskopis');
-  var labLabels = sortMonthKeys(Object.keys(labGroup));
+  var labAllKeys = getAllMonthKeys(labData, 'tglSDdiperiksa');
   var labDatasets = labCats.map(function(cat, idx) {
-    var vals = labLabels.map(function(key) { return labGroup[key].count[cat] || 0; });
+    var vals = labAllKeys.map(function(key) {
+      return (labGroup[key] && labGroup[key].count[cat]) ? labGroup[key].count[cat] : 0;
+    });
     return { label: cat, data: vals, borderColor: COLORS[(idx+2) % COLORS.length], backgroundColor: 'transparent', tension: 0.2, fill: false };
   });
-  chartConfigs.push({ id: 'chartMalariaLab', labels: labLabels, datasets: labDatasets });
+  chartConfigs.push({ id: 'chartMalariaLab', labels: labAllKeys, datasets: labDatasets });
 
   // ---- Hyperhep ----
   var hyperData = filterData(dataMap.HyperhepPasien.data, 'tglMelahirkan');
   var hyperGroup = groupDataByMonth(hyperData, 'tglMelahirkan', 'skriningAwal');
   var hyperCats = getUniqueCategories(hyperData, 'skriningAwal');
-  var hyperLabels = sortMonthKeys(Object.keys(hyperGroup));
+  var hyperAllKeys = getAllMonthKeys(hyperData, 'tglMelahirkan');
   var hyperDatasets = hyperCats.map(function(cat, idx) {
-    var vals = hyperLabels.map(function(key) { return hyperGroup[key].count[cat] || 0; });
+    var vals = hyperAllKeys.map(function(key) {
+      return (hyperGroup[key] && hyperGroup[key].count[cat]) ? hyperGroup[key].count[cat] : 0;
+    });
     return { label: cat, data: vals, borderColor: COLORS[(idx+4) % COLORS.length], backgroundColor: 'transparent', tension: 0.2, fill: false };
   });
-  chartConfigs.push({ id: 'chartHyperhep', labels: hyperLabels, datasets: hyperDatasets });
+  chartConfigs.push({ id: 'chartHyperhep', labels: hyperAllKeys, datasets: hyperDatasets });
 
   // ---- Tuberkulin ----
   var tbData = filterData(dataMap.Tuberkulin.data, 'tglPemberianObat');
   var tbGroup = groupCountByMonth(tbData, 'tglPemberianObat');
-  var tbLabels = sortMonthKeys(Object.keys(tbGroup));
+  var tbAllKeys = getAllMonthKeys(tbData, 'tglPemberianObat');
   var tbDataset = [{
     label: 'Jumlah Pasien',
-    data: tbLabels.map(function(key) { return tbGroup[key].count; }),
+    data: tbAllKeys.map(function(key) { return tbGroup[key] ? tbGroup[key].count : 0; }),
     borderColor: COLORS[6], backgroundColor: 'transparent', tension: 0.2, fill: false
   }];
-  chartConfigs.push({ id: 'chartTuberkulin', labels: tbLabels, datasets: tbDataset });
+  chartConfigs.push({ id: 'chartTuberkulin', labels: tbAllKeys, datasets: tbDataset });
 
   // ---- Rabies ----
   var rabiesData = filterData(dataMap.RabiesPasien.data, 'tglKeRS');
   var rabiesGroup = groupDataByMonth(rabiesData, 'tglKeRS', 'jenisHewan');
   var rabiesCats = getUniqueCategories(rabiesData, 'jenisHewan');
-  var rabiesLabels = sortMonthKeys(Object.keys(rabiesGroup));
+  var rabiesAllKeys = getAllMonthKeys(rabiesData, 'tglKeRS');
   var rabiesDatasets = rabiesCats.map(function(cat, idx) {
-    var vals = rabiesLabels.map(function(key) { return rabiesGroup[key].count[cat] || 0; });
+    var vals = rabiesAllKeys.map(function(key) {
+      return (rabiesGroup[key] && rabiesGroup[key].count[cat]) ? rabiesGroup[key].count[cat] : 0;
+    });
     return { label: cat, data: vals, borderColor: COLORS[(idx+1) % COLORS.length], backgroundColor: 'transparent', tension: 0.2, fill: false };
   });
-  chartConfigs.push({ id: 'chartRabies', labels: rabiesLabels, datasets: rabiesDatasets });
+  chartConfigs.push({ id: 'chartRabies', labels: rabiesAllKeys, datasets: rabiesDatasets });
 
   // ---- Susu ----
   var susuData = filterData(dataMap.Susu.data, 'tanggalInputLaporan');
   var susuGroup = groupCountByMonth(susuData, 'tanggalInputLaporan');
-  var susuLabels = sortMonthKeys(Object.keys(susuGroup));
+  var susuAllKeys = getAllMonthKeys(susuData, 'tanggalInputLaporan');
   var susuDataset = [{
     label: 'Jumlah Pasien',
-    data: susuLabels.map(function(key) { return susuGroup[key].count; }),
+    data: susuAllKeys.map(function(key) { return susuGroup[key] ? susuGroup[key].count : 0; }),
     borderColor: COLORS[3], backgroundColor: 'transparent', tension: 0.2, fill: false
   }];
-  chartConfigs.push({ id: 'chartSusu', labels: susuLabels, datasets: susuDataset });
+  chartConfigs.push({ id: 'chartSusu', labels: susuAllKeys, datasets: susuDataset });
 
   // ---- Cobra ----
   var cobraData = filterData(dataMap.Cobra.data, 'tanggal');
   var cobraGroup = groupCountByMonth(cobraData, 'tanggal');
-  var cobraLabels = sortMonthKeys(Object.keys(cobraGroup));
+  var cobraAllKeys = getAllMonthKeys(cobraData, 'tanggal');
   var cobraDataset = [{
     label: 'Jumlah Pasien',
-    data: cobraLabels.map(function(key) { return cobraGroup[key].count; }),
+    data: cobraAllKeys.map(function(key) { return cobraGroup[key] ? cobraGroup[key].count : 0; }),
     borderColor: COLORS[4], backgroundColor: 'transparent', tension: 0.2, fill: false
   }];
-  chartConfigs.push({ id: 'chartCobra', labels: cobraLabels, datasets: cobraDataset });
+  chartConfigs.push({ id: 'chartCobra', labels: cobraAllKeys, datasets: cobraDataset });
 
   // ---- Difteri ----
   var difteriData = filterData(dataMap.Difteri.data, 'tanggal');
   var difteriGroup = groupCountByMonth(difteriData, 'tanggal');
-  var difteriLabels = sortMonthKeys(Object.keys(difteriGroup));
+  var difteriAllKeys = getAllMonthKeys(difteriData, 'tanggal');
   var difteriDataset = [{
     label: 'Jumlah Pasien',
-    data: difteriLabels.map(function(key) { return difteriGroup[key].count; }),
+    data: difteriAllKeys.map(function(key) { return difteriGroup[key] ? difteriGroup[key].count : 0; }),
     borderColor: COLORS[5], backgroundColor: 'transparent', tension: 0.2, fill: false
   }];
-  chartConfigs.push({ id: 'chartDifteri', labels: difteriLabels, datasets: difteriDataset });
+  chartConfigs.push({ id: 'chartDifteri', labels: difteriAllKeys, datasets: difteriDataset });
 
   // ---- Render semua grafik ----
   chartConfigs.forEach(function(cfg) {
